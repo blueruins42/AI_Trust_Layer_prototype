@@ -69,7 +69,7 @@ _MUTED = "#6B7280"
 
 
 def _inject_chart_style():
-    """Wrap every altair chart in a P0-style white card (once per render)."""
+    """Wrap every altair chart in a P0-style white card and center fixed-width charts."""
     st.markdown(
         """
         <style>
@@ -79,6 +79,10 @@ def _inject_chart_style():
             padding: 16px 18px 8px 18px;
             box-shadow: 0 2px 8px rgba(1,77,178,0.06);
             margin-bottom: 4px;
+        }
+        div[data-testid="stAltairChart"] svg {
+            display: block;
+            margin: 0 auto;
         }
         </style>
         """,
@@ -134,13 +138,7 @@ def _build_trend_chart(log: list):
     points = base.mark_circle(color=_DEEP, size=55, stroke="#FFFFFF", strokeWidth=1.5).encode(
         x="Query:Q", y="Trust Health (%):Q"
     )
-    chart = (area + line + points).properties(
-        title=alt.TitleParams(
-            text="Trust Health Trend",
-            subtitle="Cumulative verification-click rate · lower = more trust",
-            anchor="start",
-        )
-    )
+    chart = (area + line + points)
     return _style(chart)
 
 
@@ -167,15 +165,7 @@ def _build_confidence_donut(log: list):
             ),
             tooltip=["level", "count"],
         )
-        .properties(
-            width=320,
-            height=240,
-            title=alt.TitleParams(
-                text="Confidence Distribution",
-                subtitle=f"{total} queries · High / Medium / Low",
-                anchor="start",
-            ),
-        )
+        .properties(width=230, height=200)
     )
     return _style(chart)
 
@@ -220,14 +210,7 @@ def _build_jargon_bar(top_jargon: list):
     labels = alt.Chart(df).mark_text(dx=7, color=_TEXT, fontWeight="bold", fontSize=12.5).encode(
         y="term:N", x="views:Q", text="views:Q"
     )
-    chart = (bars + labels).properties(
-        height=36 * n + 46,
-        title=alt.TitleParams(
-            text="Jargon Term Heat",
-            subtitle="Most-viewed domain terms · ranked by views",
-            anchor="start",
-        ),
-    )
+    chart = (bars + labels).properties(height=36 * n + 46)
     return _style(chart)
 
 
@@ -236,16 +219,28 @@ def _build_jargon_bar(top_jargon: list):
 # ---------------------------------------------------------------------------
 
 def _section_header(eyebrow: str, title: str, subtitle: str = ""):
-    """Reusable section eyebrow + title with a blue vertical accent bar (P0 design language)."""
+    """Reusable section eyebrow + title (big section title, no accent bar)."""
     html = (
-        '<div style="display:flex; align-items:stretch; margin:4px 0 14px 0;">'
-        '<div style="width:4px; background:#3B82F6; border-radius:2px; margin-right:12px; flex:0 0 auto;"></div>'
-        '<div style="flex:1 1 auto;">'
+        '<div style="margin:4px 0 14px 0;">'
         f'<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">{eyebrow}</span>'
         f'<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px; line-height:1.25;">{title}</div>'
     )
     if subtitle:
         html += f'<div style="color:#6B7280; font-size:13px; margin-top:4px;">{subtitle}</div>'
+    html += "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def _chart_subtitle(title: str, subtitle: str = ""):
+    """Small chart/block subtitle with a blue vertical accent bar (P0 design language)."""
+    html = (
+        '<div style="display:flex; align-items:stretch; margin:8px 0 10px 0;">'
+        '<div style="width:4px; background:#3B82F6; border-radius:2px; margin-right:10px; flex:0 0 auto;"></div>'
+        '<div style="flex:1 1 auto;">'
+        f'<div style="color:#0A0A0B; font-size:15px; font-weight:700; line-height:1.2;">{title}</div>'
+    )
+    if subtitle:
+        html += f'<div style="color:#6B7280; font-size:12px; margin-top:2px;">{subtitle}</div>'
     html += "</div></div>"
     st.markdown(html, unsafe_allow_html=True)
 
@@ -258,8 +253,10 @@ def render_section_query_trust(log: list, metrics: dict):
         subtitle="Trend line shows cumulative verification-click rate over the query sequence; full log below.",
     )
 
+    _chart_subtitle("Trust Health Trend", "Cumulative verification-click rate · lower = more trust")
     st.altair_chart(_build_trend_chart(log), use_container_width=True)
-    st.markdown('<div style="height:4px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height:12px;"></div>', unsafe_allow_html=True)
+    _chart_subtitle("Recent Queries", "Full query log · newest first")
     render_recent_queries(metrics["recent_queries"])
 
 
@@ -271,10 +268,14 @@ def render_section_confidence(log: list, metrics: dict):
         subtitle="Donut shows the share of each confidence level; table shows counts and percentages.",
     )
 
-    col_chart, col_table = st.columns([1, 2])
+    col_chart, col_table = st.columns([1.3, 2])
     with col_chart:
+        _chart_subtitle("Confidence Distribution", f"{metrics['total_queries']} queries · High / Medium / Low")
         st.altair_chart(_build_confidence_donut(log), use_container_width=False)
     with col_table:
+        _chart_subtitle("Confidence Breakdown", "Count and share per level")
+        # Align table bottom with the donut legend (three category icons) bottom
+        st.markdown('<div style="height:96px;">&nbsp;</div>', unsafe_allow_html=True)
         render_confidence_breakdown(log, metrics)
 
 
@@ -288,10 +289,12 @@ def render_section_jargon(metrics: dict):
 
     col_chart, col_table = st.columns([2, 1])
     with col_chart:
+        _chart_subtitle("Jargon Term Heat", "Most-viewed domain terms · ranked by views")
         bar = _build_jargon_bar(metrics["top_jargon"])
         if bar is not None:
             st.altair_chart(bar, use_container_width=True)
     with col_table:
+        _chart_subtitle("Top 5 Jargon Terms", "Ranked by view count")
         render_top_jargon(metrics["top_jargon"])
 
 
@@ -424,7 +427,10 @@ def render_recent_queries(queries: list):
     total = len(queries)
     for i, entry in enumerate(reversed(queries)):
         seq = total - i  # Sequential number (oldest = 1)
-        verified = "Verified ✓" if entry.clicked_verification else "Not Verified"
+        if entry.clicked_verification:
+            verified = '<span style="display:inline-block; padding:2px 9px; border-radius:999px; background:rgba(16,185,129,0.12); color:#10B981; font-weight:600; font-size:12px;">✓ Verified</span>'
+        else:
+            verified = '<span style="display:inline-block; padding:2px 9px; border-radius:999px; background:rgba(107,114,128,0.12); color:#6B7280; font-weight:600; font-size:12px;">Not verified</span>'
         conf_display = {
             "high": '<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10B981; margin-right:6px; vertical-align:middle;"></span>High',
             "medium": '<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#F59E0B; margin-right:6px; vertical-align:middle;"></span>Medium',

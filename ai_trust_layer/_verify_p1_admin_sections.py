@@ -33,11 +33,11 @@ with sync_playwright() as p:
     page.screenshot(path=f"{OUT}/p1_admin_full.png", full_page=True)
 
     # Section-specific viewport captures for close inspection
-    page.locator("text=CONFIDENCE BREAKDOWN").scroll_into_view_if_needed()
+    page.get_by_text("High / Medium / Low Distribution").scroll_into_view_if_needed()
     time.sleep(0.5)
     page.screenshot(path=f"{OUT}/p1_admin_confidence.png")
 
-    page.locator("text=JARGON INSIGHTS").scroll_into_view_if_needed()
+    page.get_by_text("Term Heat & Rankings").scroll_into_view_if_needed()
     time.sleep(0.5)
     page.screenshot(path=f"{OUT}/p1_admin_jargon.png")
 
