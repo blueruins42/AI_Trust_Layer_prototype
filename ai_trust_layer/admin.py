@@ -71,9 +71,11 @@ def render_admin():
     log = st.session_state.get("interaction_log", [])
     metrics = calculate_admin_metrics(log)
 
-    # Empty data handling
+    # Empty data handling — bilingual per design spec; the Restore control lets a
+    # reviewer reproduce the seeded dashboard after clearing (Path A).
     if metrics.get("empty"):
-        st.info("No data yet. Please make queries in the frontend first.")
+        st.info("暂无数据，请先在前台进行查询 · No data yet — please query the frontend first.")
+        _render_demo_data_controls(empty=True)
         return
 
     # Three metric cards
@@ -94,6 +96,36 @@ def render_admin():
 
     st.divider()
     _render_footer()
+
+    # Path A: Clear / Restore demo data controls (bottom of dashboard).
+    _render_demo_data_controls(empty=False)
+
+
+def _render_demo_data_controls(empty: bool):
+    """Path A — reviewers can reproduce the empty state on demand and restore the
+    seeded demo data. This only flips session flags; no production data path is
+    touched. The actual re-seed is performed in app.init_session_state() to avoid
+    a circular import between app.py and admin.py."""
+    col_left, col_mid, col_right = st.columns([1, 1.4, 1])
+    with col_mid:
+        if empty:
+            if st.button(
+                "Restore demo data · 恢复演示数据",
+                key="restore_demo", type="primary", use_container_width=True,
+            ):
+                st.session_state["_request_seed"] = True
+                st.rerun()
+        else:
+            if st.button(
+                "Clear demo data · 清空演示数据",
+                key="clear_demo", type="secondary", use_container_width=True,
+            ):
+                st.session_state["interaction_log"] = []
+                st.session_state["jargon_views"] = {}
+                st.session_state["verification_clicks"] = 0
+                st.session_state["query_count"] = 0
+                st.session_state["demo_data_cleared"] = True
+                st.rerun()
 
 
 # ---------------------------------------------------------------------------

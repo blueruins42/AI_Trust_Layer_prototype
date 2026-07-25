@@ -1,6 +1,27 @@
+# --- Python ---
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.Python
+
+# --- Virtual environments (never commit the 387MB venv) ---
+.venv/
+venv/
+env/
+
+# --- Secrets & local config ---
 .env
+.env.*
+.streamlit/secrets.toml
+
+# --- WorkBuddy internal state ---
+.workbuddy/
+
+# --- OS / editor cruft ---
 .DS_Store
+Thumbs.db
 *.session
+
+# --- Ardot working exports (not curated demo assets) ---
+ai_trust_layer/screenshots/screenshot(*).png

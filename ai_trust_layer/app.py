@@ -35,8 +35,22 @@ def init_session_state():
     # --- Interaction log ---
     init_log()
 
-    # --- Seed data (Step 6 requirement: ensure Admin Dashboard has data when toggled) ---
-    if not st.session_state["interaction_log"]:
+    # --- Demo-data seed gate (Path A) ---
+    # `demo_data_cleared` is set True when the user clicks "Clear demo data" in Admin,
+    # so the auto-seed below does NOT refill on the next rerun — making the empty-state
+    # acceptance criterion reproducible on demand. `_request_seed` is set by Admin's
+    # "Restore demo data" button and processed here (avoids a circular import).
+    if "demo_data_cleared" not in st.session_state:
+        st.session_state["demo_data_cleared"] = False
+    if st.session_state.get("_request_seed"):
+        _seed_log_data()
+        st.session_state["demo_data_cleared"] = False
+        st.session_state["_request_seed"] = False
+
+    # Seed data (Step 6 requirement: ensure Admin Dashboard has data when toggled).
+    # Only when the log is empty AND the user has not explicitly cleared it — this keeps
+    # the impressive default dashboard while still allowing the empty state to be shown.
+    if not st.session_state["interaction_log"] and not st.session_state["demo_data_cleared"]:
         _seed_log_data()
 
 
