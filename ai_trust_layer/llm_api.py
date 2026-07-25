@@ -150,6 +150,33 @@ MOCK_RESPONSES: dict[str, dict] = {
             "documents_searched": 10,
             "documents_matched": 2
         }
+    },
+
+    # No-match: query does not map to any known topic -> zero relevant documents.
+    # Surfaces the graceful "no relevant documents" banner on the frontend instead of
+    # silently returning a high-confidence answer. The 3 demo scenes (signal/budget/switch) above are untouched.
+    "nomatch": {
+        "answer": {
+            "text": "I couldn't find any documents relevant to your question in the current database. Try rephrasing with project-specific keywords (e.g. signaling system, switch machine, construction budget).",
+            "confidence_score": 0.0,
+            "confidence_level": "low",
+            "is_inferred": True
+        },
+        "sources": [],
+        "jargon_glossary": [],
+        "verification_advice": {
+            "needs_verification": False,
+            "fields_to_check": [],
+            "action_link": None
+        },
+        "metadata": {
+            "query_id": "mock-nomatch-001",
+            "timestamp": "2026-07-24T10:03:00",
+            "response_time_ms": 60,
+            "model_used": "mock-static",
+            "documents_searched": 10,
+            "documents_matched": 0
+        }
     }
 }
 
@@ -167,11 +194,11 @@ def get_mock_response(user_query: str) -> TrustLayerResponse:
 
     Matching logic:
     1. Iterate MOCK_QUERY_MAP, first keyword group hit wins
-    2. No match -> default to high scenario
+    2. No match -> "nomatch" scenario (empty sources -> frontend shows no-docs banner)
 
     Returns: Pydantic-validated TrustLayerResponse object
     """
-    matched_scenario = "high"  # default scenario
+    matched_scenario = "nomatch"  # default: no keyword match => no relevant documents
 
     for keywords, scenario in MOCK_QUERY_MAP:
         if any(kw in user_query for kw in keywords):

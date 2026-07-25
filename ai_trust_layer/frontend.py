@@ -243,8 +243,9 @@ def render_response(response: TrustLayerResponse):
     # 1. Confidence label
     render_confidence_label(level, response.answer.is_inferred)
 
-    # 2. Low confidence alert (above answer)
-    if level == ConfidenceLevel.LOW:
+    # 2. Low confidence alert (above answer) — suppressed when there are no source docs,
+    #    since the no-docs banner below already communicates the problem (avoids a double banner).
+    if level == ConfidenceLevel.LOW and response.sources:
         render_alert_banner(response.verification_advice, response.answer.confidence_score)
 
     # 3. AI answer text
