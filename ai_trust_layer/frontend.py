@@ -48,9 +48,10 @@ def _inject_expander_css():
 
         /* Search input: single gray rounded border when idle.
            On focus the gray border becomes blue (design blue) with a soft glow — applied to the
-           visible baseweb box so there is NEVER a double (gray + blue) border. */
+           visible baseweb box so there is NEVER a double (gray + blue) border. Deeper gray
+           (#C4C4C8) so the idle border stays clearly visible on the white hero. */
         div[data-baseweb="input"] {
-            border: 1px solid #E4E4E7 !important;
+            border: 1px solid #C4C4C8 !important;
             border-radius: 12px !important;
             box-shadow: none !important;
         }
@@ -65,6 +66,10 @@ def _inject_expander_css():
             outline: none !important;
             box-shadow: none !important;
         }
+        /* Hide Streamlit's "Press Enter to submit form" caption under the form submit button.
+           The Enter-to-submit behavior is preserved — only the redundant hint text is removed
+           so it no longer overlaps the input placeholder. */
+        [data-testid="stFormSubmitButton"] small { display: none !important; }
         </style>
         """,
         unsafe_allow_html=True,
@@ -97,20 +102,27 @@ def render_frontend():
         unsafe_allow_html=True,
     )
 
-    # Search box + button on the same row, centered (~50% width)
+    # Search box + button on the same row, centered (~50% width).
+    # Wrapped in a form so pressing Enter inside the input submits the search
+    # (keyboard Enter previously did nothing — only the button click worked).
+    # border=False removes the default form outline so only the input + button show.
     _, search_center, _ = st.columns([1, 2, 1])
     with search_center:
-        search_col, btn_col = st.columns([4, 1])
-        with search_col:
-            user_query = st.text_input(
-                "Ask anything about your project documents:",
-                placeholder="Ask anything about your project documents...",
-                key="query_input",
-                label_visibility="collapsed",
-            )
-        with btn_col:
-            if st.button("Search", type="primary", use_container_width=True):
-                if user_query.strip():
+        with st.form(key="search_form", clear_on_submit=False, border=False):
+            search_col, btn_col = st.columns([4, 1])
+            with search_col:
+                user_query = st.text_input(
+                    "Ask anything about your project documents:",
+                    placeholder="Ask anything about your project documents...",
+                    key="query_input",
+                    label_visibility="collapsed",
+                )
+            with btn_col:
+                submitted = st.form_submit_button(
+                    "Search", type="primary", use_container_width=True
+                )
+            if submitted:
+                if user_query and user_query.strip():
                     _handle_query(user_query.strip())
                 else:
                     st.warning("Please enter a query")
@@ -240,20 +252,23 @@ def render_response(response: TrustLayerResponse):
     """
     level = response.answer.confidence_level
 
+    # Empty-retrieval (no-match) case: show ONLY the amber status banner.
+    # The answer text and details are redundant here (the banner already states the
+    # no-documents result), so we skip the pill / answer / details to keep the UI clean.
+    if not response.sources:
+        render_no_docs_banner()
+        return
+
     # 1. Confidence label
     render_confidence_label(level, response.answer.is_inferred)
 
-    # 2. Low confidence alert (above answer) — suppressed when there are no source docs,
-    #    since the no-docs banner below already communicates the problem (avoids a double banner).
+    # 2. Low confidence alert (above answer) — only when there ARE source docs,
+    #    since the no-docs banner already communicates the problem otherwise.
     if level == ConfidenceLevel.LOW and response.sources:
         render_alert_banner(response.verification_advice, response.answer.confidence_score)
 
     # 3. AI answer text
     st.markdown(response.answer.text)
-
-    # 3.5 Empty-retrieval fallback: surface a graceful warning if no source documents matched.
-    if not response.sources:
-        render_no_docs_banner()
 
     # 4. Details expander (progressive disclosure core)
     render_details_expander(response)
@@ -351,8 +366,8 @@ def render_alert_banner(verification_advice, confidence_score=None):
 def render_no_docs_banner():
     """
     Fallback banner shown when the retrieved source list is empty (no matches from the
-    mock database). Keeps the app from silently failing on zero-match queries — surfaces a
-    graceful, on-design warning instead. Exact copy per requirement.
+    mock database). This is the ONLY thing rendered for a no-match query, so the copy must
+    be complete and self-contained — no separate answer paragraph or details panel.
     """
     st.markdown(
         """
@@ -370,7 +385,7 @@ def render_no_docs_banner():
             </div>
             <div style="flex:1;">
                 <div style="color:#92400E; font-size:15px; font-weight:600; line-height:1.5;">
-                    No relevant documents found in the database. Please try adjusting your keywords.
+                    I couldn't find any documents relevant to your question in the current database. Try rephrasing with project-specific keywords (e.g. signaling system, switch machine, construction budget).
                 </div>
             </div>
         </div>

@@ -527,22 +527,23 @@ def render_recent_queries(queries: list, page_size: int = 4):
         query_display = entry.user_query[:42] + ("…" if len(entry.user_query) > 42 else "")
         rtime = f"{entry.response_time_ms / 1000:.1f}s"
 
-        # Only draw a separator line between rows — the LAST row gets no border-bottom so the
-        # table closes cleanly on the white card's own border (rounded corners were clipping
-        # the trailing line and making it look inconsistent across pages).
+        # Separator line only BETWEEN rows — the LAST row gets no bottom border so the
+        # table closes cleanly on the white card's own frame (no trailing rule, consistent
+        # on every page). The border is applied to the <td> cells for reliable rendering
+        # under border-collapse:collapse (a <tr>-level border can be dropped by some browsers).
         is_last = local_i == n_rows - 1
-        row_border = "" if is_last else "border-bottom:1px solid rgba(128,128,128,0.12);"
+        cell_border = "" if is_last else "border-bottom:1px solid rgba(128,128,128,0.12);"
 
         rows += (
-            f'<tr style="{row_border}">'
+            f'<tr>'
             f'<td style="text-align:left; padding:12px; font-family:{_NUM}; font-weight:600; '
-            f'font-size:13px; color:{_MUTED};">{seq}</td>'
-            f'<td style="text-align:left; padding:12px; font-family:{_SANS}; font-size:13px; color:{_TEXT};">'
+            f'font-size:13px; color:{_MUTED}; {cell_border}">{seq}</td>'
+            f'<td style="text-align:left; padding:12px; font-family:{_SANS}; font-size:13px; color:{_TEXT}; {cell_border}">'
             f'{query_display}</td>'
-            f'<td style="text-align:left; padding:12px; font-size:13px;">{conf}</td>'
+            f'<td style="text-align:left; padding:12px; font-size:13px; {cell_border}">{conf}</td>'
             f'<td style="text-align:left; padding:12px; font-family:{_NUM}; font-weight:600; '
-            f'font-size:13px; color:{_TEXT};">{rtime}</td>'
-            f'<td style="text-align:left; padding:12px; font-size:13px;">{ver}</td>'
+            f'font-size:13px; color:{_TEXT}; {cell_border}">{rtime}</td>'
+            f'<td style="text-align:left; padding:12px; font-size:13px; {cell_border}">{ver}</td>'
             f'</tr>'
         )
 
