@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard — Static Preview (admin.py render)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #FAFAFA;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #0A0A0B;
+    padding: 40px 24px;
+  }
+  .page { max-width: 1080px; margin: 0 auto; }
+  .note {
+    font-size: 12px; color: #9CA3AF; margin-bottom: 18px;
+    border: 1px dashed rgba(1,77,178,0.25); border-radius: 8px; padding: 8px 12px;
+  }
+  .wb { font-family: 'Inter', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', sans-serif; }
+  .metrics { display: flex; gap: 16px; }
+  .metric {
+    flex: 1; background: #FFFFFF; border-radius: 16px; padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(1,77,178,0.06); border: 1px solid rgba(1,77,178,0.08);
+  }
+  .metric .lbl { font-size: 12px; color: #6B7280; font-weight: 500; }
+  .metric .val { font-size: 32px; font-weight: 700; margin-top: 4px; }
+  .metric .sub { font-size: 12px; color: #6B7280; margin-top: 2px; }
+  .divider { height: 1px; background: rgba(1,77,178,0.12); margin: 32px 0; }
+  .card {
+    background: #FFFFFF; border-radius: 16px; padding: 24px;
+    box-shadow: 0 2px 8px rgba(1,77,178,0.06); border: 1px solid rgba(1,77,178,0.08);
+  }
+  .sec { margin: 4px 0 14px 0; }
+  .eyebrow { color: #3B82F6; font-size: 12px; font-weight: 600; letter-spacing: 1px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .sec-title { color: #0A0A0B; font-size: 20px; font-weight: 700; margin-top: 2px; line-height: 1.25; }
+  .sec-sub { color: #6B7280; font-size: 13px; margin-top: 4px; line-height: 1.4; }
+  .csub { display: flex; align-items: stretch; margin: 8px 0 12px 0; }
+  .csub .bar { width: 4px; background: #3B82F6; border-radius: 2px; margin-right: 8px; flex: 0 0 auto; }
+  .csub .ttl { flex: 1 1 auto; color: #0A0A0B; font-size: 15px; font-weight: 700; line-height: 1.2; }
+  .gap18 { height: 18px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #F9FAFB; }
+  th { text-align: left; padding: 12px; font-size: 12px; font-weight: 600; color: #6B7280; }
+  tbody td { text-align: left; padding: 12px; font-size: 13px; border-bottom: 1px solid rgba(128,128,128,0.12); }
+  .pill-w { font-weight: 600; }
+  .pager { display: flex; gap: 12px; align-items: center; margin-top: 14px; }
+  .pager button {
+    border: 1px solid rgba(1,77,178,0.2); background: #FFFFFF; border-radius: 8px;
+    padding: 6px 14px; font-size: 13px; color: #014DB2; cursor: pointer;
+  }
+  .pager button:disabled { opacity: 0.45; cursor: default; }
+  .pager .info { flex: 1; text-align: center; font-weight: 600; font-size: 13px; color: #6B7280; }
+  .chip {
+    display: inline-block; padding: 10px 14px; border-radius: 999px;
+    background: #EFF4FF; color: #014DB2; font-size: 13px; font-weight: 500; white-space: nowrap;
+  }
+  .footer { text-align: center; font-size: 13px; color: #A1A1AA; padding: 28px 0 4px 0; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="note">Static preview of <b>admin.py</b> render (seed data, MOCK_LLM_MODE). All numbers use ONE locked 黑体 / sans stack (consistent across the page). Generated to verify real-webpage appearance without running Streamlit.</div>
+
+  <!-- ===== Header ===== -->
+  <p class="eyebrow" style="font-size:13px; letter-spacing:1.5px; margin-bottom:4px;">TRUST LAYER ANALYTICS</p>
+  <h2 style="font-size:32px; font-weight:800; color:#0A0A0B; margin:0 0 4px 0;">Admin Dashboard</h2>
+  <p style="color:#6B7280; font-size:13px; line-height:1.5; margin:6px 0 20px 0;">Monitor trust health, low-confidence rates, and frequently-viewed jargon for system iteration.</p>
+
+  <!-- ===== Metric cards ===== -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="lbl">Trust Health</div>
+      <div class="val wb">42.9%</div>
+      <div class="sub">Verification Click Rate - Lower = More Trust</div>
+    </div>
+    <div class="metric">
+      <div class="lbl">Low Confidence Rate</div>
+      <div class="val wb">28.6%</div>
+      <div class="sub">Lower = Better Coverage</div>
+    </div>
+    <div class="metric">
+      <div class="lbl">Total Queries</div>
+      <div class="val wb">7</div>
+      <div class="sub">Session Total</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== Section 1 ===== -->
+  <div class="sec">
+    <div class="eyebrow">QUERY TRUST</div>
+    <div class="sec-title">Trust Health &amp; Verification History</div>
+    <div class="sec-sub">Cumulative verification-click rate over the query sequence, with the full log below.</div>
+  </div>
+
+  <div class="csub"><div class="bar"></div><div class="ttl">Trust Health Trend</div></div>
+  <div class="card">
+    <svg width="100%" viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <line x1="48" y1="244" x2="740" y2="244" stroke="rgba(128,128,128,0.15)" stroke-width="1"/><text x="40" y="248" class="wb" font-size="11" fill="#6B7280" text-anchor="end">0</text>
+      <line x1="48" y1="189" x2="740" y2="189" stroke="rgba(128,128,128,0.15)" stroke-width="1"/><text x="40" y="193" class="wb" font-size="11" fill="#6B7280" text-anchor="end">25</text>
+      <line x1="48" y1="134" x2="740" y2="134" stroke="rgba(128,128,128,0.15)" stroke-width="1"/><text x="40" y="138" class="wb" font-size="11" fill="#6B7280" text-anchor="end">50</text>
+      <line x1="48" y1="79" x2="740" y2="79" stroke="rgba(128,128,128,0.15)" stroke-width="1"/><text x="40" y="83" class="wb" font-size="11" fill="#6B7280" text-anchor="end">75</text>
+      <line x1="48" y1="24" x2="740" y2="24" stroke="rgba(128,128,128,0.15)" stroke-width="1"/><text x="40" y="28" class="wb" font-size="11" fill="#6B7280" text-anchor="end">100</text>
+      <polygon points="48,244 48,244 163.3,134 278.7,97.3 394,134 509.3,156 624.7,134 740,149.6 740,244" fill="rgba(59,130,246,0.10)"/>
+      <polyline points="48,244 163.3,134 278.7,97.3 394,134 509.3,156 624.7,134 740,149.6" fill="none" stroke="#014DB2" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="48" cy="244" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="163.3" cy="134" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="278.7" cy="97.3" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="394" cy="134" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="509.3" cy="156" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="624.7" cy="134" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="740" cy="149.6" r="3.5" fill="#014DB2" stroke="#FFFFFF" stroke-width="1.5"/>
+      <text x="48" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q1</text>
+      <text x="163.3" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q2</text>
+      <text x="278.7" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q3</text>
+      <text x="394" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q4</text>
+      <text x="509.3" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q5</text>
+      <text x="624.7" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q6</text>
+      <text x="740" y="262" class="wb" font-size="11" fill="#6B7280" text-anchor="middle">Q7</text>
+    </svg>
+  </div>
+
+  <div class="gap18"></div>
+
+  <div class="csub"><div class="bar"></div><div class="ttl">Recent Queries</div></div>
+  <div class="card" style="padding:0;">
+    <div style="border-radius:16px; overflow:hidden;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Query</th><th>Confidence</th><th>Response</th><th>Verification</th>
+          </tr>
+        </thead>
+        <tbody id="page1">
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">7</td>
+            <td>What signaling system does Project XX use?</td>
+            <td class="pill-w" style="color:#10B981;">High</td>
+            <td class="wb" style="font-weight:600;">1.2s</td>
+            <td class="pill-w" style="color:#6B7280;">Not verified</td>
+          </tr>
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">6</td>
+            <td>What is the construction budget for YY Line?</td>
+            <td class="pill-w" style="color:#EF4444;">Low</td>
+            <td class="wb" style="font-weight:600;">1.0s</td>
+            <td class="pill-w" style="color:#10B981;">Verified</td>
+          </tr>
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">5</td>
+            <td>What are the technical parameters of ZDJ-200 switch machine?</td>
+            <td class="pill-w" style="color:#F59E0B;">Medium</td>
+            <td class="wb" style="font-weight:600;">1.4s</td>
+            <td class="pill-w" style="color:#6B7280;">Not verified</td>
+          </tr>
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">4</td>
+            <td>What signaling system does Project XX use?</td>
+            <td class="pill-w" style="color:#10B981;">High</td>
+            <td class="wb" style="font-weight:600;">1.2s</td>
+            <td class="pill-w" style="color:#6B7280;">Not verified</td>
+          </tr>
+        </tbody>
+        <tbody id="page2" style="display:none;">
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">3</td>
+            <td>What is the construction budget for YY Line?</td>
+            <td class="pill-w" style="color:#EF4444;">Low</td>
+            <td class="wb" style="font-weight:600;">1.0s</td>
+            <td class="pill-w" style="color:#10B981;">Verified</td>
+          </tr>
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">2</td>
+            <td>What are the technical parameters of ZDJ-200 switch machine?</td>
+            <td class="pill-w" style="color:#F59E0B;">Medium</td>
+            <td class="wb" style="font-weight:600;">1.5s</td>
+            <td class="pill-w" style="color:#10B981;">Verified</td>
+          </tr>
+          <tr>
+            <td class="wb" style="font-weight:600; color:#6B7280;">1</td>
+            <td>What signaling system does Project XX use?</td>
+            <td class="pill-w" style="color:#10B981;">High</td>
+            <td class="wb" style="font-weight:600;">1.2s</td>
+            <td class="pill-w" style="color:#6B7280;">Not verified</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="pager">
+    <button id="prevBtn" onclick="showPage(1)" disabled>&larr; Previous</button>
+    <div class="info wb" id="pageInfo">Page 1 of 2</div>
+    <button id="nextBtn" onclick="showPage(2)">Next &rarr;</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== Section 2 ===== -->
+  <div class="sec">
+    <div class="eyebrow">CONFIDENCE BREAKDOWN</div>
+    <div class="sec-title">High / Medium / Low Distribution</div>
+    <div class="sec-sub">Donut shows the share of each confidence level; the card reads what the split means for system iteration.</div>
+  </div>
+
+  <div style="display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap;">
+    <div style="flex:1 1 360px; display:flex; flex-direction:column;">
+      <div class="csub"><div class="bar"></div><div class="ttl">Confidence Levels</div></div>
+      <div class="card" style="min-height:360px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" style="display:block; margin:0 auto;">
+          <circle cx="140" cy="140" r="88" fill="none" stroke="#10B981" stroke-width="44" stroke-dasharray="236.97 315.95" stroke-dashoffset="0.00" transform="rotate(-90 140 140)"/>
+          <circle cx="140" cy="140" r="88" fill="none" stroke="#F59E0B" stroke-width="44" stroke-dasharray="157.98 394.94" stroke-dashoffset="-236.97" transform="rotate(-90 140 140)"/>
+          <circle cx="140" cy="140" r="88" fill="none" stroke="#EF4444" stroke-width="44" stroke-dasharray="157.98 394.94" stroke-dashoffset="-394.95" transform="rotate(-90 140 140)"/>
+          <text x="140" y="136" class="wb" font-size="54" font-weight="700" fill="#0A0A0B" text-anchor="middle">7</text>
+          <text x="140" y="166" font-size="15" font-weight="500" fill="#6B7280" text-anchor="middle">queries</text>
+        </svg>
+        <div style="display:flex; gap:28px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+          <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#0A0A0B; font-weight:500;" class="wb"><span style="width:12px; height:12px; border-radius:6px; background:#10B981; display:inline-block;"></span>High · 42.9%</span>
+          <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#0A0A0B; font-weight:500;" class="wb"><span style="width:12px; height:12px; border-radius:6px; background:#F59E0B; display:inline-block;"></span>Medium · 28.6%</span>
+          <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#0A0A0B; font-weight:500;" class="wb"><span style="width:12px; height:12px; border-radius:6px; background:#EF4444; display:inline-block;"></span>Low · 28.6%</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1 1 420px; display:flex; flex-direction:column;">
+      <div class="csub"><div class="bar"></div><div class="ttl">Reading the Distribution</div></div>
+      <div class="card" style="min-height:360px; display:flex; flex-direction:column;">
+        <div style="display:flex; flex-direction:column; gap:16px; justify-content:center; flex:1 1 auto;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px; height:6px; border-radius:3px; background:#014DB2; flex:0 0 auto;"></div>
+            <div style="font-size:14px; color:#0A0A0B;">High <b class="wb">42.9%</b> (<span class="wb">3</span>) — answers drawn directly from source documents</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px; height:6px; border-radius:3px; background:#014DB2; flex:0 0 auto;"></div>
+            <div style="font-size:14px; color:#0A0A0B;">Medium <b class="wb">28.6%</b> (<span class="wb">2</span>) — partial coverage; monitor for escalation</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px; height:6px; border-radius:3px; background:#014DB2; flex:0 0 auto;"></div>
+            <div style="font-size:14px; color:#0A0A0B;">Low <b class="wb">28.6%</b> (<span class="wb">2</span>) — coverage gap; add source docs for these topics</div>
+          </div>
+        </div>
+        <div style="margin-top:20px; border-top:1px solid rgba(1,77,178,0.10); padding-top:12px; color:#6B7280; font-size:12px;">
+          A lower low-confidence rate means a healthier, better-covered system.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== Section 3 ===== -->
+  <div class="sec">
+    <div class="eyebrow">VOCABULARY GAP</div>
+    <div class="sec-title">Frequently-Viewed Jargon</div>
+    <div class="sec-sub">Horizontal bars show how often users expanded a domain term; top candidates should be added to the system glossary to close the knowledge gap.</div>
+  </div>
+
+  <div class="csub"><div class="bar"></div><div class="ttl">Jargon Term Views</div></div>
+  <div class="card">
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="flex:0 0 200px; font-size:13px; font-weight:500; color:#0A0A0B; text-align:left;">CBTC</div>
+        <div style="flex:1 1 auto; height:28px; background:#EEF2F7; border-radius:6px; position:relative;">
+          <div style="position:absolute; left:0; top:0; height:28px; width:100%; background:#014DB2; border-radius:6px;"></div>
+        </div>
+        <div class="wb" style="flex:0 0 40px; text-align:right; font-size:13px; font-weight:600; color:#0A0A0B;">4</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="flex:0 0 200px; font-size:13px; font-weight:500; color:#0A0A0B; text-align:left;">Electric Switch Machine</div>
+        <div style="flex:1 1 auto; height:28px; background:#EEF2F7; border-radius:6px; position:relative;">
+          <div style="position:absolute; left:0; top:0; height:28px; width:75%; background:#014DB2; border-radius:6px;"></div>
+        </div>
+        <div class="wb" style="flex:0 0 40px; text-align:right; font-size:13px; font-weight:600; color:#0A0A0B;">3</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="flex:0 0 200px; font-size:13px; font-weight:500; color:#0A0A0B; text-align:left;">Low-Voltage Integration</div>
+        <div style="flex:1 1 auto; height:28px; background:#EEF2F7; border-radius:6px; position:relative;">
+          <div style="position:absolute; left:0; top:0; height:28px; width:50%; background:#014DB2; border-radius:6px;"></div>
+        </div>
+        <div class="wb" style="flex:0 0 40px; text-align:right; font-size:13px; font-weight:600; color:#0A0A0B;">2</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="flex:0 0 200px; font-size:13px; font-weight:500; color:#0A0A0B; text-align:left;">Switching Force</div>
+        <div style="flex:1 1 auto; height:28px; background:#EEF2F7; border-radius:6px; position:relative;">
+          <div style="position:absolute; left:0; top:0; height:28px; width:25%; background:#014DB2; border-radius:6px;"></div>
+        </div>
+        <div class="wb" style="flex:0 0 40px; text-align:right; font-size:13px; font-weight:600; color:#0A0A0B;">1</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="flex:0 0 200px; font-size:13px; font-weight:500; color:#0A0A0B; text-align:left;">Traction Power Supply</div>
+        <div style="flex:1 1 auto; height:28px; background:#EEF2F7; border-radius:6px; position:relative;">
+          <div style="position:absolute; left:0; top:0; height:28px; width:25%; background:#014DB2; border-radius:6px;"></div>
+        </div>
+        <div class="wb" style="flex:0 0 40px; text-align:right; font-size:13px; font-weight:600; color:#0A0A0B;">1</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap18"></div>
+
+  <div class="csub"><div class="bar"></div><div class="ttl">Glossary Candidates</div></div>
+  <div class="card">
+    <div style="display:flex; flex-wrap:wrap; gap:10px;">
+      <span class="chip">CBTC · 4</span>
+      <span class="chip">Electric Switch Machine · 3</span>
+      <span class="chip">Low-Voltage Integration · 2</span>
+      <span class="chip">Switching Force · 1</span>
+      <span class="chip">Traction Power Supply · 1</span>
+    </div>
+  </div>
+
+  <div class="footer">Built for enterprise RAG systems&nbsp;&nbsp;·&nbsp;&nbsp;Designed by Shuting Fan&nbsp;&nbsp;·&nbsp;&nbsp;MSc Interaction &amp; Experience Design Portfolio</div>
+</div>
+
+<script>
+  function showPage(p) {
+    document.getElementById('page1').style.display = (p === 1) ? 'block' : 'none';
+    document.getElementById('page2').style.display = (p === 2) ? 'block' : 'none';
+    document.getElementById('prevBtn').disabled = (p === 1);
+    document.getElementById('nextBtn').disabled = (p === 2);
+    document.getElementById('pageInfo').textContent = 'Page ' + p + ' of 2';
+  }
+</script>
+</body>
+</html>
