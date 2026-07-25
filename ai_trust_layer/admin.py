@@ -512,6 +512,7 @@ def render_recent_queries(queries: list, page_size: int = 4):
     conf_color = {"high": _GREEN, "medium": _ORANGE, "low": _RED}
 
     rows = ""
+    n_rows = len(page_rows)
     for local_i, entry in enumerate(page_rows):
         seq = total - (start + local_i)
         conf = (
@@ -526,8 +527,14 @@ def render_recent_queries(queries: list, page_size: int = 4):
         query_display = entry.user_query[:42] + ("…" if len(entry.user_query) > 42 else "")
         rtime = f"{entry.response_time_ms / 1000:.1f}s"
 
+        # Only draw a separator line between rows — the LAST row gets no border-bottom so the
+        # table closes cleanly on the white card's own border (rounded corners were clipping
+        # the trailing line and making it look inconsistent across pages).
+        is_last = local_i == n_rows - 1
+        row_border = "" if is_last else "border-bottom:1px solid rgba(128,128,128,0.12);"
+
         rows += (
-            f'<tr style="border-bottom:1px solid rgba(128,128,128,0.12);">'
+            f'<tr style="{row_border}">'
             f'<td style="text-align:left; padding:12px; font-family:{_NUM}; font-weight:600; '
             f'font-size:13px; color:{_MUTED};">{seq}</td>'
             f'<td style="text-align:left; padding:12px; font-family:{_SANS}; font-size:13px; color:{_TEXT};">'

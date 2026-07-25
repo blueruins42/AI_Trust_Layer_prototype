@@ -46,14 +46,24 @@ def _inject_expander_css():
             padding: 24px !important;
         }
 
-        /* Search input: gray rounded border when idle; blue focus border is kept (design blue). */
-        .stTextInput input {
+        /* Search input: single gray rounded border when idle.
+           On focus the gray border becomes blue (design blue) with a soft glow — applied to the
+           visible baseweb box so there is NEVER a double (gray + blue) border. */
+        div[data-baseweb="input"] {
             border: 1px solid #E4E4E7 !important;
             border-radius: 12px !important;
+            box-shadow: none !important;
         }
-        .stTextInput input:focus {
+        div[data-baseweb="input"]:focus-within {
             border: 1px solid #3B82F6 !important;
-            box-shadow: 0 0 0 2px rgba(59,130,246,0.15) !important;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15) !important;
+        }
+        /* Neutralize the inner <input> so it never draws a second border on top of the box above. */
+        .stTextInput input,
+        .stTextInput input:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         </style>
         """,
