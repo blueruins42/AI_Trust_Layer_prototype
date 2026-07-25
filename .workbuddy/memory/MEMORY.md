@@ -19,7 +19,7 @@
 - ✅ 录屏：3 分钟 demo 视频（videos/）
 - ✅ ardot 设计稿：P0 首页引导层 + 低置信度警报横幅重设计（file ID 707535023504113），从默认 Streamlit 升级到浅色 + 深蓝信任色 + Inter/IBM Plex Mono 企业 SaaS 调性
 - ✅ P0 全部完成：首页引导层 + 高/中/低置信度结果页 pill/alert + 点击展开渐进式呈现 + Admin Dashboard eyebrow/CSS 圆点；已 git 锚定（`p0-baseline` 指向 `0550713`，P0 完成 `4e58cdf`）。
-- ✅ P1 Admin Dashboard 三图完成（trust health trend line + confidence distribution donut + jargon term bar chart），在独立分支 `p1-admin-dashboard` 待用户确认合并；已进一步重设计为「图表 ↔ 原始数据」一一对应布局，并修复标题顶部溢出、趋势/表格上下满宽、章节标题层级、饼图居中、表格底部与饼图图例对齐、Verification 列绿/灰胶囊区分。
+- ✅ P1 Admin Dashboard 三图完成（trust health trend line + confidence distribution donut + jargon term bar chart），在独立分支 `p1-admin-dashboard` 待用户确认合并；已进一步重设计为「图表 ↔ 原始数据」一一对应布局，并修复标题顶部溢出、趋势/表格上下满宽、章节标题层级、饼图居中、表格底部与饼图图例对齐、Verification 列绿/灰胶囊区分；最新版消除图表与表格冗余：饼图直接显示百分比+中心总数，柱状图保留数值标签，右侧改为 PRD 驱动的「解读/候选词库」卡。
 
 ## HCI 理论锚点（叙事必备）
 - Progressive Disclosure（Nielsen Heuristic）
