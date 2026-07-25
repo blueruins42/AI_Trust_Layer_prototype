@@ -549,7 +549,12 @@ def render_recent_queries(queries: list, page_size: int = 4):
     table_html = f'''
     <style>
     .tl-rq-table table {{ border-collapse: separate; border-spacing: 0; }}
-    .tl-rq-table td {{ border: none !important; }}
+    /* No vertical lines anywhere — columns are separated by alignment only. */
+    .tl-rq-table th, .tl-rq-table td {{ border-left: none !important; border-right: none !important; }}
+    .tl-rq-table td {{ border-top: none !important; border-bottom: none !important; }}
+    /* Horizontal separators only: one under the header, and between data rows
+       (but not on the last row, so the table closes cleanly on the card frame). */
+    .tl-rq-table th {{ border-bottom: 1px solid rgba(128,128,128,0.12) !important; }}
     .tl-rq-table tbody tr:not(:last-child) td {{ border-bottom: 1px solid rgba(128,128,128,0.12) !important; }}
     </style>
     <div class="tl-rq-table" style="border-radius:16px; overflow:hidden;">
