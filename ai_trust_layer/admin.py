@@ -527,29 +527,33 @@ def render_recent_queries(queries: list, page_size: int = 4):
         query_display = entry.user_query[:42] + ("…" if len(entry.user_query) > 42 else "")
         rtime = f"{entry.response_time_ms / 1000:.1f}s"
 
-        # Separator line only BETWEEN rows — the LAST row gets no bottom border so the
-        # table closes cleanly on the white card's own frame (no trailing rule, consistent
-        # on every page). The border is applied to the <td> cells for reliable rendering
-        # under border-collapse:collapse (a <tr>-level border can be dropped by some browsers).
-        is_last = local_i == n_rows - 1
-        cell_border = "" if is_last else "border-bottom:1px solid rgba(128,128,128,0.12);"
-
         rows += (
             f'<tr>'
             f'<td style="text-align:left; padding:12px; font-family:{_NUM}; font-weight:600; '
-            f'font-size:13px; color:{_MUTED}; {cell_border}">{seq}</td>'
-            f'<td style="text-align:left; padding:12px; font-family:{_SANS}; font-size:13px; color:{_TEXT}; {cell_border}">'
+            f'font-size:13px; color:{_MUTED};">{seq}</td>'
+            f'<td style="text-align:left; padding:12px; font-family:{_SANS}; font-size:13px; color:{_TEXT};">'
             f'{query_display}</td>'
-            f'<td style="text-align:left; padding:12px; font-size:13px; {cell_border}">{conf}</td>'
+            f'<td style="text-align:left; padding:12px; font-size:13px;">{conf}</td>'
             f'<td style="text-align:left; padding:12px; font-family:{_NUM}; font-weight:600; '
-            f'font-size:13px; color:{_TEXT}; {cell_border}">{rtime}</td>'
-            f'<td style="text-align:left; padding:12px; font-size:13px; {cell_border}">{ver}</td>'
+            f'font-size:13px; color:{_TEXT};">{rtime}</td>'
+            f'<td style="text-align:left; padding:12px; font-size:13px;">{ver}</td>'
             f'</tr>'
         )
 
+    # Scoped CSS for the Recent Queries table. Streamlit's HTML sanitizer STRIPS inline
+    # `!important` declarations from element style attributes, so the border rules must
+    # live in a <style> block (which Streamlit preserves) and be scoped to .tl-rq-table.
+    # We switch to `border-collapse: separate` and draw a separator ONLY between rows; the
+    # LAST row gets none, so the table closes cleanly on the white card frame on every page
+    # (no trailing rule, no clipping by overflow:hidden).
     table_html = f'''
-    <div style="border-radius:16px; overflow:hidden;">
-      <table style="width:100%; border-collapse:collapse; font-family:{_SANS};">
+    <style>
+    .tl-rq-table table {{ border-collapse: separate; border-spacing: 0; }}
+    .tl-rq-table td {{ border: none !important; }}
+    .tl-rq-table tbody tr:not(:last-child) td {{ border-bottom: 1px solid rgba(128,128,128,0.12) !important; }}
+    </style>
+    <div class="tl-rq-table" style="border-radius:16px; overflow:hidden;">
+      <table style="width:100%; font-family:{_SANS};">
         <thead>
           <tr style="background:#F9FAFB;">
             <th style="text-align:left; padding:12px; font-size:12px; font-weight:600; color:{_MUTED};">#</th>

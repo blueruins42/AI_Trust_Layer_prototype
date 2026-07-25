@@ -47,15 +47,17 @@ def _inject_expander_css():
         }
 
         /* Search input: single gray rounded border when idle.
-           On focus the gray border becomes blue (design blue) with a soft glow — applied to the
-           visible baseweb box so there is NEVER a double (gray + blue) border. Deeper gray
-           (#C4C4C8) so the idle border stays clearly visible on the white hero. */
-        div[data-baseweb="input"] {
+           Streamlit 1.60's real input wrapper is [data-testid="stTextInputRootElement"]
+           — the old div[data-baseweb="input"] attribute no longer exists, so it must NOT
+           be used as a selector (it silently matched nothing). Deeper gray (#C4C4C8) so the
+           idle border stays clearly visible on the white hero. Focus → design-blue + glow. */
+        [data-testid="stTextInputRootElement"] {
             border: 1px solid #C4C4C8 !important;
             border-radius: 12px !important;
             box-shadow: none !important;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
-        div[data-baseweb="input"]:focus-within {
+        [data-testid="stTextInputRootElement"]:focus-within {
             border: 1px solid #3B82F6 !important;
             box-shadow: 0 0 0 3px rgba(59,130,246,0.15) !important;
         }
@@ -66,10 +68,12 @@ def _inject_expander_css():
             outline: none !important;
             box-shadow: none !important;
         }
-        /* Hide Streamlit's "Press Enter to submit form" caption under the form submit button.
-           The Enter-to-submit behavior is preserved — only the redundant hint text is removed
-           so it no longer overlaps the input placeholder. */
-        [data-testid="stFormSubmitButton"] small { display: none !important; }
+        /* Hide Streamlit's "Press Enter to submit form" / "Press Enter to apply" caption.
+           The real node is [data-testid="InputInstructions"] (a <span> inside the text-input
+           container) — the earlier "[data-testid="stFormSubmitButton"] small" selector matched
+           nothing. Hiding it removes only the redundant hint text; the Enter-to-submit behavior
+           (driven by st.form) is fully preserved. */
+        [data-testid="InputInstructions"] { display: none !important; }
         </style>
         """,
         unsafe_allow_html=True,
