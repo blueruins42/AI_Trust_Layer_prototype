@@ -45,6 +45,16 @@ def _inject_expander_css():
             border-radius: 0 0 12px 12px !important;
             padding: 24px !important;
         }
+
+        /* Search input: gray rounded border when idle; blue focus border is kept (design blue). */
+        .stTextInput input {
+            border: 1px solid #E4E4E7 !important;
+            border-radius: 12px !important;
+        }
+        .stTextInput input:focus {
+            border: 1px solid #3B82F6 !important;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.15) !important;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -230,6 +240,10 @@ def render_response(response: TrustLayerResponse):
     # 3. AI answer text
     st.markdown(response.answer.text)
 
+    # 3.5 Empty-retrieval fallback: surface a graceful warning if no source documents matched.
+    if not response.sources:
+        render_no_docs_banner()
+
     # 4. Details expander (progressive disclosure core)
     render_details_expander(response)
 
@@ -321,6 +335,37 @@ def render_alert_banner(verification_advice, confidence_score=None):
                 }
                 update_verification_click()
                 st.rerun()
+
+
+def render_no_docs_banner():
+    """
+    Fallback banner shown when the retrieved source list is empty (no matches from the
+    mock database). Keeps the app from silently failing on zero-match queries — surfaces a
+    graceful, on-design warning instead. Exact copy per requirement.
+    """
+    st.markdown(
+        """
+        <div style="
+            display:flex; align-items:center; gap:16px;
+            background-color:#FFFBEB; border-left:6px solid #F59E0B;
+            border-radius:12px; padding:16px 20px; margin:12px 0;
+            box-shadow:0 2px 8px rgba(245,158,11,0.08);
+        ">
+            <div style="
+                flex-shrink:0; width:40px; height:40px; border-radius:50%;
+                background:#F59E0B; display:flex; align-items:center; justify-content:center;
+            ">
+                <span style="color:#FFFFFF; font-size:22px; font-weight:700; line-height:1;">!</span>
+            </div>
+            <div style="flex:1;">
+                <div style="color:#92400E; font-size:15px; font-weight:600; line-height:1.5;">
+                    No relevant documents found in the database. Please try adjusting your keywords.
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_details_expander(response: TrustLayerResponse):
