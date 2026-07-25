@@ -21,12 +21,44 @@ from interaction_log import (
 from mock_docs import get_document_page
 
 
+def _inject_expander_css():
+    """
+    Style Streamlit expanders to match the trust-layer design system.
+    Applied globally on the frontend page; Admin has no expanders, so unaffected.
+    """
+    st.markdown(
+        """
+        <style>
+        .streamlit-expanderHeader {
+            background-color: #FFFFFF !important;
+            border: 1px solid #E4E4E7 !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            color: #0A0A0B !important;
+        }
+        .streamlit-expanderContent {
+            background-color: #FFFFFF !important;
+            border: 1px solid #E4E4E7 !important;
+            border-top: none !important;
+            border-radius: 0 0 12px 12px !important;
+            padding: 24px !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_frontend():
     """
     Frontend main render function — REDESIGNED (2026-07-25) with onboarding layer.
     Hero: value proposition + search + example chips + value cards.
     See 08_Design_Implementation_Notes.md §2 for design rationale.
     """
+    _inject_expander_css()
+
     # If in document view mode, render document view
     if st.session_state.get("doc_view"):
         render_document_view(
@@ -293,26 +325,22 @@ def render_alert_banner(verification_advice, confidence_score=None):
 
 def render_details_expander(response: TrustLayerResponse):
     """
-    Details expander (Bug-fix version).
+    Progressive disclosure — styled click-to-expand details panel.
 
-    Core implementation:
-        expanded = (response.answer.confidence_level == ConfidenceLevel.MEDIUM)
+    P0 interaction requirement:
+        - Collapsed by default for all confidence levels (user must click to reveal).
+        - Styled via _inject_expander_css() to match the trust-layer design system.
+        - Content: sources, jargon glossary, verification advice.
 
-        with st.expander("Details", expanded=expanded):
-            render_sources(response.sources)
-            with st.expander("Jargon Glossary", expanded=False):
-                render_jargon_glossary(response.jargon_glossary)
-            render_verification_advice(response.verification_advice)
-
-    Bug 1: Never use st.button to control expand/collapse
-    Bug 2: Never use "half-expanded" concept, use dual expander instead
+    Logging:
+        update_details_viewed() is called whenever the panel is expanded.
     """
     level = response.answer.confidence_level
 
-    # Medium confidence: expand by default; high/low: collapse by default
-    expanded = (level == ConfidenceLevel.MEDIUM)
+    # P0: always start collapsed; user clicks to expand
+    expanded = False
 
-    with st.expander("Details", expanded=expanded):
+    with st.expander("Details · sources, jargon & verification", expanded=expanded):
         # Log that user viewed details
         update_details_viewed()
 
