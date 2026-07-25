@@ -24,4 +24,4 @@ Thumbs.db
 *.session
 
 # --- Ardot working exports (not curated demo assets) ---
-ai_trust_layer/screenshots/screenshot(*).png
+ai_trust_layer/screenshots/screenshot*.png
