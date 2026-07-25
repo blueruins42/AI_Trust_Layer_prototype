@@ -24,6 +24,13 @@ LLM_TIMEOUT: float = float(os.getenv("LLM_TIMEOUT", "3.0"))
 #   - 验证 API 集成 / 测试真实置信度 -> 设为 False
 MOCK_LLM_MODE: bool = os.getenv("MOCK_LLM_MODE", "true").lower() == "true"
 
+# No API key configured -> the real OpenAI path cannot succeed, so force the
+# bulletproof demo (mock) mode. This keeps `streamlit run app.py` working out of
+# the box (no env setup) instead of silently falling back to red "could not be
+# parsed" responses whenever an LLM key is absent.
+if not OPENAI_API_KEY:
+    MOCK_LLM_MODE = True
+
 # ── 置信度阈值 ────────────────────────────────────────────
 CONFIDENCE_HIGH_THRESHOLD: float = 0.75
 CONFIDENCE_LOW_THRESHOLD: float = 0.50

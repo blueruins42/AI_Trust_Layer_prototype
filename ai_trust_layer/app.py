@@ -124,6 +124,14 @@ def main():
         layout="wide",
     )
 
+    # Load Inter so the design's font stack renders deterministically and matches the
+    # static preview. Falls back to the system sans-serif if offline.
+    st.markdown(
+        '<link rel="stylesheet" '
+        'href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">',
+        unsafe_allow_html=True,
+    )
+
     init_session_state()
 
     # Top navigation bar (design-system consistent — small SVG shield + wordmark + admin pill)
