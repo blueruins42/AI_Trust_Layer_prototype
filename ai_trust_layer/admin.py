@@ -34,23 +34,24 @@ def render_admin():
         st.info("No data yet. Please make queries in the frontend first.")
         return
 
+    # Inject chart white-card style once per render
+    _inject_chart_style()
+
     # Three metric cards
     render_metric_cards(metrics)
 
     st.divider()
 
-    # P1: Visual analytics — trend line + confidence donut + term-frequency bar
-    render_charts(log, metrics)
+    # P1: Visual analytics paired with raw data for stronger hierarchy
+    render_section_query_trust(log, metrics)
 
     st.divider()
 
-    # Top 5 jargon terms
-    render_top_jargon(metrics["top_jargon"])
+    render_section_confidence(log, metrics)
 
     st.divider()
 
-    # Recent query records
-    render_recent_queries(metrics["recent_queries"])
+    render_section_jargon(metrics)
 
 
 # ---------------------------------------------------------------------------
@@ -88,7 +89,10 @@ def _inject_chart_style():
 def _style(chart):
     """Apply P0 typography / axis treatment to an altair chart."""
     return (
-        chart.configure_view(strokeWidth=0)
+        chart.properties(
+            padding={"top": 18, "left": 6, "right": 6, "bottom": 6}
+        )
+        .configure_view(strokeWidth=0)
         .configure_axis(
             labelColor=_MUTED,
             titleColor=_TEXT,
@@ -105,6 +109,7 @@ def _style(chart):
             color=_TEXT,
             subtitleColor=_MUTED,
             subtitleFontSize=12,
+            offset=10,
         )
         .configure_legend(labelColor=_MUTED, titleColor=_TEXT)
     )
@@ -225,26 +230,111 @@ def _build_jargon_bar(top_jargon: list):
     return _style(chart)
 
 
-def render_charts(log: list, metrics: dict):
-    """Render the three P1 analytics charts under a consistent eyebrow/title block."""
-    _inject_chart_style()
-    st.markdown(
+# ---------------------------------------------------------------------------
+# P1: Visual analytics — each chart paired with its raw data source
+# ---------------------------------------------------------------------------
+
+def _section_header(eyebrow: str, title: str, subtitle: str = ""):
+    """Reusable section eyebrow + title in P0 design language."""
+    html = (
         '<div style="margin:4px 0 14px 0;">'
-        '<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">VISUAL ANALYTICS</span>'
-        '<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px;">Trust Metrics at a Glance</div>'
-        "</div>",
-        unsafe_allow_html=True,
+        f'<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">{eyebrow}</span>'
+        f'<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px;">{title}</div>'
+    )
+    if subtitle:
+        html += f'<div style="color:#6B7280; font-size:13px; margin-top:2px;">{subtitle}</div>'
+    html += "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def render_section_query_trust(log: list, metrics: dict):
+    """Trust Health trend chart + raw recent query history (side by side)."""
+    _section_header(
+        eyebrow="QUERY TRUST",
+        title="Trust Health & Verification History",
+        subtitle="Trend line shows cumulative verification-click rate; table shows the raw query log.",
     )
 
-    col_trend, col_donut = st.columns([2, 1])
-    with col_trend:
+    col_chart, col_table = st.columns([2, 1])
+    with col_chart:
         st.altair_chart(_build_trend_chart(log), use_container_width=True)
-    with col_donut:
-        st.altair_chart(_build_confidence_donut(log), use_container_width=True)
+    with col_table:
+        render_recent_queries(metrics["recent_queries"])
 
-    bar = _build_jargon_bar(metrics["top_jargon"])
-    if bar is not None:
-        st.altair_chart(bar, use_container_width=True)
+
+def render_section_confidence(log: list, metrics: dict):
+    """Confidence distribution donut + raw breakdown table (side by side)."""
+    _section_header(
+        eyebrow="CONFIDENCE BREAKDOWN",
+        title="High / Medium / Low Distribution",
+        subtitle="Donut shows the share of each confidence level; table shows counts and percentages.",
+    )
+
+    col_chart, col_table = st.columns([1, 2])
+    with col_chart:
+        st.altair_chart(_build_confidence_donut(log), use_container_width=True)
+    with col_table:
+        render_confidence_breakdown(log, metrics)
+
+
+def render_section_jargon(metrics: dict):
+    """Jargon term heat bar chart + raw top-5 ranking table (side by side)."""
+    _section_header(
+        eyebrow="JARGON INSIGHTS",
+        title="Term Heat & Rankings",
+        subtitle="Bar chart visualizes view intensity; table keeps the exact ranked counts.",
+    )
+
+    col_chart, col_table = st.columns([2, 1])
+    with col_chart:
+        bar = _build_jargon_bar(metrics["top_jargon"])
+        if bar is not None:
+            st.altair_chart(bar, use_container_width=True)
+    with col_table:
+        render_top_jargon(metrics["top_jargon"])
+
+
+def render_confidence_breakdown(log: list, metrics: dict):
+    """Raw confidence distribution table: count + percentage + semantic color dot."""
+    total = metrics["total_queries"]
+    counts = Counter(e.confidence_level for e in log)
+    rows = [
+        ("High", counts.get("high", 0), _GREEN),
+        ("Medium", counts.get("medium", 0), _ORANGE),
+        ("Low", counts.get("low", 0), _RED),
+    ]
+
+    table_rows = ""
+    for label, count, color in rows:
+        pct = round(count / total * 100, 1) if total else 0
+        table_rows += (
+            f'<tr style="border-bottom: 1px solid rgba(128,128,128,0.2);">'
+            f'<td style="text-align: left; padding: 8px 10px;">'
+            f'<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:{color}; margin-right:8px; vertical-align:middle;"></span>'
+            f'{label}'
+            f'</td>'
+            f'<td style="text-align: left; padding: 8px 10px; font-weight:600;">{count}</td>'
+            f'<td style="text-align: left; padding: 8px 10px; color:{color}; font-weight:600;">{pct}%</td>'
+            f'</tr>'
+        )
+
+    st.markdown(
+        f"""
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid rgba(128,128,128,0.4);">
+                    <th style="text-align: left; padding: 8px 10px;">Confidence</th>
+                    <th style="text-align: left; padding: 8px 10px;">Count</th>
+                    <th style="text-align: left; padding: 8px 10px;">Share</th>
+                </tr>
+            </thead>
+            <tbody>
+                {table_rows}
+            </tbody>
+        </table>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_metric_cards(metrics: dict):
@@ -287,9 +377,7 @@ def render_metric_cards(metrics: dict):
 
 
 def render_top_jargon(jargon_list: list):
-    """Top 5 frequently viewed jargon terms"""
-    st.markdown("### Frequently Viewed Jargon Terms (Top 5)")
-
+    """Top 5 frequently viewed jargon terms (rendered as a clean table)."""
     if not jargon_list:
         st.info("No jargon view records yet")
         return
@@ -325,15 +413,7 @@ def render_top_jargon(jargon_list: list):
 
 
 def render_recent_queries(queries: list):
-    """Recent 10 query records"""
-    st.markdown(
-        '<div style="margin:8px 0 16px 0;">'
-        '<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">QUERY HISTORY</span>'
-        '<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px;">Recent Queries</div>'
-        '</div>',
-        unsafe_allow_html=True,
-    )
-
+    """Recent 10 query records (rendered as a clean table)."""
     if not queries:
         st.info("No query records yet")
         return
