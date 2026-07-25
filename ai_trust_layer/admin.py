@@ -125,7 +125,7 @@ def _build_trend_chart(log: list):
         rows.append({"Query": i, "Trust Health (%)": round(cum_clicks / i * 100, 1)})
     df = pd.DataFrame(rows)
 
-    base = alt.Chart(df).properties(height=240)
+    base = alt.Chart(df).properties(height=260)
     area = base.mark_area(color=_LIGHT, opacity=0.10).encode(
         x=alt.X("Query:Q", title="Query Sequence", axis=alt.Axis(grid=False)),
         y=alt.Y("Trust Health (%):Q", title="Verification Click Rate (%)", scale=alt.Scale(0, 100)),
@@ -168,6 +168,7 @@ def _build_confidence_donut(log: list):
             tooltip=["level", "count"],
         )
         .properties(
+            width=320,
             height=240,
             title=alt.TitleParams(
                 text="Confidence Distribution",
@@ -235,31 +236,31 @@ def _build_jargon_bar(top_jargon: list):
 # ---------------------------------------------------------------------------
 
 def _section_header(eyebrow: str, title: str, subtitle: str = ""):
-    """Reusable section eyebrow + title in P0 design language."""
+    """Reusable section eyebrow + title with a blue vertical accent bar (P0 design language)."""
     html = (
-        '<div style="margin:4px 0 14px 0;">'
+        '<div style="display:flex; align-items:stretch; margin:4px 0 14px 0;">'
+        '<div style="width:4px; background:#3B82F6; border-radius:2px; margin-right:12px; flex:0 0 auto;"></div>'
+        '<div style="flex:1 1 auto;">'
         f'<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">{eyebrow}</span>'
-        f'<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px;">{title}</div>'
+        f'<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px; line-height:1.25;">{title}</div>'
     )
     if subtitle:
-        html += f'<div style="color:#6B7280; font-size:13px; margin-top:2px;">{subtitle}</div>'
-    html += "</div>"
+        html += f'<div style="color:#6B7280; font-size:13px; margin-top:4px;">{subtitle}</div>'
+    html += "</div></div>"
     st.markdown(html, unsafe_allow_html=True)
 
 
 def render_section_query_trust(log: list, metrics: dict):
-    """Trust Health trend chart + raw recent query history (side by side)."""
+    """Trust Health trend chart (full width) + raw recent query history (full width, below)."""
     _section_header(
         eyebrow="QUERY TRUST",
         title="Trust Health & Verification History",
-        subtitle="Trend line shows cumulative verification-click rate; table shows the raw query log.",
+        subtitle="Trend line shows cumulative verification-click rate over the query sequence; full log below.",
     )
 
-    col_chart, col_table = st.columns([2, 1])
-    with col_chart:
-        st.altair_chart(_build_trend_chart(log), use_container_width=True)
-    with col_table:
-        render_recent_queries(metrics["recent_queries"])
+    st.altair_chart(_build_trend_chart(log), use_container_width=True)
+    st.markdown('<div style="height:4px;"></div>', unsafe_allow_html=True)
+    render_recent_queries(metrics["recent_queries"])
 
 
 def render_section_confidence(log: list, metrics: dict):
@@ -272,7 +273,7 @@ def render_section_confidence(log: list, metrics: dict):
 
     col_chart, col_table = st.columns([1, 2])
     with col_chart:
-        st.altair_chart(_build_confidence_donut(log), use_container_width=True)
+        st.altair_chart(_build_confidence_donut(log), use_container_width=False)
     with col_table:
         render_confidence_breakdown(log, metrics)
 
