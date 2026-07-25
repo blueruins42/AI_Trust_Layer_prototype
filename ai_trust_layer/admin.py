@@ -11,7 +11,6 @@ import pandas as pd
 from collections import Counter
 from interaction_log import calculate_admin_metrics
 
-
 def render_admin():
     """Admin Dashboard main render function"""
     # Eyebrow + title (design-system consistent with frontend hero)
@@ -53,7 +52,6 @@ def render_admin():
 
     render_section_jargon(metrics)
 
-
 # ---------------------------------------------------------------------------
 # P1: Visual analytics charts (design-language consistent with frontend P0)
 # Palette: deep blue #014DB2 / light blue #3B82F6, semantic green/orange/red
@@ -66,7 +64,6 @@ _ORANGE = "#F59E0B"
 _RED = "#EF4444"
 _TEXT = "#0A0A0B"
 _MUTED = "#6B7280"
-
 
 def _inject_chart_style():
     """Wrap every altair chart in a P0-style white card and center fixed-width charts."""
@@ -88,7 +85,6 @@ def _inject_chart_style():
         """,
         unsafe_allow_html=True,
     )
-
 
 def _style(chart):
     """Apply P0 typography / axis treatment to an altair chart."""
@@ -118,7 +114,6 @@ def _style(chart):
         .configure_legend(labelColor=_MUTED, titleColor=_TEXT)
     )
 
-
 def _build_trend_chart(log: list):
     """Trust Health trend — cumulative verification-click rate over query sequence."""
     cum_clicks = 0
@@ -141,34 +136,59 @@ def _build_trend_chart(log: list):
     chart = (area + line + points)
     return _style(chart)
 
-
 def _build_confidence_donut(log: list):
-    """Confidence distribution donut — semantic triplet (green/orange/red)."""
+    """Confidence distribution donut — semantic triplet, % baked into the legend + centered total."""
     counts = Counter(e.confidence_level for e in log)
+    h, m, l = counts.get("high", 0), counts.get("medium", 0), counts.get("low", 0)
+    total = h + m + l
+
+    def pct(x):
+        return round(x / total * 100, 1) if total else 0
+
     df = pd.DataFrame(
         [
-            {"level": "High", "count": counts.get("high", 0)},
-            {"level": "Medium", "count": counts.get("medium", 0)},
-            {"level": "Low", "count": counts.get("low", 0)},
+            {"level": "High", "count": h, "label": f"High · {pct(h)}%"},
+            {"level": "Medium", "count": m, "label": f"Medium · {pct(m)}%"},
+            {"level": "Low", "count": l, "label": f"Low · {pct(l)}%"},
         ]
     )
-    total = int(df["count"].sum())
     chart = (
         alt.Chart(df)
         .mark_arc(innerRadius=58, stroke="#FFFFFF", strokeWidth=2)
         .encode(
             theta=alt.Theta("count:Q"),
             color=alt.Color(
-                "level:N",
-                scale=alt.Scale(domain=["High", "Medium", "Low"], range=[_GREEN, _ORANGE, _RED]),
-                legend=alt.Legend(orient="bottom", title=None),
+                "label:N",
+                scale=alt.Scale(
+                    domain=[f"High · {pct(h)}%", f"Medium · {pct(m)}%", f"Low · {pct(l)}%"],
+                    range=[_GREEN, _ORANGE, _RED],
+                ),
+                legend=alt.Legend(orient="bottom", title=None, labelFontSize=12.5, labelColor=_TEXT),
             ),
             tooltip=["level", "count"],
         )
         .properties(width=230, height=200)
     )
-    return _style(chart)
-
+    # Centered total inside the donut hole
+    center = (
+        alt.Chart(pd.DataFrame({"t": [f"{total}"]}))
+        .mark_text(align="center", baseline="middle", fontSize=26, fontWeight="bold", color=_TEXT)
+        .encode(
+            x=alt.value(115),
+            y=alt.value(90),
+            text=alt.Text("t:N"),
+        )
+    )
+    sub = (
+        alt.Chart(pd.DataFrame({"s": ["queries"]}))
+        .mark_text(align="center", baseline="middle", fontSize=12, color=_MUTED)
+        .encode(
+            x=alt.value(115),
+            y=alt.value(112),
+            text=alt.Text("s:N"),
+        )
+    )
+    return _style(chart + center + sub)
 
 def _build_jargon_bar(top_jargon: list):
     """
@@ -213,7 +233,6 @@ def _build_jargon_bar(top_jargon: list):
     chart = (bars + labels).properties(height=36 * n + 46)
     return _style(chart)
 
-
 # ---------------------------------------------------------------------------
 # P1: Visual analytics — each chart paired with its raw data source
 # ---------------------------------------------------------------------------
@@ -230,7 +249,6 @@ def _section_header(eyebrow: str, title: str, subtitle: str = ""):
     html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
-
 def _chart_subtitle(title: str, subtitle: str = ""):
     """Small chart/block subtitle with a blue vertical accent bar (P0 design language)."""
     html = (
@@ -244,6 +262,18 @@ def _chart_subtitle(title: str, subtitle: str = ""):
     html += "</div></div>"
     st.markdown(html, unsafe_allow_html=True)
 
+def _insight_card(items: list, footer: str):
+    """Light-blue insight/action card — PRD-driven interpretation, not a raw number repeat."""
+    items_html = "".join(f'<li style="margin-bottom:6px;">{it}</li>' for it in items)
+    st.markdown(
+        f"""
+        <div style="background:#F8FAFF; border:1px solid rgba(1,77,178,0.12); border-radius:14px; padding:16px 18px; height:100%;">
+            <ul style="margin:0; padding-left:18px; color:#374151; font-size:13px; line-height:1.65;">{items_html}</ul>
+            <div style="color:#6B7280; font-size:12px; margin-top:12px; border-top:1px solid rgba(1,77,178,0.10); padding-top:10px;">{footer}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 def render_section_query_trust(log: list, metrics: dict):
     """Trust Health trend chart (full width) + raw recent query history (full width, below)."""
@@ -259,87 +289,58 @@ def render_section_query_trust(log: list, metrics: dict):
     _chart_subtitle("Recent Queries", "Full query log · newest first")
     render_recent_queries(metrics["recent_queries"])
 
-
 def render_section_confidence(log: list, metrics: dict):
-    """Confidence distribution donut + raw breakdown table (side by side)."""
+    """Confidence donut (with % baked in) + PRD-driven interpretation card."""
     _section_header(
         eyebrow="CONFIDENCE BREAKDOWN",
         title="High / Medium / Low Distribution",
-        subtitle="Donut shows the share of each confidence level; table shows counts and percentages.",
+        subtitle="Donut shows the share of each level; the card reads what the split means for iteration.",
     )
 
-    col_chart, col_table = st.columns([1.3, 2])
+    col_chart, col_card = st.columns([1.3, 2])
     with col_chart:
-        _chart_subtitle("Confidence Distribution", f"{metrics['total_queries']} queries · High / Medium / Low")
+        _chart_subtitle("Confidence Distribution", f"{metrics['total_queries']} queries")
         st.altair_chart(_build_confidence_donut(log), use_container_width=False)
-    with col_table:
-        _chart_subtitle("Confidence Breakdown", "Count and share per level")
-        # Align table bottom with the donut legend (three category icons) bottom
-        st.markdown('<div style="height:96px;">&nbsp;</div>', unsafe_allow_html=True)
-        render_confidence_breakdown(log, metrics)
-
+    with col_card:
+        _chart_subtitle("Reading the Distribution", "PRD F7 · drive iteration from the split")
+        low_pct = metrics["low_conf_rate"]
+        trust_pct = metrics["trust_health"]
+        c = Counter(e.confidence_level for e in log)
+        total = max(metrics["total_queries"], 1)
+        high_pct = round(c.get("high", 0) / total * 100, 1)
+        _insight_card(
+            items=[
+                f"Low <b>{low_pct}%</b> → coverage gap; add source docs for low-confidence topics",
+                f"High <b>{high_pct}%</b> answers drawn directly from documents",
+                f"Trust Health <b>{trust_pct}%</b> — optimization direction: lower rate as users trust the AI more (PRD F7)",
+            ],
+            footer="A lower low-confidence rate and trust-health rate means a healthier, better-covered system.",
+        )
 
 def render_section_jargon(metrics: dict):
-    """Jargon term heat bar chart + raw top-5 ranking table (side by side)."""
+    """Jargon term heat bar (with value labels) + glossary-candidate card."""
     _section_header(
         eyebrow="JARGON INSIGHTS",
-        title="Term Heat & Rankings",
-        subtitle="Bar chart visualizes view intensity; table keeps the exact ranked counts.",
+        title="Term Heat & Glossary Candidates",
+        subtitle="Bar shows view intensity; the card lists terms to preload into the glossary.",
     )
 
-    col_chart, col_table = st.columns([2, 1])
+    col_chart, col_card = st.columns([2, 1])
     with col_chart:
         _chart_subtitle("Jargon Term Heat", "Most-viewed domain terms · ranked by views")
         bar = _build_jargon_bar(metrics["top_jargon"])
         if bar is not None:
             st.altair_chart(bar, use_container_width=True)
-    with col_table:
-        _chart_subtitle("Top 5 Jargon Terms", "Ranked by view count")
-        render_top_jargon(metrics["top_jargon"])
-
-
-def render_confidence_breakdown(log: list, metrics: dict):
-    """Raw confidence distribution table: count + percentage + semantic color dot."""
-    total = metrics["total_queries"]
-    counts = Counter(e.confidence_level for e in log)
-    rows = [
-        ("High", counts.get("high", 0), _GREEN),
-        ("Medium", counts.get("medium", 0), _ORANGE),
-        ("Low", counts.get("low", 0), _RED),
-    ]
-
-    table_rows = ""
-    for label, count, color in rows:
-        pct = round(count / total * 100, 1) if total else 0
-        table_rows += (
-            f'<tr style="border-bottom: 1px solid rgba(128,128,128,0.2);">'
-            f'<td style="text-align: left; padding: 8px 10px;">'
-            f'<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:{color}; margin-right:8px; vertical-align:middle;"></span>'
-            f'{label}'
-            f'</td>'
-            f'<td style="text-align: left; padding: 8px 10px; font-weight:600;">{count}</td>'
-            f'<td style="text-align: left; padding: 8px 10px; color:{color}; font-weight:600;">{pct}%</td>'
-            f'</tr>'
-        )
-
-    st.markdown(
-        f"""
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="border-bottom: 2px solid rgba(128,128,128,0.4);">
-                    <th style="text-align: left; padding: 8px 10px;">Confidence</th>
-                    <th style="text-align: left; padding: 8px 10px;">Count</th>
-                    <th style="text-align: left; padding: 8px 10px;">Share</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table_rows}
-            </tbody>
-        </table>
-        """,
-        unsafe_allow_html=True,
-    )
-
+    with col_card:
+        _chart_subtitle("Glossary Candidates", "PRD F7 · close the knowledge gap")
+        jargon = metrics["top_jargon"]
+        if jargon:
+            items = [f"<b>{term}</b> ({count}×)" for term, count in jargon[:3]]
+            footer = "Terms viewed ≥2× are the strongest candidates for the preset glossary (PRD F7)."
+        else:
+            items = ["No jargon views recorded yet."]
+            footer = "Make queries in the frontend to populate this list."
+        _insight_card(items=items, footer=footer)
 
 def render_metric_cards(metrics: dict):
     """
@@ -376,45 +377,6 @@ def render_metric_cards(metrics: dict):
             help="Total number of queries in the current session",
         )
         st.caption("Session Total")
-
-
-
-
-def render_top_jargon(jargon_list: list):
-    """Top 5 frequently viewed jargon terms (rendered as a clean table)."""
-    if not jargon_list:
-        st.info("No jargon view records yet")
-        return
-
-    # Build HTML table with left-aligned columns
-    rows = ""
-    for i, (term, count) in enumerate(jargon_list, 1):
-        rows += (
-            f'<tr style="border-bottom: 1px solid rgba(128,128,128,0.2);">'
-            f'<td style="text-align: left; padding: 6px 10px;">{i}</td>'
-            f'<td style="text-align: left; padding: 6px 10px;">{term}</td>'
-            f'<td style="text-align: left; padding: 6px 10px;">{count}</td>'
-            f'</tr>'
-        )
-
-    st.markdown(
-        f"""
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="border-bottom: 2px solid rgba(128,128,128,0.4);">
-                    <th style="text-align: left; padding: 6px 10px;">Rank</th>
-                    <th style="text-align: left; padding: 6px 10px;">Term</th>
-                    <th style="text-align: left; padding: 6px 10px;">Views</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
-        """,
-        unsafe_allow_html=True,
-    )
-
 
 def render_recent_queries(queries: list):
     """Recent 10 query records (rendered as a clean table)."""

@@ -37,7 +37,7 @@ with sync_playwright() as p:
     time.sleep(0.5)
     page.screenshot(path=f"{OUT}/p1_admin_confidence.png")
 
-    page.get_by_text("Term Heat & Rankings").scroll_into_view_if_needed()
+    page.get_by_text("Term Heat & Glossary Candidates").scroll_into_view_if_needed()
     time.sleep(0.5)
     page.screenshot(path=f"{OUT}/p1_admin_jargon.png")
 
