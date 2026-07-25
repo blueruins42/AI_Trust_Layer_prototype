@@ -6,6 +6,9 @@ Corresponds to: PRD Step 4.6 F7 Admin Dashboard + Step 5.2.7
 """
 
 import streamlit as st
+import altair as alt
+import pandas as pd
+from collections import Counter
 from interaction_log import calculate_admin_metrics
 
 
@@ -36,6 +39,11 @@ def render_admin():
 
     st.divider()
 
+    # P1: Visual analytics — trend line + confidence donut + term-frequency bar
+    render_charts(log, metrics)
+
+    st.divider()
+
     # Top 5 jargon terms
     render_top_jargon(metrics["top_jargon"])
 
@@ -43,6 +51,200 @@ def render_admin():
 
     # Recent query records
     render_recent_queries(metrics["recent_queries"])
+
+
+# ---------------------------------------------------------------------------
+# P1: Visual analytics charts (design-language consistent with frontend P0)
+# Palette: deep blue #014DB2 / light blue #3B82F6, semantic green/orange/red
+# White card + 16px radius + soft blue shadow (mirrors frontend hero cards)
+# ---------------------------------------------------------------------------
+_DEEP = "#014DB2"
+_LIGHT = "#3B82F6"
+_GREEN = "#10B981"
+_ORANGE = "#F59E0B"
+_RED = "#EF4444"
+_TEXT = "#0A0A0B"
+_MUTED = "#6B7280"
+
+
+def _inject_chart_style():
+    """Wrap every altair chart in a P0-style white card (once per render)."""
+    st.markdown(
+        """
+        <style>
+        div[data-testid="stAltairChart"] {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 16px 18px 8px 18px;
+            box-shadow: 0 2px 8px rgba(1,77,178,0.06);
+            margin-bottom: 4px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _style(chart):
+    """Apply P0 typography / axis treatment to an altair chart."""
+    return (
+        chart.configure_view(strokeWidth=0)
+        .configure_axis(
+            labelColor=_MUTED,
+            titleColor=_TEXT,
+            titleFontWeight="bold",
+            titleFontSize=12,
+            gridColor="rgba(128,128,128,0.15)",
+            domainColor="rgba(128,128,128,0.3)",
+            tickColor="rgba(128,128,128,0.3)",
+        )
+        .configure_title(
+            anchor="start",
+            fontSize=16,
+            fontWeight="bold",
+            color=_TEXT,
+            subtitleColor=_MUTED,
+            subtitleFontSize=12,
+        )
+        .configure_legend(labelColor=_MUTED, titleColor=_TEXT)
+    )
+
+
+def _build_trend_chart(log: list):
+    """Trust Health trend — cumulative verification-click rate over query sequence."""
+    cum_clicks = 0
+    rows = []
+    for i, e in enumerate(log, 1):
+        if e.clicked_verification:
+            cum_clicks += 1
+        rows.append({"Query": i, "Trust Health (%)": round(cum_clicks / i * 100, 1)})
+    df = pd.DataFrame(rows)
+
+    base = alt.Chart(df).properties(height=240)
+    area = base.mark_area(color=_LIGHT, opacity=0.10).encode(
+        x=alt.X("Query:Q", title="Query Sequence", axis=alt.Axis(grid=False)),
+        y=alt.Y("Trust Health (%):Q", title="Verification Click Rate (%)", scale=alt.Scale(0, 100)),
+    )
+    line = base.mark_line(color=_DEEP, strokeWidth=2.5).encode(x="Query:Q", y="Trust Health (%):Q")
+    points = base.mark_circle(color=_DEEP, size=55, stroke="#FFFFFF", strokeWidth=1.5).encode(
+        x="Query:Q", y="Trust Health (%):Q"
+    )
+    chart = (area + line + points).properties(
+        title=alt.TitleParams(
+            text="Trust Health Trend",
+            subtitle="Cumulative verification-click rate · lower = more trust",
+            anchor="start",
+        )
+    )
+    return _style(chart)
+
+
+def _build_confidence_donut(log: list):
+    """Confidence distribution donut — semantic triplet (green/orange/red)."""
+    counts = Counter(e.confidence_level for e in log)
+    df = pd.DataFrame(
+        [
+            {"level": "High", "count": counts.get("high", 0)},
+            {"level": "Medium", "count": counts.get("medium", 0)},
+            {"level": "Low", "count": counts.get("low", 0)},
+        ]
+    )
+    total = int(df["count"].sum())
+    chart = (
+        alt.Chart(df)
+        .mark_arc(innerRadius=58, stroke="#FFFFFF", strokeWidth=2)
+        .encode(
+            theta=alt.Theta("count:Q"),
+            color=alt.Color(
+                "level:N",
+                scale=alt.Scale(domain=["High", "Medium", "Low"], range=[_GREEN, _ORANGE, _RED]),
+                legend=alt.Legend(orient="bottom", title=None),
+            ),
+            tooltip=["level", "count"],
+        )
+        .properties(
+            height=240,
+            title=alt.TitleParams(
+                text="Confidence Distribution",
+                subtitle=f"{total} queries · High / Medium / Low",
+                anchor="start",
+            ),
+        )
+    )
+    return _style(chart)
+
+
+def _build_jargon_bar(top_jargon: list):
+    """
+    Jargon-term heat — OPTIMIZED for differentiation.
+
+    Mock data is sparse and term-view counts run close together, so raw vertical
+    bars look near-identical. Optimizations:
+      - Horizontal bars (easier rank comparison than vertical)
+      - Sorted descending so the leader sits on top
+      - Numeric value label at each bar end (differentiation is explicit)
+      - Blue intensity gradient (deeper = more viewed) draws the eye to the leader
+    """
+    if not top_jargon:
+        return None
+    df = pd.DataFrame(top_jargon, columns=["term", "views"])
+    df = df.sort_values("views", ascending=True)  # horizontal bar: largest ends on top
+    n = len(df)
+
+    if df["views"].nunique() == 1:
+        color_scale = alt.Scale(range=[_DEEP, _DEEP])
+    else:
+        color_scale = alt.Scale(domain=[df["views"].min(), df["views"].max()], range=["#93C5FD", _DEEP])
+
+    bars = (
+        alt.Chart(df)
+        .mark_bar(size=22, cornerRadiusEnd=3)
+        .encode(
+            y=alt.Y(
+                "term:N",
+                title=None,
+                sort=None,
+                axis=alt.Axis(labelLimit=260, labelFontSize=12.5, labelColor=_TEXT),
+                scale=alt.Scale(padding=0.35),
+            ),
+            x=alt.X("views:Q", title="Views", axis=alt.Axis(grid=True)),
+            color=alt.Color("views:Q", scale=color_scale, legend=None),
+        )
+    )
+    labels = alt.Chart(df).mark_text(dx=7, color=_TEXT, fontWeight="bold", fontSize=12.5).encode(
+        y="term:N", x="views:Q", text="views:Q"
+    )
+    chart = (bars + labels).properties(
+        height=36 * n + 46,
+        title=alt.TitleParams(
+            text="Jargon Term Heat",
+            subtitle="Most-viewed domain terms · ranked by views",
+            anchor="start",
+        ),
+    )
+    return _style(chart)
+
+
+def render_charts(log: list, metrics: dict):
+    """Render the three P1 analytics charts under a consistent eyebrow/title block."""
+    _inject_chart_style()
+    st.markdown(
+        '<div style="margin:4px 0 14px 0;">'
+        '<span style="color:#3B82F6; font-size:12px; font-weight:600; letter-spacing:1px;">VISUAL ANALYTICS</span>'
+        '<div style="color:#0A0A0B; font-size:20px; font-weight:700; margin-top:2px;">Trust Metrics at a Glance</div>'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    col_trend, col_donut = st.columns([2, 1])
+    with col_trend:
+        st.altair_chart(_build_trend_chart(log), use_container_width=True)
+    with col_donut:
+        st.altair_chart(_build_confidence_donut(log), use_container_width=True)
+
+    bar = _build_jargon_bar(metrics["top_jargon"])
+    if bar is not None:
+        st.altair_chart(bar, use_container_width=True)
 
 
 def render_metric_cards(metrics: dict):

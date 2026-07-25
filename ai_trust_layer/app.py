@@ -42,54 +42,72 @@ def init_session_state():
 
 def _seed_log_data():
     """
-    Pre-fill 3 seed log entries covering high/medium/low confidence + 1 verification click + 3 jargon views.
-    Ensures Admin Dashboard has data when toggled during demo.
+    Pre-fill seed log entries covering high/medium/low confidence + verification clicks + varied jargon views.
+    Enriches the distribution so Admin Dashboard charts (trend / donut / term-frequency) read as a credible
+    monitoring view during demo. Frontend P0 visuals are untouched.
     """
     from interaction_log import InteractionLogEntry
 
     seeds = [
         InteractionLogEntry(
-            query_id="seed-001",
-            timestamp="2026-07-24T09:55:00",
+            query_id="seed-001", timestamp="2026-07-24T09:55:00",
             user_query="What signaling system does Project XX use?",
-            confidence_level="high",
-            response_time_ms=1200,
-            viewed_details=True,
-            viewed_jargon=["CBTC"],
-            clicked_verification=False,
-            documents_searched=10,
-            documents_matched=2,
+            confidence_level="high", response_time_ms=1200,
+            viewed_details=True, viewed_jargon=["CBTC"],
+            clicked_verification=False, documents_searched=10, documents_matched=2,
         ),
         InteractionLogEntry(
-            query_id="seed-002",
-            timestamp="2026-07-24T09:58:00",
+            query_id="seed-002", timestamp="2026-07-24T09:58:00",
             user_query="What are the technical parameters of ZDJ-200 switch machine?",
-            confidence_level="medium",
-            response_time_ms=1500,
-            viewed_details=True,
-            viewed_jargon=["Electric Switch Machine", "Switching Force"],
-            clicked_verification=True,
-            documents_searched=10,
-            documents_matched=2,
+            confidence_level="medium", response_time_ms=1500,
+            viewed_details=True, viewed_jargon=["CBTC", "Electric Switch Machine", "Switching Force"],
+            clicked_verification=True, documents_searched=10, documents_matched=2,
         ),
         InteractionLogEntry(
-            query_id="seed-003",
-            timestamp="2026-07-24T10:01:00",
+            query_id="seed-003", timestamp="2026-07-24T10:01:00",
             user_query="What is the construction budget for YY Line?",
-            confidence_level="low",
-            response_time_ms=950,
-            viewed_details=True,
-            viewed_jargon=["Low-Voltage Integration"],
-            clicked_verification=True,
-            documents_searched=10,
-            documents_matched=1,
+            confidence_level="low", response_time_ms=950,
+            viewed_details=True, viewed_jargon=["Low-Voltage Integration"],
+            clicked_verification=True, documents_searched=10, documents_matched=1,
+        ),
+        InteractionLogEntry(
+            query_id="seed-004", timestamp="2026-07-24T10:05:00",
+            user_query="What signaling system does Project XX use?",
+            confidence_level="high", response_time_ms=1180,
+            viewed_details=True, viewed_jargon=["CBTC"],
+            clicked_verification=False, documents_searched=10, documents_matched=2,
+        ),
+        InteractionLogEntry(
+            query_id="seed-005", timestamp="2026-07-24T10:09:00",
+            user_query="What are the technical parameters of ZDJ-200 switch machine?",
+            confidence_level="medium", response_time_ms=1420,
+            viewed_details=True, viewed_jargon=["Electric Switch Machine"],
+            clicked_verification=False, documents_searched=10, documents_matched=2,
+        ),
+        InteractionLogEntry(
+            query_id="seed-006", timestamp="2026-07-24T10:14:00",
+            user_query="What is the construction budget for YY Line?",
+            confidence_level="low", response_time_ms=980,
+            viewed_details=True, viewed_jargon=["Low-Voltage Integration", "Traction Power Supply"],
+            clicked_verification=True, documents_searched=10, documents_matched=1,
+        ),
+        InteractionLogEntry(
+            query_id="seed-007", timestamp="2026-07-24T10:20:00",
+            user_query="What signaling system does Project XX use?",
+            confidence_level="high", response_time_ms=1150,
+            viewed_details=True, viewed_jargon=["CBTC"],
+            clicked_verification=False, documents_searched=10, documents_matched=2,
         ),
     ]
 
     st.session_state["interaction_log"] = seeds
-    st.session_state["query_count"] = 3
-    st.session_state["jargon_views"] = {"CBTC": 1, "Electric Switch Machine": 1, "Switching Force": 1, "Low-Voltage Integration": 1}
-    st.session_state["verification_clicks"] = 2
+    st.session_state["query_count"] = len(seeds)
+    # Jargon view tally mirrors the per-query viewed_jargon above (descending distribution).
+    st.session_state["jargon_views"] = {
+        "CBTC": 4, "Electric Switch Machine": 3, "Low-Voltage Integration": 2,
+        "Switching Force": 1, "Traction Power Supply": 1,
+    }
+    st.session_state["verification_clicks"] = sum(1 for e in seeds if e.clicked_verification)
 
 
 def main():
