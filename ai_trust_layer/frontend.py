@@ -243,6 +243,11 @@ def _handle_query(user_query: str):
     # (otherwise Streamlit reuses the previous expander's open/closed state).
     st.session_state["_response_id"] = st.session_state.get("_response_id", 0) + 1
 
+    # A new query invalidates any open source-document view — start from the
+    # answer every time (the document view is a full-page switch, so this also
+    # guards against a stale doc lingering if the flow ever changes).
+    st.session_state["doc_view"] = None
+
     # Log interaction
     log_interaction(response, user_query, elapsed_ms)
 
@@ -451,6 +456,11 @@ def render_sources(sources: list):
         st.info("No specific documents referenced in this answer")
         return
 
+    # Key nested expanders by response id so they reset to collapsed on a new query
+    # (the outer Details expander is already keyed by rid; without this, an excerpt
+    # left open on answer A would stay open on answer B, the same carry-over bug).
+    rid = st.session_state.get("_response_id", 0)
+
     st.markdown(f"**Sources ({len(sources)} matching documents)**")
 
     # Sort by match_score descending
@@ -465,7 +475,7 @@ def render_sources(sources: list):
 
         # Excerpt expand (nested expander, Bug 1 fix: use expander not button)
         if src.excerpt:
-            with st.expander("View Excerpt", expanded=False, key=f"excerpt_{i}"):
+            with st.expander("View Excerpt", expanded=False, key=f"excerpt_{rid}_{i}"):
                 st.markdown(f"> {src.excerpt}")
 
         st.markdown("---")
@@ -478,6 +488,11 @@ def render_jargon_glossary(jargon_glossary: list):
     if not jargon_glossary:
         return
 
+    # Key nested expanders by response id so they reset to collapsed on a new query
+    # (mirrors the Details/excerpt fix: without this, a definition left open on one
+    # answer would stay open on the next, regardless of the outer Jargon key).
+    rid = st.session_state.get("_response_id", 0)
+
     for i, term in enumerate(jargon_glossary):
         st.markdown(f"**{term.term}**")
         st.markdown(f"💬 {term.plain_language}")
@@ -486,7 +501,7 @@ def render_jargon_glossary(jargon_glossary: list):
         update_jargon_view(term.term)
 
         # Formal definition on demand (Bug 1 fix: use expander not button/checkbox)
-        with st.expander("Formal Definition", expanded=False, key=f"jargon_def_{i}"):
+        with st.expander("Formal Definition", expanded=False, key=f"jargon_def_{rid}_{i}"):
             st.markdown(term.definition)
 
         st.markdown("")
