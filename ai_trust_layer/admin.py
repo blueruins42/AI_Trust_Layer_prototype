@@ -138,46 +138,53 @@ def _render_demo_data_controls(empty: bool, compact: bool = False):
         return
 
     if compact:
-        # Header placement: discreet, small right-aligned popover trigger.
-        # A confirmation popover guards against accidental clicks (Path A reviewer tool).
-        with st.popover(
-            "Clear",
-            help="Remove all seeded demo queries from this session",
+        # Header placement: discreet, small right-aligned trigger that opens a
+        # confirmation modal (guards against accidental clicks — Path A reviewer tool).
+        # A dialog (not a popover) is used because it reliably closes on rerun, so the
+        # Cancel action visibly dismisses and leaves the dashboard untouched.
+        if st.button(
+            "Reset", key="reset_trigger", type="secondary",
         ):
-            st.markdown(
-                '<p style="font-size:13px; font-weight:600; color:#0A0A0B; '
-                'margin:2px 0 4px 0;">Clear all demo data?</p>',
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                '<p style="font-size:12px; color:#6B7280; line-height:1.45; '
-                'margin:0 0 12px 0;">This removes all seeded demo queries, jargon '
-                'views, and counters from this session. Restore is available from '
-                'the empty state.</p>',
-                unsafe_allow_html=True,
-            )
-            c_confirm, c_cancel = st.columns(2)
-            with c_confirm:
-                if st.button(
-                    "Confirm", key="confirm_clear", type="primary",
-                    use_container_width=True,
-                ):
-                    st.session_state["interaction_log"] = []
-                    st.session_state["jargon_views"] = {}
-                    st.session_state["verification_clicks"] = 0
-                    st.session_state["query_count"] = 0
-                    st.session_state["demo_data_cleared"] = True
-                    st.rerun()
-            with c_cancel:
-                if st.button(
-                    "Cancel", key="cancel_clear", type="secondary",
-                    use_container_width=True,
-                ):
-                    st.rerun()
+            _open_reset_dialog()
         return
 
     # Non-compact empty-state Restore is handled above (empty branch). No other
     # non-compact layout is currently wired, so control flow ends here.
+
+
+@st.dialog("Reset demo data")
+def _open_reset_dialog():
+    """Confirmation modal for the header Reset control (Path A reviewer tool).
+
+    Confirm clears the seeded session data. Cancel (or dismissing the modal)
+    simply closes it and leaves the dashboard untouched — the rerun triggered by
+    either button reliably closes the dialog in all Streamlit versions.
+    """
+    st.markdown(
+        '<p style="font-size:13px; color:#0A0A0B; line-height:1.5; '
+        'margin:0 0 16px 0;">This removes all seeded demo queries, jargon views, '
+        'and counters from this session. The dashboard will switch to the empty '
+        'state; you can restore the seeded data from there.</p>',
+        unsafe_allow_html=True,
+    )
+    c_confirm, c_cancel = st.columns(2)
+    with c_confirm:
+        if st.button(
+            "Confirm", key="confirm_reset", type="primary",
+            use_container_width=True,
+        ):
+            st.session_state["interaction_log"] = []
+            st.session_state["jargon_views"] = {}
+            st.session_state["verification_clicks"] = 0
+            st.session_state["query_count"] = 0
+            st.session_state["demo_data_cleared"] = True
+            st.rerun()
+    with c_cancel:
+        if st.button(
+            "Cancel", key="cancel_reset", type="secondary",
+            use_container_width=True,
+        ):
+            st.rerun()
 
 
 # ---------------------------------------------------------------------------
