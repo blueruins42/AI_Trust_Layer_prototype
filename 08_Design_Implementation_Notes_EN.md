@@ -58,7 +58,7 @@ Design tokens obtained via ardot style catalog search + build:
    - Confidence Calibration (green #10B981 icon)
    - Plain Language, On Demand (orange #F59E0B icon)
    - Icon color triplet echoes the product's three-tier confidence semantics
-4. Footer: `Built for enterprise RAG systems · Designed by Shuting Fan · MSc Interaction & Experience Design Portfolio`
+4. Footer: `Built for enterprise RAG systems · Student design prototype · Non-commercial · Designed by Shuting Fan`
 
 ---
 
@@ -137,11 +137,11 @@ After the fix, `capture_layout` will still report a `Left Accent Bar: Outside pa
 **Decision**: Add `Designed by Shuting Fan` to the homepage Footer.
 
 **Rationale**:
-- Portfolio applications must be attributed; admissions officers need to know the author
+- Portfolio pieces must be attributed; reviewers need to know the author
 - Placed in the restrained Footer position, not overshadowing the main content
-- Placed alongside the product identity and degree information, forming a complete "work attribution chain"
+- Placed alongside the product identity, forming a complete "work attribution chain"
 
-**Footer copy**: `Built for enterprise RAG systems · Designed by Shuting Fan · MSc Interaction & Experience Design Portfolio`
+**Footer copy**: `Built for enterprise RAG systems · Student design prototype · Non-commercial · Designed by Shuting Fan`
 
 ---
 

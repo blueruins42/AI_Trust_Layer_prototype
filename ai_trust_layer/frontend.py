@@ -212,7 +212,7 @@ def render_frontend():
         # Portfolio footer
         st.markdown(
             '<p style="color:#A1A1AA; font-size:13px; text-align:center; margin-top:40px;">'
-            'Built for enterprise RAG systems  ·  Designed by Shuting Fan  ·  MSc Interaction & Experience Design Portfolio'
+            'Built for enterprise RAG systems  ·  Student design prototype  ·  Non-commercial  ·  Designed by Shuting Fan'
             '</p>',
             unsafe_allow_html=True,
         )

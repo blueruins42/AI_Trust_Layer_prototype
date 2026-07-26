@@ -103,10 +103,10 @@ ai_trust_layer/
 
 ## Academic Context
 
-This prototype is developed as part of a portfolio for the MSc in Interaction and Experience Design at the University of Limerick. It addresses the HCI core topic of **Explainable AI (XAI)** and **Trust Calibration** in enterprise AI systems.
+This prototype is a student design project exploring the HCI core topics of **Explainable AI (XAI)** and **Trust Calibration** in enterprise RAG systems.
 
 ---
 
 Built with Python, Streamlit, and a commitment to making AI trustworthy for everyone.
 
-**Designed by Shuting Fan** · MSc Interaction & Experience Design Portfolio · University of Limerick
+**Designed by Shuting Fan** · Student design prototype · Non-commercial

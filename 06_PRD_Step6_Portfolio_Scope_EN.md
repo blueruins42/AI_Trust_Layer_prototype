@@ -10,11 +10,11 @@
 
 ## 6.0 Core Principle: Begin with the End in Mind
 
-**You are not selling software; you are demonstrating the depth of your thinking to the admissions officer.**
+**You are not selling software; you are demonstrating the depth of your thinking to the reviewer.**
 
 | Dimension | Software Product Mindset | Portfolio Mindset |
 |-----------|--------------------------|-------------------|
-| Goal | User adoption, DAU, revenue | Persuade the admissions officer within 3 minutes |
+| Goal | User adoption, DAU, revenue | Persuade the reviewer within 3 minutes |
 | Metrics | Feature completeness, performance, stability | Problem insight × Design reasoning × Technical execution |
 | Code requirement | Every feature must work | Features covered by the Demo script must work; the rest may be Mocked |
 | Documentation requirement | API docs, user manuals | README narrative + PRD chain + Demo screen recording |
@@ -26,11 +26,11 @@
 
 ## 6.1 Portfolio Deliverables List
 
-### Complete file package to submit to UL
+### Complete file package for submission
 
 ```
 portfolio_submission/
-├── README.md                          # GitHub homepage (the first thing the admissions officer sees)
+├── README.md                          # GitHub homepage (the first thing the reviewer sees)
 ├── PRD/                               # Product design document chain (Step 1-6)
 │   ├── 01_PRD_Step1_Problem_Definition_EN.md
 │   ├── 02_PRD_Step2_User_Personas_EN.md
@@ -57,23 +57,23 @@ portfolio_submission/
 │       ├── 02_low_confidence_alert.png # Low confidence alert scenario
 │       ├── 03_progressive_disclosure.png # Progressive disclosure expanded
 │       └── 04_admin_dashboard.png     # Admin dashboard
-└── PORTFOLIO_NARRATIVE.md             # 1-page narrative summary (if UL requires a separate document)
+└── PORTFOLIO_NARRATIVE.md             # 1-page narrative summary (if a separate narrative document is required)
 ```
 
 ### Deliverable priorities
 
 | Priority | Deliverable | Rationale |
 |----------|-------------|-----------|
-| **P0 Required** | README.md + demo_video.mp4 + screenshots/ | The admissions officer's attention is 90% here |
+| **P0 Required** | README.md + demo_video.mp4 + screenshots/ | The reviewer's attention is 90% here |
 | **P0 Required** | ai_trust_layer/ runnable code | Proves "I actually wrote code," not a PowerPoint project |
 | **P1 Should submit** | PRD/ Step 1–5 document chain | Proves "my design reasoning process," not guesswork |
-| **P2 Optional** | PORTFOLIO_NARRATIVE.md | Only if the UL application system requires uploading a separate document |
+| **P2 Optional** | PORTFOLIO_NARRATIVE.md | Only if the submission system requires uploading a separate document |
 
 ---
 
 ## 6.2 GitHub README Structure
 
-After the admissions officer opens the GitHub repository, the **first 30 seconds** decide whether they keep looking. The README must accomplish three things above the fold: state the problem clearly, show the solution, and prove technical capability.
+After the reviewer opens the GitHub repository, the **first 30 seconds** decide whether they keep looking. The README must accomplish three things above the fold: state the problem clearly, show the solution, and prove technical capability.
 
 ### README structure design
 
@@ -83,7 +83,7 @@ After the admissions officer opens the GitHub repository, the **first 30 seconds
 
 > A trust interface layer for enterprise RAG systems — designed for non-technical users who need to understand, trust, and act on AI-generated information.
 
-[One-line positioning] | [Tech stack tags] | [MSc Portfolio label]
+[One-line positioning] | [Tech stack tags] | [Portfolio label]
 
 ---
 
@@ -192,7 +192,7 @@ This portfolio demonstrates:
 
 ## 📄 License
 
-MIT — This is a portfolio project for academic application purposes.
+MIT — This is a student design prototype, shared for portfolio and educational showcase purposes.
 ```
 
 ### README above-the-fold screenshot selection logic
@@ -439,7 +439,7 @@ MIT — This is a portfolio project for academic application purposes.
 
 ## 6.5 Portfolio Narrative Structure
 
-The admissions officer's attention curve when viewing the Portfolio:
+The reviewer's attention curve when viewing the Portfolio:
 
 ```
 Attention
@@ -478,7 +478,7 @@ Attention
 
 ### "Signal words" that must appear in the narrative
 
-Key terms the admissions officer cares about in HCI, ensure they appear in README / PRD / Demo subtitles:
+Key terms the reviewer cares about in HCI, ensure they appear in README / PRD / Demo subtitles:
 
 | Signal word | Where it appears | Corresponding HCI theory |
 |-------------|------------------|--------------------------|
@@ -605,9 +605,9 @@ def init_session_state():
 
 ---
 
-## 6.8 Alignment Check with UL MSc Requirements
+## 6.8 Alignment Check with MSc Program Requirements
 
-| UL MSc Requirement | How the Portfolio Proves It | Corresponding Deliverable |
+| MSc Program Requirement | How the Portfolio Proves It | Corresponding Deliverable |
 |--------------------|------------------------------|---------------------------|
 | Significant technical challenge | LLM structured output + Pydantic validation + Streamlit state management + dual expander nesting | Code + PRD Step 4–5 |
 | HCI theoretical grounding | Progressive Disclosure + Trust Calibration + Cognitive Load Theory | PRD Step 1–3 + README signal words |

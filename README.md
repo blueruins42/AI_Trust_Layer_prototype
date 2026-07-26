@@ -2,7 +2,7 @@
 
 > **A trust interface for enterprise RAG systems** — helping non-technical users *see where an AI answer comes from, know how much to trust it, and verify when it matters.*
 >
-> Interactive & Experience Design portfolio piece · Shuting Fan · MSc Interaction & Experience Design
+> HCI / Explainable-AI design prototype · Shuting Fan
 
 ---
 
@@ -163,5 +163,5 @@ The design-implementation notes (`08_Design_Implementation_Notes_EN.md`) and the
 
 ## Author
 
-**Shuting Fan** — MSc Interaction & Experience Design portfolio.
+**Shuting Fan** — HCI / interaction-design portfolio.
 Built for enterprise RAG systems in the rail-transit low voltage integration domain.

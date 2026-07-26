@@ -147,7 +147,7 @@ The product must answer two questions simultaneously:
 
 ### Portfolio-Level Metrics
 
-| Dimension | What admissions officers/interviewers want to see | How this prototype demonstrates it |
+| Dimension | What reviewers/interviewers want to see | How this prototype demonstrates it |
 |------|---------------------|----------------|
 | **Problem Discovery** | Ability to extract designable problems from real experience | Step 1 problem definition + four formalized questions |
 | **User-Centered Design** | Ability to define personas, journeys, and needs | Step 2 three personas + progressive journey + trinity governance |

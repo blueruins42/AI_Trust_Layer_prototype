@@ -1130,9 +1130,9 @@ After confirming Step 5, proceed to:
 **Step 6: Prototype Scope Definition (Portfolio Deliverables)**
 
 - Determine which files to submit for the Portfolio (code + docs + screenshots/recordings)
-- Portfolio narrative structure (how to write the README for admissions officers)
+- Portfolio narrative structure (how to write the README for reviewers)
 - Interview demo script (3-minute Demo flow)
-- Alignment check against UL MSc thesis requirements
+- Alignment check against the MSc thesis requirements
 
 Or, if you are ready to start coding, go directly to:
 
