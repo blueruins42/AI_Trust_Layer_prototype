@@ -38,19 +38,28 @@ It is built to run with **zero API keys** (a bulletproof demo mode), so a review
 
 ## Demo
 
-### Screenshots (curated)
+### Screenshots
 
-| Scene | Image |
-|---|---|
-| Home — onboarding / value proposition | `ai_trust_layer/screenshots/new_01_home_onboarding.png` |
-| Low-confidence alert banner | `ai_trust_layer/screenshots/new_02_low_confidence_alert.png` |
-| High confidence — collapsed | `ai_trust_layer/screenshots/p0_high_collapsed.png` |
-| High confidence — expanded (sources/jargon/verification) | `ai_trust_layer/screenshots/p0_high_expanded.png` |
-| Medium confidence — expanded | `ai_trust_layer/screenshots/p0_medium_expanded.png` |
-| Low confidence result | `ai_trust_layer/screenshots/p0_low.png` |
-| Admin Dashboard (full) | `ai_trust_layer/screenshots/p1_admin_full.png` |
+**Home — onboarding / value proposition**
+![Home — onboarding](ai_trust_layer/screenshots/new_01_home_onboarding.png)
 
-> Full set (including older `scene*` captures) lives in `ai_trust_layer/screenshots/`.
+**Low-confidence alert banner**
+![Low-confidence alert banner](ai_trust_layer/screenshots/new_02_low_confidence_alert.png)
+
+**High confidence — collapsed**
+![High confidence — collapsed](ai_trust_layer/screenshots/p0_high_collapsed.png)
+
+**High confidence — expanded (sources / jargon / verification)**
+![High confidence — expanded](ai_trust_layer/screenshots/p0_high_expanded.png)
+
+**Medium confidence — expanded**
+![Medium confidence — expanded](ai_trust_layer/screenshots/p0_medium_expanded.png)
+
+**Low confidence result**
+![Low confidence result](ai_trust_layer/screenshots/p0_low.png)
+
+**Admin Dashboard (full)**
+![Admin Dashboard](ai_trust_layer/screenshots/p1_admin_full.png)
 
 ### Walkthrough video
 

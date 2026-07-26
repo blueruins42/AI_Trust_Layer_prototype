@@ -23,5 +23,12 @@ env/
 Thumbs.db
 *.session
 
-# --- Ardot working exports (not curated demo assets) ---
-ai_trust_layer/screenshots/screenshot*.png
+# --- Screenshots: keep only the 7 curated demo assets in the repo ---
+ai_trust_layer/screenshots/*.png
+!ai_trust_layer/screenshots/new_01_home_onboarding.png
+!ai_trust_layer/screenshots/new_02_low_confidence_alert.png
+!ai_trust_layer/screenshots/p0_high_collapsed.png
+!ai_trust_layer/screenshots/p0_high_expanded.png
+!ai_trust_layer/screenshots/p0_medium_expanded.png
+!ai_trust_layer/screenshots/p0_low.png
+!ai_trust_layer/screenshots/p1_admin_full.png
