@@ -66,9 +66,11 @@ def render_admin():
     with header_right:
         if not metrics.get("empty"):
             # Drop the control to roughly align with the title baseline, then render a
-            # compact, right-aligned secondary button instead of the full-width bottom one.
+            # compact, right-aligned secondary button (wrapped in .mini-clear-btn for small styling).
             st.markdown('<div style="height:24px;"></div>', unsafe_allow_html=True)
+            st.markdown('<div class="mini-clear-btn">', unsafe_allow_html=True)
             _render_demo_data_controls(empty=False, compact=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
     # Lock every numeric figure (incl. st.metric values) to ONE bold font stack, so the
     # three metric cards match the inline numbers elsewhere on the page.
@@ -77,6 +79,12 @@ def render_admin():
         '[data-testid="stMetricValue"]{'
         'font-family:"Inter","PingFang SC","Microsoft YaHei","Heiti SC",sans-serif !important;'
         'font-weight:700 !important;}'
+        '.mini-clear-btn{display:flex; justify-content:flex-end;}'
+        '.mini-clear-btn button{'
+        'font-size:11px !important; font-weight:500 !important;'
+        'padding:3px 12px !important; min-height:0 !important;'
+        'line-height:1.5 !important; border-radius:6px !important;'
+        'border-width:1px !important;}'
         '</style>',
         unsafe_allow_html=True,
     )
@@ -130,33 +138,46 @@ def _render_demo_data_controls(empty: bool, compact: bool = False):
         return
 
     if compact:
-        # Header placement: discreet right-aligned secondary button.
-        if st.button(
-            "Clear demo data",
-            key="clear_demo", type="secondary", use_container_width=True,
+        # Header placement: discreet, small right-aligned popover trigger.
+        # A confirmation popover guards against accidental clicks (Path A reviewer tool).
+        with st.popover(
+            "Clear",
             help="Remove all seeded demo queries from this session",
         ):
-            st.session_state["interaction_log"] = []
-            st.session_state["jargon_views"] = {}
-            st.session_state["verification_clicks"] = 0
-            st.session_state["query_count"] = 0
-            st.session_state["demo_data_cleared"] = True
-            st.rerun()
+            st.markdown(
+                '<p style="font-size:13px; font-weight:600; color:#0A0A0B; '
+                'margin:2px 0 4px 0;">Clear all demo data?</p>',
+                unsafe_allow_html=True,
+            )
+            st.markdown(
+                '<p style="font-size:12px; color:#6B7280; line-height:1.45; '
+                'margin:0 0 12px 0;">This removes all seeded demo queries, jargon '
+                'views, and counters from this session. Restore is available from '
+                'the empty state.</p>',
+                unsafe_allow_html=True,
+            )
+            c_confirm, c_cancel = st.columns(2)
+            with c_confirm:
+                if st.button(
+                    "Confirm", key="confirm_clear", type="primary",
+                    use_container_width=True,
+                ):
+                    st.session_state["interaction_log"] = []
+                    st.session_state["jargon_views"] = {}
+                    st.session_state["verification_clicks"] = 0
+                    st.session_state["query_count"] = 0
+                    st.session_state["demo_data_cleared"] = True
+                    st.rerun()
+            with c_cancel:
+                if st.button(
+                    "Cancel", key="cancel_clear", type="secondary",
+                    use_container_width=True,
+                ):
+                    st.rerun()
         return
 
-    # Standalone non-empty layout (centered) — retained for completeness.
-    col_left, col_mid, col_right = st.columns([1, 1.4, 1])
-    with col_mid:
-        if st.button(
-            "Clear demo data",
-            key="clear_demo", type="secondary", use_container_width=True,
-        ):
-            st.session_state["interaction_log"] = []
-            st.session_state["jargon_views"] = {}
-            st.session_state["verification_clicks"] = 0
-            st.session_state["query_count"] = 0
-            st.session_state["demo_data_cleared"] = True
-            st.rerun()
+    # Non-compact empty-state Restore is handled above (empty branch). No other
+    # non-compact layout is currently wired, so control flow ends here.
 
 
 # ---------------------------------------------------------------------------
