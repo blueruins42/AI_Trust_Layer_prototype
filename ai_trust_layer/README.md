@@ -109,4 +109,4 @@ This prototype is a student design project exploring the HCI core topics of **Ex
 
 Built with Python, Streamlit, and a commitment to making AI trustworthy for everyone.
 
-**Designed by Shuting Fan** · Student design prototype · Non-commercial
+Built for enterprise RAG systems · Prototype · Designed by Shuting Fan

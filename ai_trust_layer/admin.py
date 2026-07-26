@@ -709,8 +709,7 @@ def _render_footer():
         '<div style="text-align:center; font-size:13px; color:#A1A1AA; '
         'padding:28px 0 4px 0; margin-top:8px; font-family:{_SANS};">'
         'Built for enterprise RAG systems&nbsp;&nbsp;·&nbsp;&nbsp;'
-        'Student design prototype&nbsp;&nbsp;·&nbsp;&nbsp;'
-        'Non-commercial&nbsp;&nbsp;·&nbsp;&nbsp;'
+        'Prototype&nbsp;&nbsp;·&nbsp;&nbsp;'
         'Designed by Shuting Fan</div>'.replace("{_SANS}", _SANS),
         unsafe_allow_html=True,
     )

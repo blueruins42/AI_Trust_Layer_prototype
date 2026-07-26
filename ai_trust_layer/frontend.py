@@ -239,6 +239,10 @@ def _handle_query(user_query: str):
     st.session_state["current_response"] = response
     st.session_state["current_query"] = user_query
 
+    # Monotonic id so each new query renders a fresh, collapsed Details expander
+    # (otherwise Streamlit reuses the previous expander's open/closed state).
+    st.session_state["_response_id"] = st.session_state.get("_response_id", 0) + 1
+
     # Log interaction
     log_interaction(response, user_query, elapsed_ms)
 
@@ -413,10 +417,15 @@ def render_details_expander(response: TrustLayerResponse):
     """
     level = response.answer.confidence_level
 
-    # P0: always start collapsed; user clicks to expand
-    expanded = False
+    # Key the Details expander by response id so every new query starts collapsed
+    # (the previous open/closed state must NOT carry over to the next answer).
+    rid = st.session_state.get("_response_id", 0)
 
-    with st.expander("Details · sources, jargon & verification", expanded=expanded):
+    with st.expander(
+        "Details · sources, jargon & verification",
+        expanded=False,
+        key=f"details_{rid}",
+    ):
         # Log that user viewed details
         update_details_viewed()
 
@@ -425,7 +434,9 @@ def render_details_expander(response: TrustLayerResponse):
 
         # F3: Jargon glossary (independent expander, always collapsed by default)
         if response.jargon_glossary:
-            with st.expander("Jargon Glossary", expanded=False):
+            with st.expander(
+                "Jargon Glossary", expanded=False, key=f"jargon_{rid}"
+            ):
                 render_jargon_glossary(response.jargon_glossary)
 
         # F4: Verification advice
