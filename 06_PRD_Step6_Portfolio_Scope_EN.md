@@ -33,12 +33,12 @@
 portfolio_submission/
 ├── README.md                          # GitHub homepage (the first thing the admissions officer sees)
 ├── PRD/                               # Product design document chain (Step 1-6)
-│   ├── 01_MSc_vs_MA_Analysis.md
-│   ├── 02_PRD_Step1_Problem_Definition.md
-│   ├── 03_PRD_Step2_User_Personas_v2.md
-│   ├── 04_PRD_Step3_Product_Vision.md
-│   ├── 05_PRD_Step4_Functional_Specs.md
-│   └── 06_PRD_Step5_Technical_Architecture.md
+│   ├── 01_PRD_Step1_Problem_Definition_EN.md
+│   ├── 02_PRD_Step2_User_Personas_EN.md
+│   ├── 03_PRD_Step3_Product_Vision_EN.md
+│   ├── 04_PRD_Step4_Functional_Specs_EN.md
+│   ├── 05_PRD_Step5_Technical_Architecture_EN.md
+│   └── 06_PRD_Step6_Portfolio_Scope_EN.md
 ├── ai_trust_layer/                    # Runnable prototype code
 │   ├── app.py
 │   ├── config.py

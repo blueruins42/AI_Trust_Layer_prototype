@@ -8,7 +8,7 @@
 
 ## Why this exists
 
-Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit weak-current (ELV) system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
+Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit low-voltage (ELV) system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
 
 AI Trust Layer is a **trust interface layer** that sits on top of a RAG answer and makes its reliability *legible*:
 
@@ -138,27 +138,22 @@ Open <http://localhost:8600>. With no `OPENAI_API_KEY` set, the app automaticall
 
 ## Documentation (PRD chain)
 
-The product was specified through a six-step PRD chain. The **formal submission chain starts at Step 1 (02)**; `01_MSc_vs_MA_Analysis.md` is an internal programme-comparison note and is **excluded** from submission.
+The product was specified through a six-step PRD chain, provided here in **English** (the default submission language):
 
-Both the original Chinese documents and English submission versions are provided:
-
-| Step | Chinese (original) | English (submission) |
+| # | Document (PRD step) | File |
 |---|---|---|
-| 01 · Internal programme analysis | `01_MSc_vs_MA_Analysis.md` *(not submitted)* | — |
-| 02 · Problem definition | `02_PRD_Step1_Problem_Definition.md` | `02_PRD_Step1_Problem_Definition_EN.md` |
-| 03 · User personas | `03_PRD_Step2_User_Personas_v2.md` | `03_PRD_Step2_User_Personas_EN.md` |
-| 04 · Product vision | `04_PRD_Step3_Product_Vision.md` | `04_PRD_Step3_Product_Vision_EN.md` |
-| 05 · Functional specs | `05_PRD_Step4_Functional_Specs.md` | `05_PRD_Step4_Functional_Specs_EN.md` |
-| 06 · Technical architecture | `06_PRD_Step5_Technical_Architecture.md` | `06_PRD_Step5_Technical_Architecture_EN.md` |
-| 07 · Portfolio scope | `07_PRD_Step6_Portfolio_Scope.md` | `07_PRD_Step6_Portfolio_Scope_EN.md` |
-| 08 · Design implementation notes | `08_Design_Implementation_Notes.md` | `08_Design_Implementation_Notes_EN.md` |
-| 09 · Development changelog | `09_Development_Changelog.md` *(EN)* | — |
+| 1 | Problem definition | `01_PRD_Step1_Problem_Definition_EN.md` |
+| 2 | User personas | `02_PRD_Step2_User_Personas_EN.md` |
+| 3 | Product vision | `03_PRD_Step3_Product_Vision_EN.md` |
+| 4 | Functional specs | `04_PRD_Step4_Functional_Specs_EN.md` |
+| 5 | Technical architecture | `05_PRD_Step5_Technical_Architecture_EN.md` |
+| 6 | Portfolio scope | `06_PRD_Step6_Portfolio_Scope_EN.md` |
 
-> Note: the Chinese `06` file is named `06_PRD_Step5_Technical_Architecture.md`; the English version follows the same number. `03` has an earlier `v1` draft superseded by `v2` (the canonical Step 2).
+The design-implementation notes (`08_Design_Implementation_Notes_EN.md`) and the development changelog (`09_Development_Changelog.md`) are referenced in the *Design process* section above.
 
 ---
 
 ## Author
 
 **Shuting Fan** — MSc Interaction & Experience Design portfolio.
-Built for enterprise RAG systems in the rail-transit weak-current (ELV) integration domain.
+Built for enterprise RAG systems in the rail-transit low-voltage (ELV) integration domain.
