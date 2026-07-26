@@ -25,14 +25,3 @@ Thumbs.db
 
 # --- Ardot working exports (not curated demo assets) ---
 ai_trust_layer/screenshots/screenshot*.png
-
-# --- Chinese-language source PRD docs (English is the default submission) ---
-01_MSc_vs_MA_Analysis.md
-02_PRD_Step1_Problem_Definition.md
-03_PRD_Step2_User_Personas.md
-03_PRD_Step2_User_Personas_v2.md
-04_PRD_Step3_Product_Vision.md
-05_PRD_Step4_Functional_Specs.md
-06_PRD_Step5_Technical_Architecture.md
-07_PRD_Step6_Portfolio_Scope.md
-08_Design_Implementation_Notes.md
