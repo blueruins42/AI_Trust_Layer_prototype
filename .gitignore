@@ -35,3 +35,6 @@ ai_trust_layer/screenshots/*.png
 
 # --- Demo videos: never auto-commit placeholders; added explicitly per release ---
 ai_trust_layer/videos/
+
+# --- Local recording script (kept on disk, not part of the public portfolio) ---
+DEMO_WALKTHROUGH.md
