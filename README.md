@@ -96,7 +96,7 @@ The visual layer was designed in **ardot** (mockup file `707535023504113`) and i
 - **P1 — Admin Dashboard**: visual analytics (trend / donut / bar) paired one-to-one with raw data; redundancy removed in favour of PRD-driven interpretation cards; internal requirement IDs kept out of the UI; everything aligned pixel-by-pixel to the ardot mockup.
 - **Constraint discipline**: ≤3 colours per scene, consistent alignment, no Chinese in visuals (language consistency for the Irish application), unified number font across the whole app.
 
-See [`08_Design_Implementation_Notes_EN.md`](08_Design_Implementation_Notes_EN.md) for the full design-implementation log, and [`09_Development_Changelog.md`](09_Development_Changelog.md) for the bug-fix / debugging trail.
+The full design-implementation log and the bug-fix / debugging trail (08 / 09) will be added in a follow-up update.
 
 ---
 
@@ -146,18 +146,9 @@ Open <http://localhost:8600>. With no `OPENAI_API_KEY` set, the app automaticall
 
 ## Documentation (PRD chain)
 
-The product was specified through a six-step PRD chain, provided here in **English** (the default submission language):
+The product was specified through a six-step PRD chain (problem definition → user personas → product vision → functional specs → technical architecture → portfolio scope), plus a design-implementation log and a development changelog.
 
-| # | Document (PRD step) | File |
-|---|---|---|
-| 1 | Problem definition | `01_PRD_Step1_Problem_Definition_EN.md` |
-| 2 | User personas | `02_PRD_Step2_User_Personas_EN.md` |
-| 3 | Product vision | `03_PRD_Step3_Product_Vision_EN.md` |
-| 4 | Functional specs | `04_PRD_Step4_Functional_Specs_EN.md` |
-| 5 | Technical architecture | `05_PRD_Step5_Technical_Architecture_EN.md` |
-| 6 | Portfolio scope | `06_PRD_Step6_Portfolio_Scope_EN.md` |
-
-The design-implementation notes (`08_Design_Implementation_Notes_EN.md`) and the development changelog (`09_Development_Changelog.md`) are referenced in the *Design process* section above.
+> These documents are being revised and will be added to the repository in a follow-up update. The current deliverables are the code, this README, and the curated screenshots.
 
 ---
 

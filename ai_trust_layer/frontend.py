@@ -209,18 +209,19 @@ def render_frontend():
                 unsafe_allow_html=True,
             )
 
-        # Portfolio footer
-        st.markdown(
-            '<p style="color:#A1A1AA; font-size:13px; text-align:center; margin-top:40px;">'
-            'Built for enterprise RAG systems  ·  Student design prototype  ·  Non-commercial  ·  Designed by Shuting Fan'
-            '</p>',
-            unsafe_allow_html=True,
-        )
-
     # Render current response (if any)
     if st.session_state.get("current_response"):
         st.divider()
         render_response(st.session_state["current_response"])
+
+    # Portfolio footer — always visible, independent of query state
+    # (previously lived inside the empty-state branch and vanished after a query)
+    st.markdown(
+        '<p style="color:#A1A1AA; font-size:13px; text-align:center; margin-top:40px;">'
+        'Built for enterprise RAG systems  ·  Prototype  ·  Designed by Shuting Fan'
+        '</p>',
+        unsafe_allow_html=True,
+    )
 
 
 def _handle_query(user_query: str):
