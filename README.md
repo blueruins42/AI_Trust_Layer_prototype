@@ -13,6 +13,8 @@
 ![HTML/CSS + SVG](https://img.shields.io/badge/HTML%2FCSS%20%2B%20SVG-UI-014DB2?logo=html5&logoColor=white)
 ![Demo Mode](https://img.shields.io/badge/Demo_Mode-MOCK__LLM__MODE-014DB2)
 
+![Home — onboarding / value proposition](ai_trust_layer/screenshots/new_01_home_onboarding.png)
+
 ---
 
 ## 🎯 The Problem
@@ -36,6 +38,10 @@ Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding 
 | 📈 Admin Dashboard | Monitors trust health, low-confidence rate, and high-frequency terms | Upgrades one-way display into a human–AI feedback loop |
 
 ![Low-confidence alert banner](ai_trust_layer/screenshots/new_02_low_confidence_alert.png)
+
+![High confidence — collapsed by default](ai_trust_layer/screenshots/p0_high_collapsed.png)
+
+![Low confidence result](ai_trust_layer/screenshots/p0_low.png)
 
 ---
 
@@ -70,6 +76,8 @@ Bulletproof Demo Mode (MOCK_LLM_MODE toggle)
 ## 🎬 Demo
 
 ![Progressive disclosure — expanded detail view](ai_trust_layer/screenshots/p0_medium_expanded.png)
+
+![Admin Dashboard (full)](ai_trust_layer/screenshots/p1_admin_full.png)
 
 **3-minute demo video:** coming in a follow-up update (to be committed to `ai_trust_layer/videos/`).
 
