@@ -3,7 +3,6 @@
 > Product working name: AI Trust Layer
 > Stage: Full Product Design Process — Step 2
 > Date: 2026-07-23 | Revised: 2026-07-24
-> Reason for revision: User identified three structural blind spots + activation of secondary / non-target users
 
 ---
 
@@ -113,7 +112,7 @@ Stage 3b: Expand on demand (Progressive Disclosure Level 1)
   │  │                                                │ │
   │  │ ℹ️ Jargon: "switch machine" = device that      │ │
   │  │    controls railway point switching            │ │
-  │  │    "low-voltage (ELV) integration" = overall    │ │
+  │  │    "low voltage integration" = overall    │ │
   │  │    contracting of low-voltage electrical systems│ │
   │  │                                                │ │
   │  │ ⚠️ Verification advised: Equipment quantity     │ │
@@ -458,5 +457,3 @@ Proceed to **Step 3: Product Vision & PRD Core Framework**
 - Technical architecture overview (based on data contract and NFR)
 
 ---
-
-*Step 2 v2 revision complete. All three blind spots have been fixed; the secondary user and non-target user have been activated. If confirmed correct, I will proceed to Step 3.*

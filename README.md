@@ -8,7 +8,7 @@
 
 ## Why this exists
 
-Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit low-voltage (ELV) system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
+Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit low voltage system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
 
 AI Trust Layer is a **trust interface layer** that sits on top of a RAG answer and makes its reliability *legible*:
 
@@ -72,7 +72,7 @@ The prototype is a single Streamlit app composed of focused modules:
 | `llm_api.py` | `MOCK_LLM_MODE` handling, `get_mock_response()`, the three canned answers + `nomatch` |
 | `models.py` | Pydantic response schema + `create_fallback_response()` |
 | `config.py` | Config + the "no API key ⇒ demo mode" safety rule |
-| `mock_documents/` | Domain corpus (rail-transit ELV specs) used by the demo answers |
+| `mock_documents/` | Domain corpus (rail-transit low voltage specs) used by the demo answers |
 | `run.bat` | One-click Windows launcher (kill stale Streamlit → activate venv → serve on 8600) |
 
 **Data flow**: user query → `llm_api` (mock or real) → `models` validates → `frontend` renders with confidence + progressive disclosure → interactions logged → `admin` aggregates via `interaction_log`.
@@ -156,4 +156,4 @@ The design-implementation notes (`08_Design_Implementation_Notes_EN.md`) and the
 ## Author
 
 **Shuting Fan** — MSc Interaction & Experience Design portfolio.
-Built for enterprise RAG systems in the rail-transit low-voltage (ELV) integration domain.
+Built for enterprise RAG systems in the rail-transit low voltage integration domain.

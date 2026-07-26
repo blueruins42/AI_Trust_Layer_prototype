@@ -3,7 +3,6 @@
 > Working product name: AI Trust Layer
 > Phase: Full Product Design Process - Step 1
 > Date: 2026-07-23
-> Status: ✅ Confirmed (user supplied key information on 2026-07-23)
 
 ---
 
@@ -11,7 +10,7 @@
 
 ### Background
 
-China Huaxin Post & Telecom Technologies is a rail transit low-voltage (ELV) systems integrator. The company deployed an internally built RAG (Retrieval-Augmented Generation)-based AI bidding assistant to help the sales team:
+China Huaxin Post & Telecom Technologies is a rail transit low voltage systems integrator. The company deployed an internally built RAG (Retrieval-Augmented Generation)-based AI bidding assistant to help the sales team:
 
 - Use project documents as the source, and perform project database retrieval via an AI model
 - Ultimately handle the quote generation for bidding documents

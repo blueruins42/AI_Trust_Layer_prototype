@@ -3,7 +3,6 @@
 > Product working name: AI Trust Layer
 > Stage: Full Product Design Process - Step 4
 > Date: 2026-07-24
-> Status: Draft, pending user confirmation
 > Upstream inputs: Step 1 Problem Definition, Step 2 v2 User Personas + Data Contract + NFR, Step 3 Product Vision + MVP Scope
 
 ---
@@ -1106,5 +1105,3 @@ After Step 4 is confirmed, proceed to:
 - Responsibilities and core function signatures of each Python file
 
 ---
-
-*Step 4 draft complete. All MVP functions have detailed specifications defined. Please confirm whether any function specifications need adjustment. After confirmation, proceed to Step 5.*

@@ -3,7 +3,6 @@
 > Product working name: AI Trust Layer
 > Phase: Full Product Design Process — Step 6
 > Date: 2026-07-24
-> Status: Draft, pending user confirmation
 > Upstream inputs: All confirmed deliverables from Steps 1–5
 > This step's outputs: Portfolio deliverables list, GitHub README structure, 3-minute Demo script, Must-Work vs Mock matrix, Portfolio narrative structure
 
@@ -658,5 +657,3 @@ After confirming Step 6, proceed to:
 - After Phase F, record the video per the §6.3 Demo script + take screenshots per §6.6
 
 ---
-
-*Step 6 draft complete. The Portfolio deliverables list, README structure, 3-minute Demo script, Must-Work vs Mock matrix, narrative structure, and screenshot guide are all defined. Please confirm if there is anything to adjust. After confirmation, proceed to Step 7 (coding).*
