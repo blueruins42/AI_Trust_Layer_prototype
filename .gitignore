@@ -36,8 +36,11 @@ ai_trust_layer/screenshots/*.png
 # --- Demo videos: never auto-commit placeholders; added explicitly per release ---
 ai_trust_layer/videos/
 
-# --- Local capture utility (kept on disk, not part of the public portfolio) ---
+# --- Local capture utilities (kept on disk, not part of the public portfolio) ---
 ai_trust_layer/capture_readme_shots.py
+ai_trust_layer/record_demo.py
+ai_trust_layer/_debug_expander.py
+ai_trust_layer/_record_tmp/
 DEMO_WALKTHROUGH.md
 
 # --- Deferred docs: being revised, excluded from the public repo until re-added ---

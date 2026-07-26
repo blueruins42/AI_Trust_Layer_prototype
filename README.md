@@ -79,7 +79,9 @@ Bulletproof Demo Mode (MOCK_LLM_MODE toggle)
 
 ![Admin Dashboard (full)](ai_trust_layer/screenshots/p1_admin_full.png)
 
-**3-minute demo video:** coming in a follow-up update (to be committed to `ai_trust_layer/videos/`).
+**3-minute demo video** — real walkthrough with English subtitles (recorded by driving the live Streamlit app):
+
+<video src="ai_trust_layer/videos/ai_trust_layer_demo.mp4" controls width="100%" poster="ai_trust_layer/screenshots/p0_high_expanded.png"></video>
 
 **Try it yourself:**
 ```bash
