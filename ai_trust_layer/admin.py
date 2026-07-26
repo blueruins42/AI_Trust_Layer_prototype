@@ -39,22 +39,36 @@ _SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 
 
 def render_admin():
     """Admin Dashboard main render function"""
-    # Eyebrow + title (design-system consistent with frontend hero)
-    st.markdown(
-        '<p style="color:#3B82F6; font-size:13px; font-weight:600; letter-spacing:1.5px; margin-bottom:4px; font-family:{_SANS};">TRUST LAYER ANALYTICS</p>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        '<h2 style="font-size:32px; font-weight:800; color:#0A0A0B; margin-top:0; margin-bottom:4px;">Admin Dashboard</h2>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        f'<p style="color:#6B7280; font-size:13px; line-height:1.5; '
-        f'margin:6px 0 20px 0; font-family:{_SANS};">'
-        f'Monitor trust health, low-confidence rates, and '
-        f'frequently-viewed jargon for system iteration.</p>',
-        unsafe_allow_html=True,
-    )
+    # Resolve data up front so the header can decide whether to surface the Clear control.
+    log = st.session_state.get("interaction_log", [])
+    metrics = calculate_admin_metrics(log)
+
+    # --- Header: eyebrow + title (left) and the demo Clear control (right) ---
+    # The Clear/Restore affordance is a reviewer tool (Path A), so it lives discreetly
+    # in the header's top-right — never below the page footer / signature line.
+    header_left, header_right = st.columns([4.5, 1.3])
+    with header_left:
+        st.markdown(
+            f'<p style="color:#3B82F6; font-size:13px; font-weight:600; letter-spacing:1.5px; margin-bottom:4px; font-family:{_SANS};">TRUST LAYER ANALYTICS</p>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<h2 style="font-size:32px; font-weight:800; color:#0A0A0B; margin-top:0; margin-bottom:4px;">Admin Dashboard</h2>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<p style="color:#6B7280; font-size:13px; line-height:1.5; '
+            f'margin:6px 0 20px 0; font-family:{_SANS};">'
+            f'Monitor trust health, low-confidence rates, and '
+            f'frequently-viewed jargon for system iteration.</p>',
+            unsafe_allow_html=True,
+        )
+    with header_right:
+        if not metrics.get("empty"):
+            # Drop the control to roughly align with the title baseline, then render a
+            # compact, right-aligned secondary button instead of the full-width bottom one.
+            st.markdown('<div style="height:24px;"></div>', unsafe_allow_html=True)
+            _render_demo_data_controls(empty=False, compact=True)
 
     # Lock every numeric figure (incl. st.metric values) to ONE bold font stack, so the
     # three metric cards match the inline numbers elsewhere on the page.
@@ -66,10 +80,6 @@ def render_admin():
         '</style>',
         unsafe_allow_html=True,
     )
-
-    # Get log data
-    log = st.session_state.get("interaction_log", [])
-    metrics = calculate_admin_metrics(log)
 
     # Empty data handling — bilingual per design spec; the Restore control lets a
     # reviewer reproduce the seeded dashboard after clearing (Path A).
@@ -97,35 +107,56 @@ def render_admin():
     st.divider()
     _render_footer()
 
-    # Path A: Clear / Restore demo data controls (bottom of dashboard).
-    _render_demo_data_controls(empty=False)
 
-
-def _render_demo_data_controls(empty: bool):
+def _render_demo_data_controls(empty: bool, compact: bool = False):
     """Path A — reviewers can reproduce the empty state on demand and restore the
     seeded demo data. This only flips session flags; no production data path is
     touched. The actual re-seed is performed in app.init_session_state() to avoid
-    a circular import between app.py and admin.py."""
-    col_left, col_mid, col_right = st.columns([1, 1.4, 1])
-    with col_mid:
-        if empty:
+    a circular import between app.py and admin.py.
+
+    compact=True renders a single discreet, right-aligned secondary button (used in
+    the dashboard header). compact=False (default) keeps the centered layout used by
+    the empty-state 'Restore' prompt.
+    """
+    if empty:
+        col_left, col_mid, col_right = st.columns([1, 1.4, 1])
+        with col_mid:
             if st.button(
                 "Restore demo data",
                 key="restore_demo", type="primary", use_container_width=True,
             ):
                 st.session_state["_request_seed"] = True
                 st.rerun()
-        else:
-            if st.button(
-                "Clear demo data",
-                key="clear_demo", type="secondary", use_container_width=True,
-            ):
-                st.session_state["interaction_log"] = []
-                st.session_state["jargon_views"] = {}
-                st.session_state["verification_clicks"] = 0
-                st.session_state["query_count"] = 0
-                st.session_state["demo_data_cleared"] = True
-                st.rerun()
+        return
+
+    if compact:
+        # Header placement: discreet right-aligned secondary button.
+        if st.button(
+            "Clear demo data",
+            key="clear_demo", type="secondary", use_container_width=True,
+            help="Remove all seeded demo queries from this session",
+        ):
+            st.session_state["interaction_log"] = []
+            st.session_state["jargon_views"] = {}
+            st.session_state["verification_clicks"] = 0
+            st.session_state["query_count"] = 0
+            st.session_state["demo_data_cleared"] = True
+            st.rerun()
+        return
+
+    # Standalone non-empty layout (centered) — retained for completeness.
+    col_left, col_mid, col_right = st.columns([1, 1.4, 1])
+    with col_mid:
+        if st.button(
+            "Clear demo data",
+            key="clear_demo", type="secondary", use_container_width=True,
+        ):
+            st.session_state["interaction_log"] = []
+            st.session_state["jargon_views"] = {}
+            st.session_state["verification_clicks"] = 0
+            st.session_state["query_count"] = 0
+            st.session_state["demo_data_cleared"] = True
+            st.rerun()
 
 
 # ---------------------------------------------------------------------------
