@@ -544,7 +544,7 @@ def render_document_view(doc_name: str, page_number: int):
     """DOCUMENT_VIEW state rendering: show doc name + page + original content + back button"""
     st.markdown("### Document View")
 
-    if st.button("<- Back to Answer"):
+    if st.button("<- Back to Answer", key="doc_view_back_top"):
         st.session_state["doc_view"] = None
         st.rerun()
 
