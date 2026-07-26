@@ -1,8 +1,9 @@
+import os
 import time
 from playwright.sync_api import sync_playwright
 
 BASE = "http://localhost:8501"
-OUT = r"E:\新建文件夹\UL_Portfolio\ai_trust_layer\screenshots"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "screenshots")
 
 
 def wait_text(page, text, timeout=20000):

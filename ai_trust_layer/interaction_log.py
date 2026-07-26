@@ -1,8 +1,8 @@
 """
-interaction_log.py - 交互日志记录与指标计算
+interaction_log.py - Interaction logging and metric computation
 
-职责：管理交互日志、计算 Admin Dashboard 指标
-对应 PRD：Step 4.11 交互日志规格 + Step 5.2.8
+Responsibility: manage interaction logs, compute Admin Dashboard metrics
+Maps to PRD: Step 4.11 interaction log spec + Step 5.2.8
 """
 
 from collections import Counter
@@ -14,7 +14,7 @@ import uuid
 
 @dataclass
 class InteractionLogEntry:
-    """单次查询的交互日志条目"""
+    """Interaction log entry for a single query"""
     query_id: str
     timestamp: str
     user_query: str
@@ -29,8 +29,8 @@ class InteractionLogEntry:
 
 def init_log():
     """
-    初始化 st.session_state 中的日志相关变量。
-    在 app.py 的 init_session_state() 中调用。
+    Initialise the log-related variables in st.session_state.
+    Called from init_session_state() in app.py.
     """
     import streamlit as st
 
@@ -48,8 +48,8 @@ def init_log():
 
 def log_interaction(response, user_query: str, response_time: int):
     """
-    创建日志条目并存入 st.session_state["interaction_log"]。
-    在 frontend.py 每次查询后调用。
+    Create a log entry and store it in st.session_state["interaction_log"].
+    Called after each query in frontend.py.
     """
     import streamlit as st
 
@@ -68,19 +68,19 @@ def log_interaction(response, user_query: str, response_time: int):
 
     st.session_state["interaction_log"].append(entry)
     st.session_state["query_count"] += 1
-    # 重置当前查询的交互标记
+    # Reset the interaction flags for the current query
     st.session_state["details_viewed"] = False
 
 
 def update_jargon_view(term: str):
-    """记录用户查看了某个术语"""
+    """Record that the user viewed a certain term"""
     import streamlit as st
 
     if term not in st.session_state["jargon_views"]:
         st.session_state["jargon_views"][term] = 0
     st.session_state["jargon_views"][term] += 1
 
-    # 同时更新最近一条日志的 viewed_jargon
+    # Also update viewed_jargon of the most recent log entry
     if st.session_state["interaction_log"]:
         last_entry = st.session_state["interaction_log"][-1]
         if term not in last_entry.viewed_jargon:
@@ -88,18 +88,18 @@ def update_jargon_view(term: str):
 
 
 def update_verification_click():
-    """记录用户点击了核实建议"""
+    """Record that the user clicked the verification suggestion"""
     import streamlit as st
 
     st.session_state["verification_clicks"] += 1
 
-    # 同时更新最近一条日志的 clicked_verification
+    # Also update clicked_verification of the most recent log entry
     if st.session_state["interaction_log"]:
         st.session_state["interaction_log"][-1].clicked_verification = True
 
 
 def update_details_viewed():
-    """记录用户查看了详情"""
+    """Record that the user viewed the details"""
     import streamlit as st
 
     if not st.session_state.get("details_viewed", False):
@@ -110,12 +110,12 @@ def update_details_viewed():
 
 def calculate_admin_metrics(log: list) -> dict:
     """
-    计算 Admin Dashboard 三项指标：
-    - total_queries: 总查询数
-    - trust_health: 核实点击率（越高=越不信任AI）
-    - low_conf_rate: 低置信度触发率
-    - top_jargon: 高频术语 Top 5
-    - recent_queries: 最近 10 条
+    Compute the three Admin Dashboard metrics:
+    - total_queries: total number of queries
+    - trust_health: verification click-through rate (higher = less trust in AI)
+    - low_conf_rate: low-confidence trigger rate
+    - top_jargon: top 5 most frequent terms
+    - recent_queries: the 10 most recent entries
     """
     total_queries = len(log)
 
@@ -132,7 +132,7 @@ def calculate_admin_metrics(log: list) -> dict:
     verification_clicks = sum(1 for e in log if e.clicked_verification)
     low_conf_count = sum(1 for e in log if e.confidence_level == "low")
 
-    # 术语查看统计
+    # Term view statistics
     jargon_counter = Counter()
     for entry in log:
         for term in entry.viewed_jargon:

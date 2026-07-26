@@ -10,7 +10,7 @@ Visual language (mirrors frontend P0 + ardot design draft, item-by-item):
 - Confidence donut + trend line + jargon bars are all inline SVG / responsive HTML, matching
   the ardot draft pixel-for-pixel where it matters.
 - All inline numeric figures (#, response time, bar values, page indicator, metric cards,
-  axis labels, legend %) use ONE locked 黑体 / sans font stack (consistent, never monospace).
+  axis labels, legend %) use ONE locked bold / sans font stack (consistent, never monospace).
 """
 
 import streamlit as st
@@ -31,8 +31,8 @@ _MUTED = "#6B7280"
 _TRACK = "#EEF2F7"
 _CHIP_BG = "#EFF4FF"
 
-# Shared numeric figure font — LOCKED to one 黑体 / sans stack so every number on the
-# page renders identically (user requirement: "all numbers one font, just use 黑体").
+# Shared numeric figure font — LOCKED to one bold / sans stack so every number on the
+# page renders identically (user requirement: "all numbers one font, bold sans-serif").
 _NUM = "'Inter', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', sans-serif"
 _SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"
 
@@ -56,7 +56,7 @@ def render_admin():
         unsafe_allow_html=True,
     )
 
-    # Lock every numeric figure (incl. st.metric values) to ONE 黑体 font stack, so the
+    # Lock every numeric figure (incl. st.metric values) to ONE bold font stack, so the
     # three metric cards match the inline numbers elsewhere on the page.
     st.markdown(
         '<style>'
@@ -74,7 +74,7 @@ def render_admin():
     # Empty data handling — bilingual per design spec; the Restore control lets a
     # reviewer reproduce the seeded dashboard after clearing (Path A).
     if metrics.get("empty"):
-        st.info("暂无数据，请先在前台进行查询 · No data yet — please query the frontend first.")
+        st.info("No data yet — please query the frontend first.")
         _render_demo_data_controls(empty=True)
         return
 
@@ -110,14 +110,14 @@ def _render_demo_data_controls(empty: bool):
     with col_mid:
         if empty:
             if st.button(
-                "Restore demo data · 恢复演示数据",
+                "Restore demo data",
                 key="restore_demo", type="primary", use_container_width=True,
             ):
                 st.session_state["_request_seed"] = True
                 st.rerun()
         else:
             if st.button(
-                "Clear demo data · 清空演示数据",
+                "Clear demo data",
                 key="clear_demo", type="secondary", use_container_width=True,
             ):
                 st.session_state["interaction_log"] = []

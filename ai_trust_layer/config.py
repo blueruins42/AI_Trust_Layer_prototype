@@ -1,7 +1,7 @@
 """
-config.py - AI Trust Layer 全局配置
+config.py - AI Trust Layer global configuration
 
-职责：集中管理所有配置项，从 .env 读取敏感信息
+Responsibility: centralise all configuration items, read sensitive info from .env
 """
 
 import os
@@ -9,19 +9,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ── LLM API 配置 ──────────────────────────────────────────
+# ── LLM API configuration ──────────────────────────────────────────
 OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 LLM_MODEL: str = os.getenv("LLM_MODEL", "gpt-4o-mini")
 LLM_TIMEOUT: float = float(os.getenv("LLM_TIMEOUT", "3.0"))
 
-# ── 防弹演示模式（Bulletproof Demo Mode）──────────────────
-# True  -> llm_api.py 跳过 OpenAI 调用，直接返回预写静态 JSON（0 延迟、100% 可控）
-# False -> 正常调用 OpenAI API
+# ── Bulletproof Demo Mode ──────────────────────────────────────────
+# True  -> llm_api.py skips the OpenAI call and returns pre-written static JSON directly (0 latency, 100% controllable)
+# False -> call the OpenAI API normally
 #
-# 使用场景：
-#   - 录制 Demo 视频 / 面试 Live 演示 -> 设为 True
-#   - 开发调试前台界面 -> 设为 True（不消耗 API 额度）
-#   - 验证 API 集成 / 测试真实置信度 -> 设为 False
+# Use cases:
+#   - Record demo video / live interview demo -> set to True
+#   - Develop/debug the frontend UI -> set to True (no API quota consumed)
+#   - Verify API integration / test real confidence -> set to False
 MOCK_LLM_MODE: bool = os.getenv("MOCK_LLM_MODE", "true").lower() == "true"
 
 # No API key configured -> the real OpenAI path cannot succeed, so force the
@@ -31,14 +31,14 @@ MOCK_LLM_MODE: bool = os.getenv("MOCK_LLM_MODE", "true").lower() == "true"
 if not OPENAI_API_KEY:
     MOCK_LLM_MODE = True
 
-# ── 置信度阈值 ────────────────────────────────────────────
+# ── Confidence thresholds ──────────────────────────────────────────
 CONFIDENCE_HIGH_THRESHOLD: float = 0.75
 CONFIDENCE_LOW_THRESHOLD: float = 0.50
 
-# ── 数据契约约束 ──────────────────────────────────────────
+# ── Data contract constraints ──────────────────────────────────────
 MAX_SOURCES: int = 5
 MAX_JARGON_TERMS: int = 10
 MAX_ANSWER_LENGTH: int = 2000
 
-# ── Mock 文档路径 ─────────────────────────────────────────
+# ── Mock document path ─────────────────────────────────────────────
 MOCK_DOCS_DIR: str = os.path.join(os.path.dirname(__file__), "mock_documents")

@@ -1,8 +1,8 @@
 """
-mock_docs.py - Mock 文档集 + 模拟 RAG 检索
+mock_docs.py - Mock document set + simulated RAG retrieval
 
-职责：加载 Mock 文档、模拟 RAG 检索、计算匹配分数、获取文档页面内容
-对应 PRD：Step 4.10 Mock 文档集规格 + Step 5.2.4
+Responsibility: load mock documents, simulate RAG retrieval, compute match scores, fetch document page content
+Maps to PRD: Step 4.10 Mock document set spec + Step 5.2.4
 """
 
 import os
@@ -11,17 +11,17 @@ from models import Source
 from config import MOCK_DOCS_DIR
 
 
-# ── 文档缓存 ──────────────────────────────────────────────
+# ── Document cache ─────────────────────────────────────────────────
 
 _documents_cache: list[dict] | None = None
 
 
 def load_mock_documents() -> list[dict]:
     """
-    加载 mock_documents/ 目录下所有 .md 文件。
-    解析每份文档的元数据（标题、页码标记、章节）。
+    Load all .md files under the mock_documents/ directory.
+    Parse each document's metadata (title, page markers, sections).
 
-    返回: [{"name": str, "content": str, "pages": [{"page": int, "text": str}]}]
+    Returns: [{"name": str, "content": str, "pages": [{"page": int, "text": str}]}]
     """
     global _documents_cache
     if _documents_cache is not None:
@@ -41,7 +41,7 @@ def load_mock_documents() -> list[dict]:
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
 
-        # 解析页码标记: > page=X
+        # Parse page markers: > page=X
         pages = _parse_pages(content)
 
         documents.append({
@@ -57,22 +57,22 @@ def load_mock_documents() -> list[dict]:
 
 def _parse_pages(content: str) -> list[dict]:
     """
-    解析文档中的页码标记。
-    格式: [页面内容] > page=X [下一页内容] > page=Y ...
-    每个页码标记之前的内容属于该页。
+    Parse page markers in the document.
+    Format: [page content] > page=X [next page content] > page=Y ...
+    Content before each page marker belongs to that page.
     """
     pages = []
-    # 按 > page=X 分割
+    # Split by > page=X
     parts = re.split(r'>\s*page=(\d+)', content)
 
-    # parts[0] = 第一个标记之前的内容（属于第一个页码）
-    # parts[1] = 第一个页码数字
-    # parts[2] = 第一个标记之后到第二个标记之前的内容（属于第二个页码）
-    # parts[3] = 第二个页码数字
-    # 以此类推：parts[i] 是内容，parts[i+1] 是该内容对应的页码
+    # parts[0] = content before the first marker (belongs to the first page number)
+    # parts[1] = the first page number
+    # parts[2] = content between the first and second marker (belongs to the second page number)
+    # parts[3] = the second page number
+    # and so on: parts[i] is content, parts[i+1] is the page number for that content
 
     if len(parts) <= 1:
-        # 没有页码标记，整篇文档作为第1页
+        # No page marker, treat the whole document as page 1
         pages.append({"page": 1, "text": content[:500]})
         return pages
 
@@ -86,17 +86,17 @@ def _parse_pages(content: str) -> list[dict]:
 
 def mock_rag_retrieve(query: str, top_k: int = 3) -> list[Source]:
     """
-    模拟 RAG 检索：
-    1. 对 query 做简单关键词分词
-    2. 遍历所有文档页，计算关键词匹配分数
-    3. 按分数降序排列，取前 top_k
-    4. 返回 Source 对象列表
+    Simulate RAG retrieval:
+    1. Do simple keyword tokenisation on the query
+    2. Iterate over all document pages, compute keyword match scores
+    3. Sort in descending order by score, take the top top_k
+    4. Return a list of Source objects
     """
     documents = load_mock_documents()
     scored_results = []
 
-    # 简单分词：按空格和标点分割，过滤太短的词
-    keywords = [w for w in re.split(r'[\s，。、？？]+', query) if len(w) >= 2]
+    # Simple tokenisation: split by whitespace and ASCII punctuation, filter out words that are too short
+    keywords = [w for w in re.split(r'[\s\.,;:!?]+', query) if len(w) >= 2]
 
     if not keywords:
         return []
@@ -104,7 +104,7 @@ def mock_rag_retrieve(query: str, top_k: int = 3) -> list[Source]:
     for doc in documents:
         for page in doc["pages"]:
             score = _calculate_match_score(keywords, doc["name"], page["text"])
-            if score > 0.1:  # 最低匹配阈值
+            if score > 0.1:  # Minimum match threshold
                 excerpt = page["text"][:200] if page["text"] else None
                 scored_results.append(Source(
                     document_name=doc["name"],
@@ -113,18 +113,18 @@ def mock_rag_retrieve(query: str, top_k: int = 3) -> list[Source]:
                     excerpt=excerpt,
                 ))
 
-    # 按 match_score 降序，取前 top_k
+    # Sort by match_score descending, take top top_k
     scored_results.sort(key=lambda x: x.match_score, reverse=True)
     return scored_results[:top_k]
 
 
 def _calculate_match_score(keywords: list[str], doc_name: str, page_text: str) -> float:
     """
-    计算关键词匹配分数：
-    - 精确匹配关键词：+0.3
-    - 部分匹配（子串）：+0.15
-    - 文档标题匹配：+0.2
-    - 最终归一化到 0.0-1.0
+    Compute the keyword match score:
+    - Exact keyword match: +0.3
+    - Partial match (substring): +0.15
+    - Document title match: +0.2
+    - Finally normalised to 0.0-1.0
     """
     score = 0.0
     text_lower = page_text.lower()
@@ -144,8 +144,8 @@ def _calculate_match_score(keywords: list[str], doc_name: str, page_text: str) -
 
 def get_document_page(doc_name: str, page_number: int) -> str | None:
     """
-    根据 document_name 和 page_number 获取文档页面内容。
-    用于 DOCUMENT_VIEW 状态的跳转。
+    Fetch document page content by document_name and page_number.
+    Used for navigation in the DOCUMENT_VIEW state.
     """
     documents = load_mock_documents()
 
@@ -154,7 +154,7 @@ def get_document_page(doc_name: str, page_number: int) -> str | None:
             for page in doc["pages"]:
                 if page["page"] == page_number:
                     return page["text"]
-            # 文档存在但页码不匹配，返回第一个页面
+            # Document exists but page number does not match, return the first page
             if doc["pages"]:
                 return doc["pages"][0]["text"]
 

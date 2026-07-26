@@ -1,8 +1,8 @@
 """
-models.py - Pydantic 数据契约模型（Data Contract）
+models.py - Pydantic data contract models (Data Contract)
 
-职责：定义 TrustLayerResponse 及所有子模型、验证逻辑、降级处理
-对应 PRD：Step 4.7 DC 数据契约实现规格
+Responsibility: define TrustLayerResponse and all sub-models, validation logic, and fallback handling
+Maps to PRD: Step 4.7 DC data contract implementation spec
 """
 
 from pydantic import BaseModel, Field, ValidationError
@@ -11,7 +11,7 @@ from enum import Enum
 from datetime import datetime
 
 
-# ── 枚举 ──────────────────────────────────────────────────
+# ── Enums ──────────────────────────────────────────────────────────
 
 class ConfidenceLevel(str, Enum):
     HIGH = "high"
@@ -19,53 +19,53 @@ class ConfidenceLevel(str, Enum):
     LOW = "low"
 
 
-# ── 子模型 ────────────────────────────────────────────────
+# ── Sub-models ─────────────────────────────────────────────────────
 
 class Answer(BaseModel):
-    text: str = Field(..., max_length=2000, description="AI生成的回答文本")
-    confidence_score: float = Field(..., ge=0.0, le=1.0, description="置信度分数")
-    confidence_level: ConfidenceLevel = Field(..., description="置信度档位")
-    is_inferred: bool = Field(..., description="是否为AI推断")
+    text: str = Field(..., max_length=2000, description="AI-generated answer text")
+    confidence_score: float = Field(..., ge=0.0, le=1.0, description="Confidence score")
+    confidence_level: ConfidenceLevel = Field(..., description="Confidence level")
+    is_inferred: bool = Field(..., description="Whether this is an AI inference")
 
 
 class Source(BaseModel):
-    document_name: str = Field(..., description="文档名称")
-    page_number: int = Field(..., ge=0, description="页码")
-    match_score: float = Field(..., ge=0.0, le=1.0, description="检索匹配分数")
-    excerpt: Optional[str] = Field(None, description="原文摘录")
+    document_name: str = Field(..., description="Document name")
+    page_number: int = Field(..., ge=0, description="Page number")
+    match_score: float = Field(..., ge=0.0, le=1.0, description="Retrieval match score")
+    excerpt: Optional[str] = Field(None, description="Original excerpt")
 
 
 class JargonTerm(BaseModel):
-    term: str = Field(..., description="技术术语")
-    definition: str = Field(..., description="正式定义")
-    plain_language: str = Field(..., description="大白话解释")
+    term: str = Field(..., description="Technical term")
+    definition: str = Field(..., description="Formal definition")
+    plain_language: str = Field(..., description="Plain-language explanation")
 
 
 class ActionLink(BaseModel):
-    text: str = Field(..., description="链接显示文字")
-    document: str = Field(..., description="目标文档名")
-    page: int = Field(..., ge=0, description="目标页码")
+    text: str = Field(..., description="Link display text")
+    document: str = Field(..., description="Target document name")
+    page: int = Field(..., ge=0, description="Target page number")
 
 
 class VerificationAdvice(BaseModel):
-    needs_verification: bool = Field(..., description="是否需要人工核实")
-    fields_to_check: List[str] = Field(default=[], description="需核实的具体字段")
-    action_link: Optional[ActionLink] = Field(None, description="行动建议链接")
+    needs_verification: bool = Field(..., description="Whether manual verification is needed")
+    fields_to_check: List[str] = Field(default=[], description="Specific fields to verify")
+    action_link: Optional[ActionLink] = Field(None, description="Action suggestion link")
 
 
 class QueryMetadata(BaseModel):
-    query_id: str = Field(..., description="查询唯一ID")
-    timestamp: str = Field(..., description="ISO 8601时间戳")
-    response_time_ms: int = Field(..., ge=0, description="响应时间(毫秒)")
-    model_used: str = Field(..., description="使用的模型名称")
-    documents_searched: int = Field(..., ge=0, description="检索的文档总数")
-    documents_matched: int = Field(..., ge=0, description="匹配的文档数")
+    query_id: str = Field(..., description="Unique query ID")
+    timestamp: str = Field(..., description="ISO 8601 timestamp")
+    response_time_ms: int = Field(..., ge=0, description="Response time (ms)")
+    model_used: str = Field(..., description="Model name used")
+    documents_searched: int = Field(..., ge=0, description="Total number of documents searched")
+    documents_matched: int = Field(..., ge=0, description="Number of matched documents")
 
 
-# ── 顶层模型 ──────────────────────────────────────────────
+# ── Top-level model ────────────────────────────────────────────────
 
 class TrustLayerResponse(BaseModel):
-    """AI Trust Layer 的完整数据契约"""
+    """The complete data contract of the AI Trust Layer"""
     answer: Answer
     sources: List[Source] = Field(default=[], max_length=5)
     jargon_glossary: List[JargonTerm] = Field(default=[], max_length=10)
@@ -73,13 +73,13 @@ class TrustLayerResponse(BaseModel):
     metadata: QueryMetadata
 
 
-# ── 验证逻辑 ──────────────────────────────────────────────
+# ── Validation logic ───────────────────────────────────────────────
 
 def validate_response(raw_json: dict) -> TrustLayerResponse | None:
     """
-    验证 LLM 返回的 JSON 是否符合数据契约。
-    通过 -> 返回 TrustLayerResponse 对象
-    不通过 -> 返回 None（调用方应使用 create_fallback_response）
+    Validate whether the JSON returned by the LLM conforms to the data contract.
+    Pass -> return a TrustLayerResponse object
+    Fail -> return None (the caller should use create_fallback_response)
     """
     try:
         response = TrustLayerResponse(**raw_json)
@@ -91,8 +91,8 @@ def validate_response(raw_json: dict) -> TrustLayerResponse | None:
 
 def create_fallback_response(raw_json: dict | None = None) -> TrustLayerResponse:
     """
-    降级处理：当 JSON 验证失败时，构造最小可用响应。
-    保留能解析的字段，缺失字段用默认值填充。
+    Fallback handling: when JSON validation fails, construct a minimally usable response.
+    Preserve fields that can be parsed; fill missing fields with default values.
     """
     raw = raw_json or {}
     answer_data = raw.get("answer", {})
@@ -124,7 +124,7 @@ def create_fallback_response(raw_json: dict | None = None) -> TrustLayerResponse
 
 def determine_confidence_level(score: float) -> ConfidenceLevel:
     """
-    根据置信度分数计算档位（兜底逻辑，当 LLM 未返回 level 时使用）。
+    Compute the confidence level from the confidence score (fallback logic, used when the LLM does not return a level).
     """
     if score >= 0.75:
         return ConfidenceLevel.HIGH

@@ -182,9 +182,9 @@ MOCK_RESPONSES: dict[str, dict] = {
 
 # Query keywords -> mock scenario mapping
 MOCK_QUERY_MAP: list[tuple[list[str], str]] = [
-    (["budget", "cost", "price", "investment", "报价"], "low"),        # Scene 3
-    (["switch", "machine", "ZDJ", "parameter", "specification", "转辙"], "medium"),  # Scene 4
-    (["signal", "signaling", "CBTC", "system", "equipment", "信号"], "high"),    # Scene 2 (default)
+    (["budget", "cost", "price", "investment"], "low"),        # Scene 3
+    (["switch", "machine", "ZDJ", "parameter", "specification"], "medium"),  # Scene 4
+    (["signal", "signaling", "CBTC", "system", "equipment"], "high"),    # Scene 2 (default)
 ]
 
 
