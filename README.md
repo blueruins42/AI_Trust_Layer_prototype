@@ -63,8 +63,7 @@ It is built to run with **zero API keys** (a bulletproof demo mode), so a review
 
 ### Walkthrough video
 
-- 3-minute demo: [`ai_trust_layer/videos/ai_trust_layer_demo_3min.mp4`](ai_trust_layer/videos/ai_trust_layer_demo_3min.mp4) · ([`.webm`](ai_trust_layer/videos/ai_trust_layer_demo_3min.webm))
-- Short demo: [`ai_trust_layer/videos/ai_trust_layer_demo.mp4`](ai_trust_layer/videos/ai_trust_layer_demo.mp4)
+A recorded walkthrough — real-time mouse cursor plus a click-through of the confidence tiers, progressive disclosure, and the Admin Dashboard — will be committed to `ai_trust_layer/videos/` in a follow-up update.
 
 ---
 

@@ -32,3 +32,6 @@ ai_trust_layer/screenshots/*.png
 !ai_trust_layer/screenshots/p0_medium_expanded.png
 !ai_trust_layer/screenshots/p0_low.png
 !ai_trust_layer/screenshots/p1_admin_full.png
+
+# --- Demo videos: never auto-commit placeholders; added explicitly per release ---
+ai_trust_layer/videos/
