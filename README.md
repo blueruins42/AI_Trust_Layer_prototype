@@ -23,6 +23,8 @@ Try the interactive prototype: **[ai-trust-layer-prototype.streamlit.app](https:
 
 The left side runs the real AI Trust Layer Streamlit prototype; the right side opens an interactive PRD panel. Click any prototype chip to open and highlight the matching requirement, or click a PRD section to run its demo scenario. A GitHub icon in the top-right links back to the source repository.
 
+![Interactive PRD — high-confidence answer with linked requirements panel](ai_trust_layer/screenshots/p1_interactive_prd.png)
+
 ---
 
 ## 🎯 The Problem

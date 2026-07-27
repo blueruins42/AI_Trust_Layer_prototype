@@ -23,7 +23,7 @@ env/
 Thumbs.db
 *.session
 
-# --- Screenshots: keep only the 7 curated demo assets in the repo ---
+# --- Screenshots: keep only the 8 curated demo assets in the repo ---
 ai_trust_layer/screenshots/*.png
 !ai_trust_layer/screenshots/new_01_home_onboarding.png
 !ai_trust_layer/screenshots/new_02_low_confidence_alert.png
@@ -32,6 +32,7 @@ ai_trust_layer/screenshots/*.png
 !ai_trust_layer/screenshots/p0_medium_expanded.png
 !ai_trust_layer/screenshots/p0_low.png
 !ai_trust_layer/screenshots/p1_admin_full.png
+!ai_trust_layer/screenshots/p1_interactive_prd.png
 
 # --- Demo videos: never auto-commit placeholders; added explicitly per release ---
 ai_trust_layer/videos/
