@@ -10,9 +10,16 @@ Run: streamlit run app.py
 import streamlit as st
 from frontend import render_frontend
 from admin import render_admin
+from prd_panel import render_prd_panel
 from interaction_log import init_log, InteractionLogEntry
 from models import ConfidenceLevel
 from datetime import datetime
+
+# Public source repository for this prototype.
+# REPLACE <YOUR_GITHUB_USERNAME> with your GitHub handle before deploying.
+# Streamlit Community Cloud derives the app URL from the repo name:
+#   repo "ai_trust_layer_prototype" -> https://ai-trust-layer-prototype.streamlit.app
+REPO_URL = "https://github.com/<YOUR_GITHUB_USERNAME>/ai_trust_layer_prototype"
 
 
 def init_session_state():
@@ -25,6 +32,12 @@ def init_session_state():
         st.session_state["view_mode"] = "front"
     if "doc_view" not in st.session_state:
         st.session_state["doc_view"] = None
+
+    # --- Interactive PRD panel state ---
+    if "prd_open" not in st.session_state:
+        st.session_state["prd_open"] = False
+    if "_prd_focus" not in st.session_state:
+        st.session_state["_prd_focus"] = None
 
     # --- Current response ---
     if "current_response" not in st.session_state:
@@ -149,7 +162,9 @@ def main():
     init_session_state()
 
     # Top navigation bar (design-system consistent — small SVG shield + wordmark + admin pill)
-    nav_left, nav_right = st.columns([3, 1])
+    # Top navigation bar: logo | PRD toggle | GitHub icon | Admin/Frontend switch
+    nav_left, nav_prd, nav_github, nav_right = st.columns([3, 0.8, 0.5, 1])
+
     with nav_left:
         st.markdown(
             '<div style="display:flex; align-items:center; gap:10px; padding:4px 0;">'
@@ -161,6 +176,30 @@ def main():
             '</div>',
             unsafe_allow_html=True,
         )
+
+    with nav_prd:
+        label = "PRD ▸" if not st.session_state.get("prd_open") else "PRD ◂"
+        if st.button(label, key="prd_toggle", type="secondary", use_container_width=True):
+            st.session_state["prd_open"] = not st.session_state.get("prd_open", False)
+            st.rerun()
+
+    with nav_github:
+        st.markdown(
+            f'<a href="{REPO_URL}" target="_blank" rel="noopener noreferrer" '
+            f'title="View source on GitHub" '
+            f'style="display:flex; justify-content:flex-end; align-items:center; height:38px;">'
+            f'<svg height="22" width="22" viewBox="0 0 16 16" fill="#0A0A0B" '
+            f'aria-label="GitHub repository" role="img" xmlns="http://www.w3.org/2000/svg">'
+            f'<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 '
+            f'0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53'
+            f'.63-.01 1.22.47 1.36.58.78 1.21 2.05.87 2.55.66.01-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 '
+            f'0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 '
+            f'1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 '
+            f'3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8'
+            f'c0-4.42-3.58-8-8-8z"></path></svg></a>',
+            unsafe_allow_html=True,
+        )
+
     with nav_right:
         if st.session_state["view_mode"] == "front":
             if st.button("Admin", key="nav_switch", type="secondary", use_container_width=True):
@@ -173,11 +212,21 @@ def main():
 
     st.divider()
 
-    # Routing
-    if st.session_state["view_mode"] == "front":
-        render_frontend()
+    # Routing - split into app + PRD panel when the PRD is open; full-width otherwise.
+    if st.session_state.get("prd_open"):
+        app_col, prd_col = st.columns([2.5, 1])
+        with app_col:
+            if st.session_state["view_mode"] == "front":
+                render_frontend()
+            else:
+                render_admin()
+        with prd_col:
+            render_prd_panel()
     else:
-        render_admin()
+        if st.session_state["view_mode"] == "front":
+            render_frontend()
+        else:
+            render_admin()
 
 
 if __name__ == "__main__":

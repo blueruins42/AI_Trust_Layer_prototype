@@ -139,15 +139,15 @@ def render_frontend():
     _, chips_center, _ = st.columns([1, 2, 1])
     with chips_center:
         chip_cols = st.columns(3)
-        examples = [
-            "What signaling system does Project XX use?",
-            "ZDJ-200 switch machine parameters",
-            "YY Line construction budget",
-        ]
-        for col, example in zip(chip_cols, examples):
-            with col:
-                if st.button(example, key=f"chip_{example[:10]}", use_container_width=True):
-                    _handle_query(example)
+        for i, (sid, query) in enumerate(SCENARIO_QUERIES.items()):
+            with chip_cols[i]:
+                if st.button(query, key=f"chip_{sid}", use_container_width=True):
+                    # Two-way link: clicking a prototype chip highlights the matching
+                    # PRD section, opens the panel if closed, and runs the scenario.
+                    st.session_state["_prd_focus"] = sid
+                    st.session_state["prd_open"] = True
+                    _handle_query(query)
+                    st.rerun()
 
     # Value cards (only show when no current response, to keep focus on answer when querying)
     if not st.session_state.get("current_response"):
@@ -222,6 +222,16 @@ def render_frontend():
         '</p>',
         unsafe_allow_html=True,
     )
+
+
+# Scenario id -> example query that triggers the matching mock response
+# (see llm_api.py MOCK_QUERY_MAP). Keys must match the confidence ids used
+# for PRD focus highlighting in prd_panel.py.
+SCENARIO_QUERIES: dict[str, str] = {
+    "high": "What signaling system does Project XX use?",
+    "medium": "ZDJ-200 switch machine parameters",
+    "low": "YY Line construction budget",
+}
 
 
 def _handle_query(user_query: str):

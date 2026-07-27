@@ -17,6 +17,14 @@
 
 ---
 
+## 🚀 Live Demo
+
+Try the interactive prototype: **[ai-trust-layer-prototype.streamlit.app](https://ai-trust-layer-prototype.streamlit.app)**
+
+The left side runs the real AI Trust Layer Streamlit prototype; the right side opens an interactive PRD panel. Click any prototype chip to open and highlight the matching requirement, or click a PRD section to run its demo scenario. A GitHub icon in the top-right links back to the source repository.
+
+---
+
 ## 🎯 The Problem
 
 Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit low voltage system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
