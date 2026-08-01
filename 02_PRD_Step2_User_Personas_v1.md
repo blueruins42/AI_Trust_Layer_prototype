@@ -1,7 +1,7 @@
 
-> Working prototype name: AI Trust Layer
-> Phase: Full Product Design Process — Step 2
-> Date: 2026-07-23
+- Working prototype name: AI Trust Layer
+- Phase: Full Product Design Process — Step 2
+- Date: 2026-07-23
 
 ---
 
