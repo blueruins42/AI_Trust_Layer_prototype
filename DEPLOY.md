@@ -2,6 +2,8 @@
 
 This repository runs as a **single, self-contained interactive portfolio prototype** on Streamlit Community Cloud (free). It runs the real AI Trust Layer demo offline (no API key needed) and links back to the full design documentation on GitHub. The Admin dashboard opens with the **Admin** button in the top bar.
 
+**Live URL:** [aitrustlayerprototype-202608.streamlit.app](https://aitrustlayerprototype-202608.streamlit.app/)
+
 ## What a reviewer gets in one URL
 - **Live demo** — the real AI Trust Layer prototype, running offline in `MOCK_LLM_MODE`.
 - **Portfolio** — problem → solution → principles → decisions, presented as a coherent story rather than a pile of features.
