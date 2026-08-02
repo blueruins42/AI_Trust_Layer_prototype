@@ -93,16 +93,6 @@ flowchart LR
     B --> E[Bulletproof Demo Mode<br/>MOCK_LLM_MODE]
 ```
 
-```
-Streamlit Frontend
-    ↕
-Python Controller (JSON Validation + Confidence Logic)
-    ↕
-Pluggable LLM (OpenAI-compatible Structured Output) + Mock Document Store
-    ↕
-Bulletproof Demo Mode (MOCK_LLM_MODE toggle)
-```
-
 ---
 
 ## 🧭 Design Principles
