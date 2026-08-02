@@ -1,27 +1,26 @@
 # Deploying AI Trust Layer — Streamlit Community Cloud
 
-This repository runs as a **single, self-contained portfolio + design document + live demo** on Streamlit Community Cloud (free). The interactive PRD panel lives in the right-hand column (toggle it with the **PRD ▸** button in the top bar); the Admin dashboard opens with the **Admin** button.
+This repository runs as a **single, self-contained interactive portfolio prototype** on Streamlit Community Cloud (free). It runs the real AI Trust Layer demo offline (no API key needed) and links back to the full design documentation on GitHub. The Admin dashboard opens with the **Admin** button in the top bar.
 
 ## What a reviewer gets in one URL
 - **Live demo** — the real AI Trust Layer prototype, running offline in `MOCK_LLM_MODE`.
-- **Design document** — the PRD narrative + HCI design philosophy, navigable inside the app (Overview / Problem / Solution / Principles / Decisions / Demo).
 - **Portfolio** — problem → solution → principles → decisions, presented as a coherent story rather than a pile of features.
+- **Source & docs** — the top-right GitHub icon links to the repository, where the full PRD and HCI design notes live.
 
 ## Prerequisites
 - A GitHub account.
 - A Streamlit account (free; sign in with GitHub at https://streamlit.io/cloud).
 
 ## Steps
-1. **Create a GitHub repo** (e.g. `ai_trust_layer_prototype`) and push this folder:
+1. **Push this folder to your GitHub repo** (`AI_Trust_Layer_prototype`):
    ```bash
-   git remote add origin https://github.com/<you>/ai_trust_layer_prototype.git
+   git remote add origin https://github.com/blueruins42/AI_Trust_Layer_prototype.git
    git push -u origin master
    ```
-2. **(Optional)** In `ai_trust_layer/app.py`, replace `<YOUR_GITHUB_USERNAME>` in `REPO_URL` with your handle, so the top-right GitHub icon links home.
-3. Go to **streamlit.io/cloud → New app** → connect GitHub → select the repo, branch `master`, and **Main file path: `ai_trust_layer/app.py`**.
-4. **Advanced settings → Python version:** 3.12. **No secrets required** — `MOCK_LLM_MODE` defaults to `true`, so the demo runs with zero API keys.
+2. Go to **streamlit.io/cloud → New app** → connect GitHub → select the repo, branch `master`, and **Main file path: `ai_trust_layer/app.py`**.
+3. **Advanced settings → Python version:** 3.12. **No secrets required** — `MOCK_LLM_MODE` defaults to `true`, so the demo runs with zero API keys.
    - To enable live OpenAI answers instead, add a secret `OPENAI_API_KEY=...` and set `MOCK_LLM_MODE=false` (via `.env` locally, or Streamlit secrets in the cloud UI).
-5. **Deploy.** Your app goes live at `https://<app-name>.streamlit.app`.
+4. **Deploy.** Your app goes live at `https://<app-name>.streamlit.app`.
 
 ## Notes
 - `requirements.txt` (repo root) pins the exact stack.

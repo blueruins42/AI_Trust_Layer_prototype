@@ -4,26 +4,21 @@
 
 > A trust interface layer for enterprise RAG systems — designed for non-technical users who need to understand, trust, and act on AI-generated information.
 
-## 🧩 Tech Stack
-
-![Python](https://img.shields.io/badge/Python-3.12-014DB2?logo=python&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.60-014DB2?logo=streamlit&logoColor=white)
-![Pydantic](https://img.shields.io/badge/Pydantic-v2-014DB2?logo=pydantic&logoColor=white)
-![python-dotenv](https://img.shields.io/badge/python--dotenv-config-014DB2)
-![HTML/CSS + SVG](https://img.shields.io/badge/HTML%2FCSS%20%2B%20SVG-UI-014DB2?logo=html5&logoColor=white)
-![Demo Mode](https://img.shields.io/badge/Demo_Mode-MOCK__LLM__MODE-014DB2)
-
 ![Home — onboarding / value proposition](ai_trust_layer/screenshots/new_01_home_onboarding.png)
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Run & Deploy
 
-Try the interactive prototype: **[ai-trust-layer-prototype.streamlit.app](https://ai-trust-layer-prototype.streamlit.app)**
+Run the prototype locally in seconds — it ships in offline demo mode, so **no API key is needed**:
 
-The left side runs the real AI Trust Layer Streamlit prototype; the right side opens an interactive PRD panel. Click any prototype chip to open and highlight the matching requirement, or click a PRD section to run its demo scenario. A GitHub icon in the top-right links back to the source repository.
+```bash
+cd ai_trust_layer
+pip install -r requirements.txt
+streamlit run app.py        # opens http://localhost:8501
+```
 
-![Interactive PRD — high-confidence answer with linked requirements panel](ai_trust_layer/screenshots/p1_interactive_prd.png)
+Prefer a live URL? Deploy it free to Streamlit Community Cloud in a few clicks — full steps in [DEPLOY.md](DEPLOY.md). A GitHub icon in the top-right of the app links back to the source repository.
 
 ---
 
@@ -83,22 +78,19 @@ Bulletproof Demo Mode (MOCK_LLM_MODE toggle)
 
 ---
 
-## 🎬 Demo
+## 🎬 What you'll see
 
 ![Progressive disclosure — expanded detail view](ai_trust_layer/screenshots/p0_medium_expanded.png)
 
 ![Admin Dashboard (full)](ai_trust_layer/screenshots/p1_admin_full.png)
 
-**3-minute demo video** — real walkthrough with English subtitles (recorded by driving the live Streamlit app):
+Explore three confidence scenarios via the example chips: high-confidence answers with visible sources, a low-confidence alert telling you what to verify, and progressive disclosure of technical detail on demand. The **Admin** button opens the trust-health monitoring dashboard.
 
-<video src="ai_trust_layer/videos/ai_trust_layer_demo.mp4" controls width="100%" poster="ai_trust_layer/screenshots/p0_high_expanded.png"></video>
+---
 
-**Try it yourself:**
-```bash
-pip install -r requirements.txt
-cp .env.example .env  # Set MOCK_LLM_MODE=true for offline demo
-streamlit run app.py
-```
+## ☁️ Deploy to the Cloud
+
+This repository is a self-contained, interactive portfolio prototype on Streamlit Community Cloud (free). It runs the real AI Trust Layer demo offline (no API key needed) and links back to the full design documentation on GitHub. Full instructions are in [DEPLOY.md](DEPLOY.md) — in short: push to GitHub, connect the repo at streamlit.io/cloud with entry `ai_trust_layer/app.py`, Python 3.12, and no secrets required (`MOCK_LLM_MODE` defaults to `true`).
 
 ---
 

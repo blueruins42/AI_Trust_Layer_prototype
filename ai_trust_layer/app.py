@@ -10,16 +10,12 @@ Run: streamlit run app.py
 import streamlit as st
 from frontend import render_frontend
 from admin import render_admin
-from prd_panel import render_prd_panel
 from interaction_log import init_log, InteractionLogEntry
 from models import ConfidenceLevel
 from datetime import datetime
 
 # Public source repository for this prototype.
-# REPLACE <YOUR_GITHUB_USERNAME> with your GitHub handle before deploying.
-# Streamlit Community Cloud derives the app URL from the repo name:
-#   repo "ai_trust_layer_prototype" -> https://ai-trust-layer-prototype.streamlit.app
-REPO_URL = "https://github.com/<YOUR_GITHUB_USERNAME>/ai_trust_layer_prototype"
+REPO_URL = "https://github.com/blueruins42/AI_Trust_Layer_prototype"
 
 
 def init_session_state():
@@ -32,14 +28,6 @@ def init_session_state():
         st.session_state["view_mode"] = "front"
     if "doc_view" not in st.session_state:
         st.session_state["doc_view"] = None
-
-    # --- Interactive PRD panel state ---
-    if "prd_open" not in st.session_state:
-        st.session_state["prd_open"] = False
-    if "_prd_focus" not in st.session_state:
-        st.session_state["_prd_focus"] = None
-    if "_prd_section" not in st.session_state:
-        st.session_state["_prd_section"] = "overview"
 
     # --- Current response ---
     if "current_response" not in st.session_state:
@@ -163,9 +151,8 @@ def main():
 
     init_session_state()
 
-    # Top navigation bar (design-system consistent — small SVG shield + wordmark + admin pill)
-    # Top navigation bar: logo | PRD toggle | GitHub icon | Admin/Frontend switch
-    nav_left, nav_prd, nav_github, nav_right = st.columns([3, 0.8, 0.5, 1])
+    # Top navigation bar: logo | GitHub icon | Admin/Frontend switch
+    nav_left, nav_github, nav_right = st.columns([3, 0.5, 1])
 
     with nav_left:
         st.markdown(
@@ -178,12 +165,6 @@ def main():
             '</div>',
             unsafe_allow_html=True,
         )
-
-    with nav_prd:
-        label = "PRD ▸" if not st.session_state.get("prd_open") else "PRD ◂"
-        if st.button(label, key="prd_toggle", type="secondary", use_container_width=True):
-            st.session_state["prd_open"] = not st.session_state.get("prd_open", False)
-            st.rerun()
 
     with nav_github:
         st.markdown(
@@ -214,21 +195,11 @@ def main():
 
     st.divider()
 
-    # Routing - split into app + PRD panel when the PRD is open; full-width otherwise.
-    if st.session_state.get("prd_open"):
-        app_col, prd_col = st.columns([2.5, 1])
-        with app_col:
-            if st.session_state["view_mode"] == "front":
-                render_frontend()
-            else:
-                render_admin()
-        with prd_col:
-            render_prd_panel()
+    # Routing - the prototype always gets the full page width.
+    if st.session_state["view_mode"] == "front":
+        render_frontend()
     else:
-        if st.session_state["view_mode"] == "front":
-            render_frontend()
-        else:
-            render_admin()
+        render_admin()
 
 
 if __name__ == "__main__":

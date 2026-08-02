@@ -142,11 +142,7 @@ def render_frontend():
         for i, (sid, query) in enumerate(SCENARIO_QUERIES.items()):
             with chip_cols[i]:
                 if st.button(query, key=f"chip_{sid}", use_container_width=True):
-                    # Two-way link: clicking a prototype chip highlights the matching
-                    # PRD section, opens the panel if closed, and runs the scenario.
-                    st.session_state["_prd_focus"] = sid
-                    st.session_state["prd_open"] = True
-                    st.session_state["_prd_section"] = "solution"
+                    # Quick-run a confidence scenario on the prototype.
                     _handle_query(query)
                     st.rerun()
 
@@ -226,8 +222,7 @@ def render_frontend():
 
 
 # Scenario id -> example query that triggers the matching mock response
-# (see llm_api.py MOCK_QUERY_MAP). Keys must match the confidence ids used
-# for PRD focus highlighting in prd_panel.py.
+# (see llm_api.py MOCK_QUERY_MAP).
 SCENARIO_QUERIES: dict[str, str] = {
     "high": "What signaling system does Project XX use?",
     "medium": "ZDJ-200 switch machine parameters",
