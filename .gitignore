@@ -1,0 +1,62 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# --- Virtual environments (never commit the 387MB venv) ---
+.venv/
+venv/
+env/
+
+# --- Secrets & local config ---
+.env
+.env.*
+.streamlit/secrets.toml
+
+# --- WorkBuddy internal state ---
+.workbuddy/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+*.session
+
+# --- Screenshots: keep only the 8 curated demo assets in the repo ---
+ai_trust_layer/screenshots/*.png
+!ai_trust_layer/screenshots/new_01_home_onboarding.png
+!ai_trust_layer/screenshots/new_02_low_confidence_alert.png
+!ai_trust_layer/screenshots/p0_high_collapsed.png
+!ai_trust_layer/screenshots/p0_high_expanded.png
+!ai_trust_layer/screenshots/p0_medium_expanded.png
+!ai_trust_layer/screenshots/p0_low.png
+!ai_trust_layer/screenshots/p1_admin_full.png
+!ai_trust_layer/screenshots/p1_interactive_prd.png
+
+# --- Demo videos: never auto-commit placeholders; added explicitly per release ---
+ai_trust_layer/videos/
+
+# --- Local capture utilities (kept on disk, not part of the public portfolio) ---
+ai_trust_layer/capture_readme_shots.py
+ai_trust_layer/record_demo.py
+ai_trust_layer/_debug_expander.py
+ai_trust_layer/_record_tmp/
+DEMO_WALKTHROUGH.md
+
+# --- Deferred docs: being revised, excluded from the public repo until re-added ---
+01_PRD_Step1_Problem_Definition_EN.md
+02_PRD_Step2_User_Personas_EN.md
+03_PRD_Step3_Product_Vision_EN.md
+04_PRD_Step4_Functional_Specs_EN.md
+05_PRD_Step5_Technical_Architecture_EN.md
+06_PRD_Step6_Portfolio_Scope_EN.md
+08_Design_Implementation_Notes_EN.md
+09_Development_Changelog.md
+
+# --- Local verification venvs (never commit; hundreds of MB) ---
+venv2/
+venv313/
+
+# --- Design PRD docs already live on the GitHub repo; keep them out of the code repo ---
+0[1-5]_PRD_*.md
