@@ -146,6 +146,7 @@ def render_frontend():
                     # PRD section, opens the panel if closed, and runs the scenario.
                     st.session_state["_prd_focus"] = sid
                     st.session_state["prd_open"] = True
+                    st.session_state["_prd_section"] = "solution"
                     _handle_query(query)
                     st.rerun()
 

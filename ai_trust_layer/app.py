@@ -38,6 +38,8 @@ def init_session_state():
         st.session_state["prd_open"] = False
     if "_prd_focus" not in st.session_state:
         st.session_state["_prd_focus"] = None
+    if "_prd_section" not in st.session_state:
+        st.session_state["_prd_section"] = "overview"
 
     # --- Current response ---
     if "current_response" not in st.session_state:

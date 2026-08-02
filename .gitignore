@@ -53,3 +53,10 @@ DEMO_WALKTHROUGH.md
 06_PRD_Step6_Portfolio_Scope_EN.md
 08_Design_Implementation_Notes_EN.md
 09_Development_Changelog.md
+
+# --- Local verification venvs (never commit; hundreds of MB) ---
+venv2/
+venv313/
+
+# --- Design PRD docs already live on the GitHub repo; keep them out of the code repo ---
+0[1-5]_PRD_*.md
