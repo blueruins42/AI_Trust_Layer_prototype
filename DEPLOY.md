@@ -4,6 +4,8 @@ This repository runs as a **single, self-contained interactive portfolio prototy
 
 **Live URL:** [aitrustlayerprototype-202608.streamlit.app](https://aitrustlayerprototype-202608.streamlit.app/)
 
+**Static mirror (GitHub Pages, no setup required):** [blueruins42.github.io/AI_Trust_Layer_prototype](https://blueruins42.github.io/AI_Trust_Layer_prototype/) — a fully interactive HTML build covering all four answer states, the Admin dashboard, and the document-verification views. Useful when the Streamlit app is unavailable.
+
 ## What a reviewer gets in one URL
 - **Live demo** — the real AI Trust Layer prototype, running offline in `MOCK_LLM_MODE`.
 - **Portfolio** — problem → solution → principles → decisions, presented as a coherent story rather than a pile of features.

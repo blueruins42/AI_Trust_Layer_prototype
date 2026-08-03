@@ -22,6 +22,16 @@ Prefer a live URL? Deploy it free to Streamlit Community Cloud in a few clicks �
 
 ---
 
+## 🌐 Live Demo (Static Mirror)
+
+No setup needed — a fully interactive **static mirror** of the prototype is hosted on GitHub Pages and runs in any browser. It covers all four answer states (High / Medium / Low / No-match), the Admin dashboard, and the document-verification views:
+
+**▶ https://blueruins42.github.io/AI_Trust_Layer_prototype/**
+
+This mirror is kept in sync with the Streamlit version above and is the fastest way to review the complete interaction flow.
+
+---
+
 ## 🎯 The Problem
 
 Enterprise RAG (Retrieval-Augmented Generation) systems give confident-sounding answers. But for the people who actually act on them — rail-transit low voltage system integrators, operations managers — **there is no signal telling them *when* to trust the answer and *when* to double-check.**
