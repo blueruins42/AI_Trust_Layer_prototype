@@ -441,7 +441,14 @@ def render_details_expander(response: TrustLayerResponse):
         update_details_viewed()
 
         # F1: Source annotations
-        render_sources(response.sources)
+        # Tell render_sources whether a source-document button already exists in
+        # the verification advice (low/medium). High confidence has none, so
+        # render_sources will add its own Document Verification View button.
+        has_doc_link = bool(
+            response.verification_advice
+            and getattr(response.verification_advice, "action_link", None)
+        )
+        render_sources(response.sources, has_doc_action_link=has_doc_link)
 
         # F3: Jargon glossary (independent expander, always collapsed by default)
         if response.jargon_glossary:
@@ -456,8 +463,15 @@ def render_details_expander(response: TrustLayerResponse):
 
 # -- F1: Source Annotations -------------------------------------
 
-def render_sources(sources: list):
-    """F1 Source annotation rendering: sorted by match_score descending, each shows doc name + page + match score + excerpt"""
+def render_sources(sources: list, has_doc_action_link: bool = False):
+    """F1 Source annotation rendering: sorted by match_score descending, each shows doc name + page + match score + excerpt.
+
+    For answers that do NOT already surface a source-document button via the
+    verification advice (i.e. high confidence), a direct "View source document"
+    button is appended so the Document Verification View is reachable. This is
+    the F1 Source Transparency principle and matches the static mirror. Low and
+    medium keep their own verification-advice action link untouched.
+    """
     if not sources:
         st.info("No specific documents referenced in this answer")
         return
@@ -485,6 +499,20 @@ def render_sources(sources: list):
                 st.markdown(f"> {src.excerpt}")
 
         st.markdown("---")
+
+    # F1 Document Verification View — only when the verification advice did NOT
+    # already provide a source-document button (the high-confidence case). Jump
+    # to the most relevant referenced document (top source by match score).
+    if not has_doc_action_link and sorted_sources:
+        top = sorted_sources[0]
+        if top.page_number > 0:
+            label = f"View source document page {top.page_number}"
+            if st.button(f"{label} ->", key=f"source_doc_link_{rid}"):
+                st.session_state["doc_view"] = {
+                    "doc_name": top.document_name,
+                    "page": top.page_number,
+                }
+                st.rerun()
 
 
 # -- F3: Jargon Glossary ----------------------------------------
