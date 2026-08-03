@@ -147,7 +147,7 @@ ai_trust_layer/
 
 ## 🎓 Academic Context
 
-This prototype is a student design project exploring the HCI core topics of **Explainable AI (XAI)** and **Trust Calibration** in enterprise RAG systems — submitted as part of an MSc in Interaction and Experience Design application.
+This prototype is a student design project exploring the topics of **Explainable AI (XAI)** and **Trust Calibration** in enterprise RAG systems.
 
 ---
 
