@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preflight</title>
+    <style id="theme-vars">
+:root {
+  /* ── Brand palette: trustworthy enterprise blue ── */
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-popover: #ffffff;
+  --atl-popover-foreground: #0f172a;
+  --atl-primary: #1d4ed8;
+  --atl-primary-foreground: #ffffff;
+  --atl-primary-50: #eff6ff;
+  --atl-primary-100: #dbeafe;
+  --atl-primary-200: #bfdbfe;
+  --atl-primary-300: #93c5fd;
+  --atl-primary-400: #60a5fa;
+  --atl-primary-500: #3b82f6;
+  --atl-primary-600: #2563eb;
+  --atl-primary-700: #1d4ed8;
+  --atl-primary-800: #1e40af;
+  --atl-primary-900: #1e3a8a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+  --atl-input: #e2e8f0;
+  --atl-ring: #3b82f6;
+  --atl-radius-sm: 4px;
+  --atl-radius-md: 8px;
+  --atl-radius-lg: 12px;
+  --atl-radius-xl: 16px;
+  --atl-radius-full: 9999px;
+
+  /* ── Neutral scale ── */
+  --atl-neutral-50: #f8fafc;
+  --atl-neutral-100: #f1f5f9;
+  --atl-neutral-200: #e2e8f0;
+  --atl-neutral-300: #cbd5e1;
+  --atl-neutral-400: #94a3b8;
+  --atl-neutral-500: #64748b;
+  --atl-neutral-600: #475569;
+  --atl-neutral-700: #334155;
+  --atl-neutral-800: #1e293b;
+  --atl-neutral-900: #0f172a;
+
+  /* ── Semantic status colors ── */
+  --atl-state-success: #16a34a;
+  --atl-state-success-bg: #f0fdf4;
+  --atl-state-warning: #d97706;
+  --atl-state-warning-bg: #fffbeb;
+  --atl-state-error: #dc2626;
+  --atl-state-error-bg: #fef2f2;
+  --atl-state-info: #2563eb;
+  --atl-state-info-bg: #eff6ff;
+
+  /* ── Typography ── */
+  --atl-font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --atl-font-mono: "IBM Plex Mono", "SF Mono", "Menlo", "Consolas", monospace;
+
+  /* ── Spacing ── */
+  --atl-space-1: 4px;
+  --atl-space-2: 8px;
+  --atl-space-3: 12px;
+  --atl-space-4: 16px;
+  --atl-space-5: 24px;
+  --atl-space-6: 32px;
+  --atl-space-7: 48px;
+  --atl-space-8: 64px;
+  --atl-space-9: 96px;
+
+  /* ── Shadows ── */
+  --atl-shadow-1: 0 1px 2px 0 rgba(15, 23, 42, 0.05), 0 1px 1px 0 rgba(15, 23, 42, 0.03);
+  --atl-shadow-2: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --atl-shadow-3: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+
+/* ── Light/dark semantic aliases for head contract ── */
+.light {
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+}
+
+/* ── Base typography ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--atl-font-sans);
+  background: var(--atl-background);
+  color: var(--atl-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+a {
+  color: var(--atl-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ── Utility classes ── */
+.atl-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--atl-space-5);
+}
+
+.atl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--atl-background);
+    --color-foreground: var(--atl-foreground);
+    --color-card: var(--atl-card);
+    --color-card-foreground: var(--atl-card-foreground);
+    --color-popover: var(--atl-popover);
+    --color-popover-foreground: var(--atl-popover-foreground);
+    --color-primary: var(--atl-primary);
+    --color-primary-foreground: var(--atl-primary-foreground);
+    --color-muted: var(--atl-muted);
+    --color-muted-foreground: var(--atl-muted-foreground);
+    --color-border: var(--atl-border);
+    --color-input: var(--atl-input);
+    --color-ring: var(--atl-ring);
+    --radius-sm: var(--atl-radius-sm);
+    --radius-md: var(--atl-radius-md);
+    --radius-lg: var(--atl-radius-lg);
+    --radius-xl: var(--atl-radius-xl);
+  }
+  @layer base {
+    body { background: var(--atl-background); color: var(--atl-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--atl-background); }
+      .text-background { color: var(--atl-background); }
+      .border-background { border-color: var(--atl-background); }
+      .ring-background { --tw-ring-color: var(--atl-background); }
+      .bg-foreground { background-color: var(--atl-foreground); }
+      .text-foreground { color: var(--atl-foreground); }
+      .border-foreground { border-color: var(--atl-foreground); }
+      .ring-foreground { --tw-ring-color: var(--atl-foreground); }
+      .bg-card { background-color: var(--atl-card); }
+      .text-card { color: var(--atl-card); }
+      .border-card { border-color: var(--atl-card); }
+      .ring-card { --tw-ring-color: var(--atl-card); }
+      .bg-card-foreground { background-color: var(--atl-card-foreground); }
+      .text-card-foreground { color: var(--atl-card-foreground); }
+      .border-card-foreground { border-color: var(--atl-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--atl-card-foreground); }
+      .bg-popover { background-color: var(--atl-popover); }
+      .text-popover { color: var(--atl-popover); }
+      .border-popover { border-color: var(--atl-popover); }
+      .ring-popover { --tw-ring-color: var(--atl-popover); }
+      .bg-popover-foreground { background-color: var(--atl-popover-foreground); }
+      .text-popover-foreground { color: var(--atl-popover-foreground); }
+      .border-popover-foreground { border-color: var(--atl-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--atl-popover-foreground); }
+      .bg-primary { background-color: var(--atl-primary); }
+      .text-primary { color: var(--atl-primary); }
+      .border-primary { border-color: var(--atl-primary); }
+      .ring-primary { --tw-ring-color: var(--atl-primary); }
+      .bg-primary-foreground { background-color: var(--atl-primary-foreground); }
+      .text-primary-foreground { color: var(--atl-primary-foreground); }
+      .border-primary-foreground { border-color: var(--atl-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--atl-primary-foreground); }
+      .bg-muted { background-color: var(--atl-muted); }
+      .text-muted { color: var(--atl-muted); }
+      .border-muted { border-color: var(--atl-muted); }
+      .ring-muted { --tw-ring-color: var(--atl-muted); }
+      .bg-muted-foreground { background-color: var(--atl-muted-foreground); }
+      .text-muted-foreground { color: var(--atl-muted-foreground); }
+      .border-muted-foreground { border-color: var(--atl-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--atl-muted-foreground); }
+      .bg-border { background-color: var(--atl-border); }
+      .text-border { color: var(--atl-border); }
+      .border-border { border-color: var(--atl-border); }
+      .ring-border { --tw-ring-color: var(--atl-border); }
+      .bg-input { background-color: var(--atl-input); }
+      .text-input { color: var(--atl-input); }
+      .border-input { border-color: var(--atl-input); }
+      .ring-input { --tw-ring-color: var(--atl-input); }
+      .bg-ring { background-color: var(--atl-ring); }
+      .text-ring { color: var(--atl-ring); }
+      .border-ring { border-color: var(--atl-ring); }
+      .ring-ring { --tw-ring-color: var(--atl-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

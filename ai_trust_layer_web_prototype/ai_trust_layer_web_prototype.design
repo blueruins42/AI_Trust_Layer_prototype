@@ -1,0 +1,360 @@
+{
+  "data": [
+    {
+      "id": "page-index",
+      "title": "项目介绍",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1970,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-7ccba732",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/index.html",
+        "interactions": [
+          {
+            "domId": "cta-prototype",
+            "label": "进入交互原型",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "cta-admin",
+            "label": "查看管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-idle",
+      "title": "原型 - 空闲态",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-8d1c913b",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-idle.html",
+        "interactions": [
+          {
+            "domId": "cta-search",
+            "label": "提交查询",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-loading"
+          },
+          {
+            "domId": "auto-high",
+            "label": "高置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-high"
+          },
+          {
+            "domId": "auto-medium",
+            "label": "中置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-medium"
+          },
+          {
+            "domId": "auto-low",
+            "label": "低置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-low"
+          },
+          {
+            "targetPageId": "page-index",
+            "domId": "nav-intro",
+            "label": "返回项目介绍",
+            "hideEdge": true
+          },
+          {
+            "domId": "nav-admin",
+            "label": "切换到管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-loading",
+      "title": "原型 - 加载中",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-258a74c0",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-loading.html",
+        "interactions": [
+          {
+            "domId": "auto-high",
+            "label": "高置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-high"
+          },
+          {
+            "domId": "auto-medium",
+            "label": "中置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-medium"
+          },
+          {
+            "domId": "auto-low",
+            "label": "低置信度结果",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-low"
+          },
+          {
+            "domId": "nav-prototype",
+            "label": "返回原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-high",
+      "title": "原型 - 高置信度",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-fb57927d",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-high.html",
+        "interactions": [
+          {
+            "domId": "link-document",
+            "label": "查看文档",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-document"
+          },
+          {
+            "domId": "nav-prototype",
+            "label": "返回原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "nav-admin",
+            "label": "切换到管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-medium",
+      "title": "原型 - 中置信度",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-5098c90f",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-medium.html",
+        "interactions": [
+          {
+            "domId": "link-document",
+            "label": "查看文档",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-document"
+          },
+          {
+            "domId": "nav-prototype",
+            "label": "返回原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "nav-admin",
+            "label": "切换到管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-low",
+      "title": "原型 - 低置信度",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-f45ef7ea",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-low.html",
+        "interactions": [
+          {
+            "domId": "link-document",
+            "label": "查看文档",
+            "hideEdge": false,
+            "targetPageId": "page-prototype-document"
+          },
+          {
+            "domId": "nav-prototype",
+            "label": "返回原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "nav-admin",
+            "label": "切换到管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-document",
+      "title": "原型 - 文档视图",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 1546,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-943d8392",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-document.html",
+        "interactions": [
+          {
+            "domId": "back-previous",
+            "label": "返回上一页",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-low"
+          },
+          {
+            "domId": "nav-prototype",
+            "label": "返回原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "nav-admin",
+            "label": "切换到管理后台",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-admin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-prototype-admin",
+      "title": "原型 - 管理后台",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1754062800000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 941,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-916e7c54",
+          "measuredAt": 1785651382654
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/prototype-admin.html",
+        "interactions": [
+          {
+            "domId": "nav-prototype",
+            "label": "返回前端原型",
+            "hideEdge": true,
+            "targetPageId": "page-prototype-idle"
+          },
+          {
+            "domId": "nav-intro",
+            "label": "返回项目介绍",
+            "hideEdge": true,
+            "targetPageId": "page-index"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "AI Trust Layer 交互原型",
+    "designLibrary": null,
+    "visualEditorEnabled": true,
+    "showEdge": false
+  }
+}

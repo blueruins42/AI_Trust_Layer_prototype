@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trust Layer — 项目介绍</title>
+    <style id="theme-vars">
+:root {
+  /* ── Brand palette: trustworthy enterprise blue ── */
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-popover: #ffffff;
+  --atl-popover-foreground: #0f172a;
+  --atl-primary: #1d4ed8;
+  --atl-primary-foreground: #ffffff;
+  --atl-primary-50: #eff6ff;
+  --atl-primary-100: #dbeafe;
+  --atl-primary-200: #bfdbfe;
+  --atl-primary-300: #93c5fd;
+  --atl-primary-400: #60a5fa;
+  --atl-primary-500: #3b82f6;
+  --atl-primary-600: #2563eb;
+  --atl-primary-700: #1d4ed8;
+  --atl-primary-800: #1e40af;
+  --atl-primary-900: #1e3a8a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+  --atl-input: #e2e8f0;
+  --atl-ring: #3b82f6;
+  --atl-radius-sm: 4px;
+  --atl-radius-md: 8px;
+  --atl-radius-lg: 12px;
+  --atl-radius-xl: 16px;
+  --atl-radius-full: 9999px;
+
+  /* ── Neutral scale ── */
+  --atl-neutral-50: #f8fafc;
+  --atl-neutral-100: #f1f5f9;
+  --atl-neutral-200: #e2e8f0;
+  --atl-neutral-300: #cbd5e1;
+  --atl-neutral-400: #94a3b8;
+  --atl-neutral-500: #64748b;
+  --atl-neutral-600: #475569;
+  --atl-neutral-700: #334155;
+  --atl-neutral-800: #1e293b;
+  --atl-neutral-900: #0f172a;
+
+  /* ── Semantic status colors ── */
+  --atl-state-success: #16a34a;
+  --atl-state-success-bg: #f0fdf4;
+  --atl-state-warning: #d97706;
+  --atl-state-warning-bg: #fffbeb;
+  --atl-state-error: #dc2626;
+  --atl-state-error-bg: #fef2f2;
+  --atl-state-info: #2563eb;
+  --atl-state-info-bg: #eff6ff;
+
+  /* ── Typography ── */
+  --atl-font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --atl-font-mono: "IBM Plex Mono", "SF Mono", "Menlo", "Consolas", monospace;
+
+  /* ── Spacing ── */
+  --atl-space-1: 4px;
+  --atl-space-2: 8px;
+  --atl-space-3: 12px;
+  --atl-space-4: 16px;
+  --atl-space-5: 24px;
+  --atl-space-6: 32px;
+  --atl-space-7: 48px;
+  --atl-space-8: 64px;
+  --atl-space-9: 96px;
+
+  /* ── Shadows ── */
+  --atl-shadow-1: 0 1px 2px 0 rgba(15, 23, 42, 0.05), 0 1px 1px 0 rgba(15, 23, 42, 0.03);
+  --atl-shadow-2: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --atl-shadow-3: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+
+/* ── Light/dark semantic aliases for head contract ── */
+.light {
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+}
+
+/* ── Base typography ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--atl-font-sans);
+  background: var(--atl-background);
+  color: var(--atl-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+a {
+  color: var(--atl-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ── Utility classes ── */
+.atl-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--atl-space-5);
+}
+
+.atl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--atl-background);
+    --color-foreground: var(--atl-foreground);
+    --color-card: var(--atl-card);
+    --color-card-foreground: var(--atl-card-foreground);
+    --color-popover: var(--atl-popover);
+    --color-popover-foreground: var(--atl-popover-foreground);
+    --color-primary: var(--atl-primary);
+    --color-primary-foreground: var(--atl-primary-foreground);
+    --color-muted: var(--atl-muted);
+    --color-muted-foreground: var(--atl-muted-foreground);
+    --color-border: var(--atl-border);
+    --color-input: var(--atl-input);
+    --color-ring: var(--atl-ring);
+    --radius-sm: var(--atl-radius-sm);
+    --radius-md: var(--atl-radius-md);
+    --radius-lg: var(--atl-radius-lg);
+    --radius-xl: var(--atl-radius-xl);
+  }
+  @layer base {
+    body { background: var(--atl-background); color: var(--atl-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--atl-background); }
+      .text-background { color: var(--atl-background); }
+      .border-background { border-color: var(--atl-background); }
+      .ring-background { --tw-ring-color: var(--atl-background); }
+      .bg-foreground { background-color: var(--atl-foreground); }
+      .text-foreground { color: var(--atl-foreground); }
+      .border-foreground { border-color: var(--atl-foreground); }
+      .ring-foreground { --tw-ring-color: var(--atl-foreground); }
+      .bg-card { background-color: var(--atl-card); }
+      .text-card { color: var(--atl-card); }
+      .border-card { border-color: var(--atl-card); }
+      .ring-card { --tw-ring-color: var(--atl-card); }
+      .bg-card-foreground { background-color: var(--atl-card-foreground); }
+      .text-card-foreground { color: var(--atl-card-foreground); }
+      .border-card-foreground { border-color: var(--atl-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--atl-card-foreground); }
+      .bg-popover { background-color: var(--atl-popover); }
+      .text-popover { color: var(--atl-popover); }
+      .border-popover { border-color: var(--atl-popover); }
+      .ring-popover { --tw-ring-color: var(--atl-popover); }
+      .bg-popover-foreground { background-color: var(--atl-popover-foreground); }
+      .text-popover-foreground { color: var(--atl-popover-foreground); }
+      .border-popover-foreground { border-color: var(--atl-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--atl-popover-foreground); }
+      .bg-primary { background-color: var(--atl-primary); }
+      .text-primary { color: var(--atl-primary); }
+      .border-primary { border-color: var(--atl-primary); }
+      .ring-primary { --tw-ring-color: var(--atl-primary); }
+      .bg-primary-foreground { background-color: var(--atl-primary-foreground); }
+      .text-primary-foreground { color: var(--atl-primary-foreground); }
+      .border-primary-foreground { border-color: var(--atl-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--atl-primary-foreground); }
+      .bg-muted { background-color: var(--atl-muted); }
+      .text-muted { color: var(--atl-muted); }
+      .border-muted { border-color: var(--atl-muted); }
+      .ring-muted { --tw-ring-color: var(--atl-muted); }
+      .bg-muted-foreground { background-color: var(--atl-muted-foreground); }
+      .text-muted-foreground { color: var(--atl-muted-foreground); }
+      .border-muted-foreground { border-color: var(--atl-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--atl-muted-foreground); }
+      .bg-border { background-color: var(--atl-border); }
+      .text-border { color: var(--atl-border); }
+      .border-border { border-color: var(--atl-border); }
+      .ring-border { --tw-ring-color: var(--atl-border); }
+      .bg-input { background-color: var(--atl-input); }
+      .text-input { color: var(--atl-input); }
+      .border-input { border-color: var(--atl-input); }
+      .ring-input { --tw-ring-color: var(--atl-input); }
+      .bg-ring { background-color: var(--atl-ring); }
+      .text-ring { color: var(--atl-ring); }
+      .border-ring { border-color: var(--atl-ring); }
+      .ring-ring { --tw-ring-color: var(--atl-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+  <header class="global-header sticky top-0 z-50 border-b border-[var(--atl-border)] bg-[var(--atl-background)]/95 backdrop-blur">
+    <div class="atl-container flex h-16 items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 text-[var(--atl-foreground)]" data-dom-id="nav-intro">
+        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--atl-primary)] text-white">
+          <i data-lucide="shield-check" class="h-5 w-5"></i>
+        </div>
+        <span class="text-lg font-semibold tracking-tight">AI Trust Layer</span>
+      </a>
+      <nav class="hidden items-center gap-1 md:flex">
+        <a href="index.html" class="nav-item" data-nav-key="intro" data-active="true" data-dom-id="nav-intro">项目介绍</a>
+        <a href="prototype-idle.html" class="nav-item" data-nav-key="prototype" data-dom-id="nav-prototype">交互原型</a>
+        <a href="prototype-admin.html" class="nav-item" data-nav-key="admin" data-dom-id="nav-admin">管理后台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero-gradient py-20 lg:py-28">
+      <div class="atl-container text-center">
+        <div class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--atl-primary-200)] bg-[var(--atl-primary-50)] px-4 py-1.5 text-sm font-medium text-[var(--atl-primary)]">
+          <i data-lucide="sparkles" class="h-4 w-4"></i>
+          企业 RAG 系统的可信交互层
+        </div>
+        <h1 class="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-[var(--atl-foreground)] lg:text-5xl">
+          让非技术用户也能<br><span class="text-[var(--atl-primary)]">理解、信任并有效使用</span> AI 答案
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-[var(--atl-muted-foreground)]">
+          AI Trust Layer 不改变模型能力，而是重新设计 AI 输出的「面孔」——通过来源透明、置信度可视化、术语翻译和验证建议，弥合技术与业务之间的信任鸿沟。
+        </p>
+        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="prototype-idle.html" class="inline-flex h-11 items-center gap-2 rounded-lg bg-[var(--atl-primary)] px-6 text-sm font-semibold text-white shadow-sm hover:bg-[var(--atl-primary-700)]" data-dom-id="cta-prototype">
+            <i data-lucide="mouse-pointer-click" class="h-4 w-4"></i> 进入交互原型
+          </a>
+          <a href="prototype-admin.html" class="inline-flex h-11 items-center gap-2 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] px-6 text-sm font-semibold text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]" data-dom-id="cta-admin">
+            <i data-lucide="layout-dashboard" class="h-4 w-4"></i> 查看管理后台
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 lg:py-20">
+      <div class="atl-container">
+        <div class="mb-12 text-center">
+          <h2 class="text-2xl font-bold text-[var(--atl-foreground)]">核心问题</h2>
+          <p class="mt-2 text-[var(--atl-muted-foreground)]">技术完美的系统，在用户侧却失败了</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div class="principle-card">
+            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--atl-state-error-bg)] text-[var(--atl-state-error)]">
+              <i data-lucide="eye-off" class="h-5 w-5"></i>
+            </div>
+            <h3 class="font-semibold text-[var(--atl-foreground)]">来源不透明</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">用户不知道答案来自哪份文档，无法验证。</p>
+          </div>
+          <div class="principle-card">
+            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--atl-state-warning-bg)] text-[var(--atl-state-warning)]">
+              <i data-lucide="gauge" class="h-5 w-5"></i>
+            </div>
+            <h3 class="font-semibold text-[var(--atl-foreground)]">置信度不透明</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">所有答案以同样的确定性呈现。</p>
+          </div>
+          <div class="principle-card">
+            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--atl-state-info-bg)] text-[var(--atl-state-info)]">
+              <i data-lucide="languages" class="h-5 w-5"></i>
+            </div>
+            <h3 class="font-semibold text-[var(--atl-foreground)]">术语障碍</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">工程术语让非技术用户无法理解。</p>
+          </div>
+          <div class="principle-card">
+            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--atl-state-success-bg)] text-[var(--atl-state-success)]">
+              <i data-lucide="scale" class="h-5 w-5"></i>
+            </div>
+            <h3 class="font-semibold text-[var(--atl-foreground)]">信任校准缺失</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">系统不告诉用户何时该自行核实。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-[var(--atl-border)] bg-[var(--atl-neutral-50)] py-16 lg:py-20">
+      <div class="atl-container">
+        <div class="mb-12 text-center">
+          <h2 class="text-2xl font-bold text-[var(--atl-foreground)]">五条设计原则</h2>
+          <p class="mt-2 text-[var(--atl-muted-foreground)]">来自 PRD Step 3，指导所有设计决策</p>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-3">
+          <div class="principle-card">
+            <span class="feature-pill mb-3">P1</span>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">Progressive Disclosure</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">默认最小化：只显示答案 + 置信度标签；来源、术语、验证建议按需展开。低置信度是唯一的主动提示例外。</p>
+          </div>
+          <div class="principle-card">
+            <span class="feature-pill mb-3">P2</span>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">Calibration, Not Replacement</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">高置信度可直接使用，中置信度建议核对，低置信度仅供参考。系统提供决策依据，但不替用户决定。</p>
+          </div>
+          <div class="principle-card">
+            <span class="feature-pill mb-3">P3</span>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">Plain Language First</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">术语解释默认显示大白话，正式定义点击展开。所有面向用户的文案通过「38 岁投标专员可读性」测试。</p>
+          </div>
+          <div class="principle-card">
+            <span class="feature-pill mb-3">P4</span>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">Structured Data Contract</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">前后端通过 JSON Schema 通信，answer/sources/jargon/verification/metadata 按字段渲染，无需 NLP 解析。</p>
+          </div>
+          <div class="principle-card lg:col-span-2">
+            <span class="feature-pill mb-3">P5</span>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">Human-AI Co-evolution Loop</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">前端帮助用户用好 AI，后端 Admin Dashboard 让管理员看到「信任健康度」，持续优化 RAG 数据库和术语库。每一次「验证点击」都是系统改进的信号。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 lg:py-20">
+      <div class="atl-container">
+        <div class="mb-12 text-center">
+          <h2 class="text-2xl font-bold text-[var(--atl-foreground)]">MVP 功能</h2>
+          <p class="mt-2 text-[var(--atl-muted-foreground)]">原型已实现 PRD Step 2 优先级矩阵中的 P0/P1 核心功能</p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <a href="prototype-high.html" class="principle-card group">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">F1</span>
+              <i data-lucide="arrow-right" class="h-4 w-4 text-[var(--atl-muted-foreground)] group-hover:text-[var(--atl-primary)]"></i>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">来源标注</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">文档名、页码、匹配度、原文摘录，按需展开。</p>
+          </a>
+          <a href="prototype-high.html" class="principle-card group">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">F2</span>
+              <i data-lucide="arrow-right" class="h-4 w-4 text-[var(--atl-muted-foreground)] group-hover:text-[var(--atl-primary)]"></i>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">置信度指示 + 低置信警告</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">高/中/低三级标签，低置信度弹出非忽略警告横幅。</p>
+          </a>
+          <a href="prototype-high.html" class="principle-card group">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">F3</span>
+              <i data-lucide="arrow-right" class="h-4 w-4 text-[var(--atl-muted-foreground)] group-hover:text-[var(--atl-primary)]"></i>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">术语解释层</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">答案中的术语高亮，大白话优先，正式定义可展开。</p>
+          </a>
+          <a href="prototype-medium.html" class="principle-card group">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">F4</span>
+              <i data-lucide="arrow-right" class="h-4 w-4 text-[var(--atl-muted-foreground)] group-hover:text-[var(--atl-primary)]"></i>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">验证建议 + 动作链接</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">标记需人工核对字段，一键跳转原文档页。</p>
+          </a>
+          <a href="prototype-admin.html" class="principle-card group">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">F7</span>
+              <i data-lucide="arrow-right" class="h-4 w-4 text-[var(--atl-muted-foreground)] group-hover:text-[var(--atl-primary)]"></i>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">管理后台</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">Trust Health、低置信触发率、高频术语 Top 5。</p>
+          </a>
+          <div class="principle-card">
+            <div class="flex items-start justify-between">
+              <span class="feature-pill">DC / N1 / N2</span>
+            </div>
+            <h3 class="mt-3 font-semibold text-[var(--atl-foreground)]">数据契约 + 延迟 + 校验</h3>
+            <p class="mt-2 text-sm text-[var(--atl-muted-foreground)]">JSON Schema、渐进加载 ≤3s、Pydantic 校验降级。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="global-footer border-t border-[var(--atl-border)] bg-[var(--atl-muted)] py-8">
+    <div class="atl-container text-center text-sm text-[var(--atl-muted-foreground)]">
+      <p>AI Trust Layer — 面向企业 RAG 系统的可信交互层原型</p>
+      <p class="mt-1">PRD v2 · Progressive Disclosure · Calibration, Not Replacement · Plain Language First</p>
+    </div>
+  </footer>
+
+  <script>lucide.createIcons();</script>
+
+    <style>
+    .nav-item { @apply rounded-md px-3 py-2 text-sm font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)] hover:text-[var(--atl-foreground)]; }
+    .nav-item[data-active="true"] { @apply bg-[var(--atl-primary-50)] text-[var(--atl-primary)]; }
+    .hero-gradient { background: linear-gradient(135deg, var(--atl-primary-50) 0%, var(--atl-background) 60%); }
+    .principle-card { @apply rounded-xl border border-[var(--atl-border)] bg-[var(--atl-card)] p-6 transition-shadow; }
+    .principle-card:hover { box-shadow: var(--atl-shadow-2); }
+    .feature-pill { @apply inline-flex items-center rounded-full bg-[var(--atl-primary-50)] px-2.5 py-0.5 text-xs font-medium text-[var(--atl-primary)]; }
+  </style>
+</body>
+</html>

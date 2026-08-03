@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trust Layer — 交互原型 · 中置信度</title>
+    <style id="theme-vars">
+:root {
+  /* ── Brand palette: trustworthy enterprise blue ── */
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-popover: #ffffff;
+  --atl-popover-foreground: #0f172a;
+  --atl-primary: #1d4ed8;
+  --atl-primary-foreground: #ffffff;
+  --atl-primary-50: #eff6ff;
+  --atl-primary-100: #dbeafe;
+  --atl-primary-200: #bfdbfe;
+  --atl-primary-300: #93c5fd;
+  --atl-primary-400: #60a5fa;
+  --atl-primary-500: #3b82f6;
+  --atl-primary-600: #2563eb;
+  --atl-primary-700: #1d4ed8;
+  --atl-primary-800: #1e40af;
+  --atl-primary-900: #1e3a8a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+  --atl-input: #e2e8f0;
+  --atl-ring: #3b82f6;
+  --atl-radius-sm: 4px;
+  --atl-radius-md: 8px;
+  --atl-radius-lg: 12px;
+  --atl-radius-xl: 16px;
+  --atl-radius-full: 9999px;
+
+  /* ── Neutral scale ── */
+  --atl-neutral-50: #f8fafc;
+  --atl-neutral-100: #f1f5f9;
+  --atl-neutral-200: #e2e8f0;
+  --atl-neutral-300: #cbd5e1;
+  --atl-neutral-400: #94a3b8;
+  --atl-neutral-500: #64748b;
+  --atl-neutral-600: #475569;
+  --atl-neutral-700: #334155;
+  --atl-neutral-800: #1e293b;
+  --atl-neutral-900: #0f172a;
+
+  /* ── Semantic status colors ── */
+  --atl-state-success: #16a34a;
+  --atl-state-success-bg: #f0fdf4;
+  --atl-state-warning: #d97706;
+  --atl-state-warning-bg: #fffbeb;
+  --atl-state-error: #dc2626;
+  --atl-state-error-bg: #fef2f2;
+  --atl-state-info: #2563eb;
+  --atl-state-info-bg: #eff6ff;
+
+  /* ── Typography ── */
+  --atl-font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --atl-font-mono: "IBM Plex Mono", "SF Mono", "Menlo", "Consolas", monospace;
+
+  /* ── Spacing ── */
+  --atl-space-1: 4px;
+  --atl-space-2: 8px;
+  --atl-space-3: 12px;
+  --atl-space-4: 16px;
+  --atl-space-5: 24px;
+  --atl-space-6: 32px;
+  --atl-space-7: 48px;
+  --atl-space-8: 64px;
+  --atl-space-9: 96px;
+
+  /* ── Shadows ── */
+  --atl-shadow-1: 0 1px 2px 0 rgba(15, 23, 42, 0.05), 0 1px 1px 0 rgba(15, 23, 42, 0.03);
+  --atl-shadow-2: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --atl-shadow-3: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+
+/* ── Light/dark semantic aliases for head contract ── */
+.light {
+  --atl-background: #ffffff;
+  --atl-foreground: #0f172a;
+  --atl-card: #ffffff;
+  --atl-card-foreground: #0f172a;
+  --atl-muted: #f1f5f9;
+  --atl-muted-foreground: #64748b;
+  --atl-border: #e2e8f0;
+}
+
+/* ── Base typography ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--atl-font-sans);
+  background: var(--atl-background);
+  color: var(--atl-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+a {
+  color: var(--atl-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ── Utility classes ── */
+.atl-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--atl-space-5);
+}
+
+.atl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--atl-background);
+    --color-foreground: var(--atl-foreground);
+    --color-card: var(--atl-card);
+    --color-card-foreground: var(--atl-card-foreground);
+    --color-popover: var(--atl-popover);
+    --color-popover-foreground: var(--atl-popover-foreground);
+    --color-primary: var(--atl-primary);
+    --color-primary-foreground: var(--atl-primary-foreground);
+    --color-muted: var(--atl-muted);
+    --color-muted-foreground: var(--atl-muted-foreground);
+    --color-border: var(--atl-border);
+    --color-input: var(--atl-input);
+    --color-ring: var(--atl-ring);
+    --radius-sm: var(--atl-radius-sm);
+    --radius-md: var(--atl-radius-md);
+    --radius-lg: var(--atl-radius-lg);
+    --radius-xl: var(--atl-radius-xl);
+  }
+  @layer base {
+    body { background: var(--atl-background); color: var(--atl-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--atl-background); }
+      .text-background { color: var(--atl-background); }
+      .border-background { border-color: var(--atl-background); }
+      .ring-background { --tw-ring-color: var(--atl-background); }
+      .bg-foreground { background-color: var(--atl-foreground); }
+      .text-foreground { color: var(--atl-foreground); }
+      .border-foreground { border-color: var(--atl-foreground); }
+      .ring-foreground { --tw-ring-color: var(--atl-foreground); }
+      .bg-card { background-color: var(--atl-card); }
+      .text-card { color: var(--atl-card); }
+      .border-card { border-color: var(--atl-card); }
+      .ring-card { --tw-ring-color: var(--atl-card); }
+      .bg-card-foreground { background-color: var(--atl-card-foreground); }
+      .text-card-foreground { color: var(--atl-card-foreground); }
+      .border-card-foreground { border-color: var(--atl-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--atl-card-foreground); }
+      .bg-popover { background-color: var(--atl-popover); }
+      .text-popover { color: var(--atl-popover); }
+      .border-popover { border-color: var(--atl-popover); }
+      .ring-popover { --tw-ring-color: var(--atl-popover); }
+      .bg-popover-foreground { background-color: var(--atl-popover-foreground); }
+      .text-popover-foreground { color: var(--atl-popover-foreground); }
+      .border-popover-foreground { border-color: var(--atl-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--atl-popover-foreground); }
+      .bg-primary { background-color: var(--atl-primary); }
+      .text-primary { color: var(--atl-primary); }
+      .border-primary { border-color: var(--atl-primary); }
+      .ring-primary { --tw-ring-color: var(--atl-primary); }
+      .bg-primary-foreground { background-color: var(--atl-primary-foreground); }
+      .text-primary-foreground { color: var(--atl-primary-foreground); }
+      .border-primary-foreground { border-color: var(--atl-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--atl-primary-foreground); }
+      .bg-muted { background-color: var(--atl-muted); }
+      .text-muted { color: var(--atl-muted); }
+      .border-muted { border-color: var(--atl-muted); }
+      .ring-muted { --tw-ring-color: var(--atl-muted); }
+      .bg-muted-foreground { background-color: var(--atl-muted-foreground); }
+      .text-muted-foreground { color: var(--atl-muted-foreground); }
+      .border-muted-foreground { border-color: var(--atl-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--atl-muted-foreground); }
+      .bg-border { background-color: var(--atl-border); }
+      .text-border { color: var(--atl-border); }
+      .border-border { border-color: var(--atl-border); }
+      .ring-border { --tw-ring-color: var(--atl-border); }
+      .bg-input { background-color: var(--atl-input); }
+      .text-input { color: var(--atl-input); }
+      .border-input { border-color: var(--atl-input); }
+      .ring-input { --tw-ring-color: var(--atl-input); }
+      .bg-ring { background-color: var(--atl-ring); }
+      .text-ring { color: var(--atl-ring); }
+      .border-ring { border-color: var(--atl-ring); }
+      .ring-ring { --tw-ring-color: var(--atl-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+  <header class="global-header sticky top-0 z-50 border-b border-[var(--atl-border)] bg-[var(--atl-background)]/95 backdrop-blur">
+    <div class="atl-container flex h-16 items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 text-[var(--atl-foreground)]" data-dom-id="nav-intro">
+        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--atl-primary)] text-white">
+          <i data-lucide="shield-check" class="h-5 w-5"></i>
+        </div>
+        <span class="text-lg font-semibold tracking-tight">AI Trust Layer</span>
+      </a>
+      <nav class="hidden items-center gap-1 md:flex">
+        <a href="index.html" class="nav-item" data-nav-key="intro" data-dom-id="nav-intro">项目介绍</a>
+        <a href="prototype-idle.html" class="nav-item" data-nav-key="prototype" data-active="true" data-dom-id="nav-prototype">交互原型</a>
+        <a href="prototype-admin.html" class="nav-item" data-nav-key="admin" data-dom-id="nav-admin">管理后台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="prototype-layout">
+      <!-- Trust Interface Frame -->
+      <section class="trust-interface-frame flex-1 bg-[var(--atl-background)] p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <div class="mb-4 flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-[var(--atl-foreground)]">李明 · 投标专员视图</h1>
+            <a href="prototype-admin.html" class="inline-flex items-center gap-1.5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-card)] px-3 py-1.5 text-xs font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)]" data-dom-id="nav-admin">
+              <i data-lucide="layout-dashboard" class="h-3.5 w-3.5"></i> 切换管理后台
+            </a>
+          </div>
+
+          <div class="trust-card p-6 lg:p-8">
+            <div class="mb-5 flex items-center gap-2 text-sm text-[var(--atl-muted-foreground)]">
+              <i data-lucide="corner-down-right" class="h-4 w-4"></i>
+              <span>查询：</span><span class="font-medium text-[var(--atl-foreground)]">ZDJ-200 转辙机的主要技术参数是什么？</span>
+            </div>
+
+            <!-- Level 0: answer + confidence -->
+            <div class="mb-4 flex flex-wrap items-center gap-3">
+              <span class="confidence-badge confidence-medium"><i data-lucide="alert-circle" class="h-3.5 w-3.5"></i> Partial match · verification recommended</span>
+              <span class="text-xs text-[var(--atl-muted-foreground)]">2 sources · AI-inferred · response time 108ms</span>
+            </div>
+
+            <div class="text-[var(--atl-foreground)]">
+              <p class="text-base leading-relaxed">
+                Main technical parameters of the <span class="jargon-term" title="Electric Switch Machine">ZDJ-200 electric point machine</span>: rated voltage DC160V, rated current ≤4.5A, <span class="jargon-term" title="Switching Force">switching force</span> 5880N, <span class="jargon-term" title="Operating Time">operating time</span> ≤6s, suitable for 50kg/m and 60kg/m rail. Some parameters come from the equipment manual and some are inferred from similar equipment; it is recommended to check the original specification.
+              </p>
+            </div>
+
+            <!-- Level 1: details expander (open by default for medium) -->
+            <details class="mt-6 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-neutral-50)]" open>
+              <summary class="flex items-center justify-between px-4 py-3 text-sm font-medium text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]">
+                <span class="flex items-center gap-2"><i data-lucide="file-text" class="h-4 w-4 text-[var(--atl-primary)]"></i> Details</span>
+                <i data-lucide="chevron-down" class="h-4 w-4 text-[var(--atl-muted-foreground)]"></i>
+              </summary>
+              <div class="border-t border-[var(--atl-border)] p-4">
+                <!-- Sources -->
+                <div class="mb-4">
+                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-muted-foreground)]">
+                    <i data-lucide="book-open" class="h-3.5 w-3.5"></i> Sources
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] p-3">
+                      <div class="flex items-center justify-between">
+                        <a href="prototype-document.html" class="text-sm font-medium text-[var(--atl-primary)] hover:underline" data-dom-id="link-document">📄 ZDJ-200 Electric Switch Machine Technical Manual · Page 8</a>
+                        <span class="text-xs font-medium text-[var(--atl-state-warning)]">71% match</span>
+                      </div>
+                      <details class="mt-2">
+                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">View excerpt</summary>
+                        <p class="mt-2 text-xs leading-relaxed text-[var(--atl-muted-foreground)]">ZDJ-200 electric point machine technical parameter table: rated voltage DC160V, switching force 5880N...</p>
+                      </details>
+                    </div>
+                    <div class="rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] p-3">
+                      <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-[var(--atl-foreground)]">📄 Rail Transit Equipment List 2024 · Page 12</span>
+                        <span class="text-xs font-medium text-[var(--atl-state-warning)]">58% match</span>
+                      </div>
+                      <details class="mt-2">
+                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">View excerpt</summary>
+                        <p class="mt-2 text-xs leading-relaxed text-[var(--atl-muted-foreground)]">Point machine selection reference table (including ZDJ-200 parameter comparison)...</p>
+                      </details>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Jargon (collapsed by default) -->
+                <details class="mb-4 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)]">
+                  <summary class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]">
+                    <i data-lucide="languages" class="h-4 w-4 text-[var(--atl-primary)]"></i> Jargon Explanation
+                  </summary>
+                  <div class="border-t border-[var(--atl-border)] p-4 space-y-4">
+                    <div>
+                      <p class="text-sm font-semibold text-[var(--atl-foreground)]">「electric point machine」</p>
+                      <p class="mt-1 flex items-start gap-2 text-sm text-[var(--atl-foreground)]"><span class="text-base">💬</span> It is the electric motor that controls which direction a rail turnout points.</p>
+                      <details class="mt-2">
+                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">📖 Formal definition</summary>
+                        <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">Electric Switch Machine, an electric device used to throw and lock turnouts/points.</p>
+                      </details>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[var(--atl-foreground)]">「switching force」</p>
+                      <p class="mt-1 flex items-start gap-2 text-sm text-[var(--atl-foreground)]"><span class="text-base">💬</span> How much force the motor has to move the rails.</p>
+                      <details class="mt-2">
+                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">📖 Formal definition</summary>
+                        <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">Point Machine Force, the force output by the point machine when pulling a turnout to switch, measured in newtons (N).</p>
+                      </details>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[var(--atl-foreground)]">「operating time」</p>
+                      <p class="mt-1 flex items-start gap-2 text-sm text-[var(--atl-foreground)]"><span class="text-base">💬</span> How many seconds it takes to move a turnout from one position to the other.</p>
+                      <details class="mt-2">
+                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">📖 Formal definition</summary>
+                        <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">Operating Time, the time from when the point machine starts switching until it completes locking.</p>
+                      </details>
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Verification advice -->
+                <div class="rounded-lg border border-[var(--atl-state-warning-bg)] bg-[var(--atl-state-warning-bg)] p-4">
+                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-state-warning)]">
+                    <i data-lucide="shield-alert" class="h-3.5 w-3.5"></i> Verification Advice
+                  </h4>
+                  <p class="mb-2 text-sm text-[var(--atl-foreground)]">以下内容建议人工核对：</p>
+                  <ul class="mb-3 list-disc space-y-1 pl-5 text-sm text-[var(--atl-foreground)]">
+                    <li>rated current value</li>
+                    <li>applicable rail type</li>
+                  </ul>
+                  <a href="prototype-document.html" class="inline-flex items-center gap-1.5 rounded-md bg-[var(--atl-state-warning)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#b45309]" data-dom-id="link-document">
+                    <i data-lucide="file-text" class="h-3.5 w-3.5"></i> View ZDJ-200 manual page 8 →
+                  </a>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <div class="mt-6 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-neutral-50)] p-4">
+            <h3 class="mb-2 flex items-center gap-2 text-sm font-semibold text-[var(--atl-foreground)]">
+              <i data-lucide="info" class="h-4 w-4 text-[var(--atl-primary)]"></i> 当前状态说明
+            </h3>
+            <p class="text-xs leading-relaxed text-[var(--atl-muted-foreground)]">
+              这是 <strong>中置信度答案态</strong>（PRD Step 4.3 / F2a + F2b bug-fix）。黄色标签表示答案部分匹配，建议核对；Sources 默认展开，Jargon 默认折叠，实现「半展开」的折中效果。Verification Advice 提供动作链接，演示 F4。
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="global-footer border-t border-[var(--atl-border)] bg-[var(--atl-muted)] py-8">
+    <div class="atl-container text-center text-sm text-[var(--atl-muted-foreground)]">
+      <p>AI Trust Layer — 面向企业 RAG 系统的可信交互层原型</p>
+      <p class="mt-1">PRD v2 · Progressive Disclosure · Calibration, Not Replacement · Plain Language First</p>
+    </div>
+  </footer>
+
+  <script>lucide.createIcons();</script>
+
+    <style>
+    .nav-item { @apply rounded-md px-3 py-2 text-sm font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)] hover:text-[var(--atl-foreground)]; }
+    .nav-item[data-active="true"] { @apply bg-[var(--atl-primary-50)] text-[var(--atl-primary)]; }
+    .prototype-layout { display: flex; min-height: calc(100vh - 64px - 88px); }.trust-card { border: 1px solid var(--atl-border); background: var(--atl-card); border-radius: 16px; box-shadow: var(--atl-shadow-1); }
+    .search-input { border: 1px solid var(--atl-input); background: var(--atl-background); }
+    .confidence-badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 9999px; padding: 4px 10px; font-size: 12px; font-weight: 500; }
+    .confidence-high { background: var(--atl-state-success-bg); color: var(--atl-state-success); border: 1px solid #bbf7d0; }
+    .confidence-medium { background: var(--atl-state-warning-bg); color: var(--atl-state-warning); border: 1px solid #fde68a; }
+    .confidence-low { background: var(--atl-state-error-bg); color: var(--atl-state-error); border: 1px solid #fecaca; }
+    .jargon-term { border-bottom: 1px dashed var(--atl-primary); color: var(--atl-primary); cursor: help; }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+  </style>
+</body>
+</html>

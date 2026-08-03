@@ -1,0 +1,285 @@
+{
+  "schemaVersion": "1.0",
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.07.22.00.00.00",
+    "version_source": "skill-release-manifest.json",
+    "read_status": "loaded"
+  },
+  "project": {
+    "operation": "create",
+    "resolvedLane": "complex_html_page",
+    "intentProfile": {
+      "caseFamily": "complex_html_page",
+      "multiDeviceProject": false,
+      "deviceType": "desktop"
+    },
+    "selectedIntentWorkflowRead": true,
+    "contextRequirementsLoaded": [
+      { "path": "intent-workflows/intent-project-complex-build/INTENT_WORKFLOW.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/start-complex-project-build.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/00-requirement-and-style-intake.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/02-page-composition.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/03-interaction-validation-delivery.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "shared-runtime/agent-dispatch-runtime/shared-page-rendering-kernel.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "shared-runtime/orchestration-summary-contract/orchestration-summary-contract.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/complex-page-runtime.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/complex-page-dispatch-contract.md", "readStatus": "loaded", "bodyRead": true },
+      { "path": "intent-workflows/intent-project-complex-build/interaction-wiring-plan.md", "readStatus": "loaded", "bodyRead": true }
+    ],
+    "contextReadScope": "complex_html_page full lane",
+    "readScopeLedger": [],
+    "projectName": "AI Trust Layer 交互原型",
+    "designRead": "B2B enterprise trust interface / non-technical tender specialists / trustworthy blue + clean surfaces / medium density / avoid playful rounded shapes",
+    "designDials": { "layoutVariance": 2, "motionIntensity": 2, "visualDensity": 3 },
+    "styleConstraints": { "radiusMax": 16, "staticShadowAlphaMax": 0.05 },
+    "sharedProjectShellContract": {
+      "radiusScale": {
+        "sm": "4px",
+        "md": "8px",
+        "lg": "12px",
+        "xl": "16px",
+        "full": "9999px"
+      },
+      "surfaceDepthModel": "border-led static surfaces; floating layers may use alpha <= 0.08 shadow",
+      "typographySystem": {
+        "sans": "Inter, Noto Sans SC, PingFang SC, Microsoft YaHei, system-ui, sans-serif",
+        "mono": "IBM Plex Mono, SF Mono, Menlo, Consolas, monospace"
+      },
+      "navigationShell": {
+        "type": "top-bar",
+        "heightPx": 64,
+        "position": "sticky-top",
+        "items": [
+          { "key": "intro", "label": "项目介绍", "target": "page-index" },
+          { "key": "prototype", "label": "交互原型", "target": "page-prototype-idle" },
+          { "key": "admin", "label": "管理后台", "target": "page-prototype-admin" }
+        ]
+      },
+      "prototypeSidebar": {
+        "type": "left-panel",
+        "widthPx": 320,
+        "position": "fixed-left",
+        "sections": [
+          { "key": "design-principles", "label": "设计理念", "open": true },
+          { "key": "features", "label": "功能映射", "open": true },
+          { "key": "states", "label": "状态速览", "open": false }
+        ]
+      }
+    },
+    "cssPreflightEvidence": {
+      "preflightPath": ".preflight/preflight.html",
+      "applied": true,
+      "commandExitCode": 0,
+      "themeVarsId": "theme-vars",
+      "semanticFallbackId": "semantic-token-fallback",
+      "tailwindThemeInlinePresent": true,
+      "prefix": "atl"
+    },
+    "generationTree": {
+      "root": {
+        "nodeId": "gen-project-shell",
+        "kind": "project-shell",
+        "pageIds": ["page-index", "page-prototype-idle", "page-prototype-loading", "page-prototype-high", "page-prototype-medium", "page-prototype-low", "page-prototype-document", "page-prototype-admin"],
+        "output": "partials/project-shell.html",
+        "sharedRegions": ["global-header", "global-footer", "brand-css-link", "viewport-meta"],
+        "privateRegions": [],
+        "mutableSlots": ["pageTitle", "mainContent", "activeNavItem"],
+        "status": "planned",
+        "children": [
+          {
+            "nodeId": "gen-prototype-shell",
+            "kind": "shared-branch",
+            "pageIds": ["page-prototype-idle", "page-prototype-loading", "page-prototype-high", "page-prototype-medium", "page-prototype-low", "page-prototype-document"],
+            "output": "partials/prototype-shell.html",
+            "sharedRegions": ["prototype-sidebar", "prototype-top-bar", "trust-interface-frame"],
+            "privateRegions": [],
+            "mutableSlots": ["stateContent", "activeSidebarItem"],
+            "status": "planned",
+            "children": [
+              { "nodeId": "gen-page-prototype-idle", "kind": "page-leaf", "pageIds": ["page-prototype-idle"], "output": "pages/prototype-idle.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["idle-state-content"], "mutableSlots": [], "status": "planned", "children": [] },
+              { "nodeId": "gen-page-prototype-loading", "kind": "page-leaf", "pageIds": ["page-prototype-loading"], "output": "pages/prototype-loading.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["loading-state-content"], "mutableSlots": [], "status": "planned", "children": [] },
+              { "nodeId": "gen-page-prototype-high", "kind": "page-leaf", "pageIds": ["page-prototype-high"], "output": "pages/prototype-high.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["high-confidence-content"], "mutableSlots": [], "status": "planned", "children": [] },
+              { "nodeId": "gen-page-prototype-medium", "kind": "page-leaf", "pageIds": ["page-prototype-medium"], "output": "pages/prototype-medium.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["medium-confidence-content"], "mutableSlots": [], "status": "planned", "children": [] },
+              { "nodeId": "gen-page-prototype-low", "kind": "page-leaf", "pageIds": ["page-prototype-low"], "output": "pages/prototype-low.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["low-confidence-content"], "mutableSlots": [], "status": "planned", "children": [] },
+              { "nodeId": "gen-page-prototype-document", "kind": "page-leaf", "pageIds": ["page-prototype-document"], "output": "pages/prototype-document.html", "sharedRegions": ["prototype-shell"], "privateRegions": ["document-view-content"], "mutableSlots": [], "status": "planned", "children": [] }
+            ]
+          },
+          {
+            "nodeId": "gen-page-index",
+            "kind": "page-leaf",
+            "pageIds": ["page-index"],
+            "output": "pages/index.html",
+            "sharedRegions": ["project-shell"],
+            "privateRegions": ["intro-content"],
+            "mutableSlots": [],
+            "status": "planned",
+            "children": []
+          },
+          {
+            "nodeId": "gen-page-prototype-admin",
+            "kind": "page-leaf",
+            "pageIds": ["page-prototype-admin"],
+            "output": "pages/prototype-admin.html",
+            "sharedRegions": ["project-shell"],
+            "privateRegions": ["admin-dashboard-content"],
+            "mutableSlots": [],
+            "status": "planned",
+            "children": []
+          }
+        ]
+      }
+    },
+    "wiringPlan": [
+      { "from": "page-index", "to": "page-prototype-idle", "domId": "cta-prototype", "label": "进入交互原型" },
+      { "from": "page-index", "to": "page-prototype-admin", "domId": "cta-admin", "label": "查看管理后台" },
+      { "from": "page-prototype-idle", "to": "page-prototype-loading", "domId": "cta-search", "label": "提交查询" },
+      { "from": "page-prototype-loading", "to": "page-prototype-high", "domId": "auto-high", "label": "高置信度结果" },
+      { "from": "page-prototype-loading", "to": "page-prototype-medium", "domId": "auto-medium", "label": "中置信度结果" },
+      { "from": "page-prototype-loading", "to": "page-prototype-low", "domId": "auto-low", "label": "低置信度结果" }
+    ],
+    "hiddenInteractionPlan": [
+      { "from": "page-prototype-idle", "to": "page-index", "domId": "nav-intro", "label": "返回项目介绍" },
+      { "from": "page-prototype-idle", "to": "page-prototype-admin", "domId": "nav-admin", "label": "切换到管理后台" },
+      { "from": "page-prototype-loading", "to": "page-prototype-idle", "domId": "nav-prototype", "label": "返回原型" },
+      { "from": "page-prototype-high", "to": "page-prototype-idle", "domId": "nav-prototype", "label": "返回原型" },
+      { "from": "page-prototype-high", "to": "page-prototype-document", "domId": "link-document", "label": "查看文档" },
+      { "from": "page-prototype-medium", "to": "page-prototype-idle", "domId": "nav-prototype", "label": "返回原型" },
+      { "from": "page-prototype-medium", "to": "page-prototype-document", "domId": "link-document", "label": "查看文档" },
+      { "from": "page-prototype-low", "to": "page-prototype-idle", "domId": "nav-prototype", "label": "返回原型" },
+      { "from": "page-prototype-low", "to": "page-prototype-document", "domId": "link-document", "label": "查看文档" },
+      { "from": "page-prototype-document", "to": "page-prototype-low", "domId": "back-previous", "label": "返回上一页" },
+      { "from": "page-prototype-admin", "to": "page-prototype-idle", "domId": "nav-prototype", "label": "返回前端原型" },
+      { "from": "page-prototype-admin", "to": "page-index", "domId": "nav-intro", "label": "返回项目介绍" }
+    ],
+    "dispatchPreflightManifest": [],
+    "expectedDispatches": [],
+    "validationRunDiscipline": {
+      "maxFullValidationRuns": 2,
+      "softWarningsTriggerRepair": false,
+      "blockingRepairMode": "targeted-once",
+      "forbiddenRepairTriggers": ["soft-warning-only", "provenance-warning-only", "style-warning-only"]
+    },
+    "lowValueCallWatchdog": {
+      "noProgressNextAction": "declare readiness or blocked summary"
+    },
+    "visualQualityCheckpoints": [
+      { "checkpoint": "visual-anchor", "target": "trustworthy enterprise blue header + persistent PRD rationale sidebar" },
+      { "checkpoint": "information-hierarchy", "target": "answer first, confidence label second, details expandable, PRD rationale side-by-side" },
+      { "checkpoint": "composition-structure", "target": "fixed top nav, two-column prototype layout (sidebar 320px + fluid main), consistent card shells" },
+      { "checkpoint": "implementation-strategy", "target": "semantic tokens via CSS vars, Tailwind utility enhancement, static layout fallback" }
+    ]
+  },
+  "designSource": {
+    "styleOrigin": "free-explore",
+    "cssFilePath": "colors_and_type.css",
+    "brandPrefix": "atl",
+    "styleContinuityAnchors": [
+      "enterprise blue primary scale (#eff6ff to #1e3a8a)",
+      "neutral slate scale for text and borders",
+      "state semantic colors (success/warning/error/info)",
+      "8px/12px radius, border-led surfaces",
+      "Inter + Noto Sans SC typography"
+    ]
+  },
+  "pages": [
+    {
+      "nodeId": "page-index",
+      "htmlSrc": "pages/index.html",
+      "title": "项目介绍",
+      "pageType": "showcase",
+      "pageIndex": 1,
+      "visualNorthStar": "Clean landing for AI Trust Layer: problem → vision → MVP features → entry CTA",
+      "compositionPattern": "centered hero + three-column principles + feature grid + footer CTA",
+      "continuityAnchors": ["top navigation shell", "enterprise blue brand treatment"],
+      "stateGroupId": null,
+      "stateRole": null
+    },
+    {
+      "nodeId": "page-prototype-idle",
+      "htmlSrc": "pages/prototype-idle.html",
+      "title": "原型 - 空闲态",
+      "pageType": "task-driven",
+      "pageIndex": 2,
+      "visualNorthStar": "Empty trust interface with plain-language prompt and search box",
+      "compositionPattern": "sidebar + main content card with centered search",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "trust interface card shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "base"
+    },
+    {
+      "nodeId": "page-prototype-loading",
+      "htmlSrc": "pages/prototype-loading.html",
+      "title": "原型 - 加载中",
+      "pageType": "task-driven",
+      "pageIndex": 3,
+      "visualNorthStar": "Progressive loading spinner with N1 latency rationale",
+      "compositionPattern": "sidebar + main content card with skeleton/loader",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "trust interface card shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "derived"
+    },
+    {
+      "nodeId": "page-prototype-high",
+      "htmlSrc": "pages/prototype-high.html",
+      "title": "原型 - 高置信度",
+      "pageType": "task-driven",
+      "pageIndex": 4,
+      "visualNorthStar": "Green high-confidence label, collapsed details, jargon terms inline",
+      "compositionPattern": "sidebar + main content card with answer + confidence + details expander",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "trust interface card shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "derived"
+    },
+    {
+      "nodeId": "page-prototype-medium",
+      "htmlSrc": "pages/prototype-medium.html",
+      "title": "原型 - 中置信度",
+      "pageType": "task-driven",
+      "pageIndex": 5,
+      "visualNorthStar": "Yellow medium-confidence label, sources auto-expanded, jargon collapsed",
+      "compositionPattern": "sidebar + main content card with answer + warning label + expanded source list",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "trust interface card shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "derived"
+    },
+    {
+      "nodeId": "page-prototype-low",
+      "htmlSrc": "pages/prototype-low.html",
+      "title": "原型 - 低置信度",
+      "pageType": "task-driven",
+      "pageIndex": 6,
+      "visualNorthStar": "Red low-confidence label + non-dismissible alert banner + action link",
+      "compositionPattern": "sidebar + main content card with alert + answer + details",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "trust interface card shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "derived"
+    },
+    {
+      "nodeId": "page-prototype-document",
+      "htmlSrc": "pages/prototype-document.html",
+      "title": "原型 - 文档视图",
+      "pageType": "information-dense",
+      "pageIndex": 7,
+      "visualNorthStar": "Mock source document page view for verification traceability",
+      "compositionPattern": "sidebar + document viewer with page header + excerpt + back button",
+      "continuityAnchors": ["prototype sidebar with PRD rationale", "document viewer shell"],
+      "stateGroupId": "sg-prototype",
+      "stateRole": "derived"
+    },
+    {
+      "nodeId": "page-prototype-admin",
+      "htmlSrc": "pages/prototype-admin.html",
+      "title": "原型 - 管理后台",
+      "pageType": "information-dense",
+      "pageIndex": 8,
+      "visualNorthStar": "Wang Fang dashboard: three metric cards + top jargon + recent queries",
+      "compositionPattern": "top nav + metric card row + two-column lists",
+      "continuityAnchors": ["top navigation shell", "enterprise blue brand treatment"],
+      "stateGroupId": null,
+      "stateRole": null
+    }
+  ],
+  "assets": []
+}

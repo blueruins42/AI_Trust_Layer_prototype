@@ -1,0 +1,17 @@
+<!-- AI Trust Layer — Prototype Shell (inherits Project Shell) -->
+<div class="prototype-layout flex min-h-[calc(100vh-64px-88px)]">
+  
+
+  <!-- Trust Interface Frame -->
+  <section class="trust-interface-frame flex-1 bg-[var(--atl-background)] p-6 lg:p-8">
+    <div class="mx-auto max-w-3xl">
+      <div class="mb-4 flex items-center justify-between">
+        <h1 class="text-xl font-semibold text-[var(--atl-foreground)]"><!-- SLOT: stateTitle --></h1>
+        <a href="pages/prototype-admin.html" class="inline-flex items-center gap-1.5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-card)] px-3 py-1.5 text-xs font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)]" data-dom-id="nav-admin">
+          <i data-lucide="layout-dashboard" class="h-3.5 w-3.5"></i> 切换管理后台
+        </a>
+      </div>
+      <!-- SLOT: stateContent -->
+    </div>
+  </section>
+</div>

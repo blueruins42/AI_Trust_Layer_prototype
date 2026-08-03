@@ -1,0 +1,30 @@
+<!-- AI Trust Layer — Project Shell -->
+<!-- Shared regions: global-header, global-footer, brand-css-link, viewport-meta -->
+<!-- Mutable slots: pageTitle, mainContent, activeNavItem -->
+
+<header class="global-header sticky top-0 z-50 border-b border-[var(--atl-border)] bg-[var(--atl-background)]/95 backdrop-blur">
+  <div class="atl-container flex h-16 items-center justify-between">
+    <a href="pages/index.html" class="flex items-center gap-2 text-[var(--atl-foreground)]" data-dom-id="nav-intro">
+      <div class="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--atl-primary)] text-white">
+        <i data-lucide="shield-check" class="h-5 w-5"></i>
+      </div>
+      <span class="text-lg font-semibold tracking-tight">AI Trust Layer</span>
+    </a>
+    <nav class="hidden items-center gap-1 md:flex">
+      <a href="pages/index.html" class="nav-item" data-nav-key="intro" data-dom-id="nav-intro">项目介绍</a>
+      <a href="pages/prototype-idle.html" class="nav-item" data-nav-key="prototype" data-dom-id="nav-prototype">交互原型</a>
+      <a href="pages/prototype-admin.html" class="nav-item" data-nav-key="admin" data-dom-id="nav-admin">管理后台</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+  <!-- SLOT: mainContent -->
+</main>
+
+<footer class="global-footer border-t border-[var(--atl-border)] bg-[var(--atl-muted)] py-8">
+  <div class="atl-container text-center text-sm text-[var(--atl-muted-foreground)]">
+    <p>AI Trust Layer — 面向企业 RAG 系统的可信交互层原型</p>
+    <p class="mt-1">PRD v2 ·  Progressive Disclosure · Calibration, Not Replacement · Plain Language First</p>
+  </div>
+</footer>
