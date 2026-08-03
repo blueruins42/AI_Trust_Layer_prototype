@@ -10,15 +10,15 @@
 
 ## 🚀 Run & Deploy
 
-Run the prototype locally in seconds — it ships in offline demo mode, so **no API key is needed**:
+Deploy it free to **Streamlit Community Cloud** in a few clicks — full steps in [DEPLOY.md](DEPLOY.md). A GitHub icon in the top-right of the app links back to this source repository. The live demo runs fully offline on the cloud with **no API key needed** (`MOCK_LLM_MODE` defaults to `true`).
+
+Prefer to run it locally? It ships in offline demo mode, so **no API key is needed**:
 
 ```bash
 cd ai_trust_layer
 pip install -r requirements.txt
 streamlit run app.py        # opens http://localhost:8501
 ```
-
-Prefer a live URL? Deploy it free to Streamlit Community Cloud in a few clicks — full steps in [DEPLOY.md](DEPLOY.md). A GitHub icon in the top-right of the app links back to the source repository.
 
 ---
 
@@ -111,12 +111,6 @@ flowchart LR
 2. **Trust Calibration** — Three tiers, differentiated — never deciding for the user
 3. **Structured Data Contract** — JSON-Schema driven — no NLP guessing
 4. **Human–AI Loop** — Front-end trust surface + back-end Admin = an iterative system
-
----
-
-## ☁️ Deploy to the Cloud
-
-This repository is a self-contained, interactive portfolio prototype on Streamlit Community Cloud (free). It runs the real AI Trust Layer demo offline (no API key needed) and links back to the full design documentation on GitHub. Full instructions are in [DEPLOY.md](DEPLOY.md) — in short: push to GitHub, connect the repo at streamlit.io/cloud with entry `ai_trust_layer/app.py`, Python 3.12, and no secrets required (`MOCK_LLM_MODE` defaults to `true`).
 
 ---
 
