@@ -291,9 +291,6 @@ button {
               <p class="text-sm leading-relaxed text-[var(--atl-foreground)]">
                 No exact investment data was found for the YY line in the database. The following answer is for reference only — verify against the source document before use.
               </p>
-              <a href="prototype-document-low.html" class="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[var(--atl-state-error)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#b91c1c]" data-dom-id="link-document">
-                <i data-lucide="file-text" class="h-3.5 w-3.5"></i> View the most similar document, p. 22 →
-              </a>
             </div>
 
             <!-- Level 0: answer + confidence -->
@@ -352,11 +349,14 @@ button {
                 </details>
 
                 <!-- Verification advice -->
-                <div class="rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] p-4">
-                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-muted-foreground)]">
+                <div class="rounded-lg border border-[var(--atl-state-error-bg)] bg-[var(--atl-state-error-bg)] p-4">
+                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-state-error)]">
                     <i data-lucide="shield-alert" class="h-3.5 w-3.5"></i> Verification Advice
                   </h4>
-                  <p class="text-sm text-[var(--atl-foreground)]">See the verification advice and action link in the warning banner above.</p>
+                  <p class="text-sm text-[var(--atl-foreground)]">No exact YY-line data was found. Verify the estimate against the cited source before use — the answer is for reference only.</p>
+                  <a href="prototype-document-low.html" class="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[var(--atl-state-error)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#b91c1c]" data-dom-id="link-document">
+                    <i data-lucide="file-text" class="h-3.5 w-3.5"></i> View the most similar document, p. 22 →
+                  </a>
                 </div>
               </div>
             </details>

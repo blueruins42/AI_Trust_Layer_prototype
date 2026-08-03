@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Trust Layer — User · High Confidence</title>
+    <title>AI Trust Layer — User · Document View</title>
     <style id="theme-vars">
 :root {
   /* ── Brand palette: trustworthy enterprise blue ── */
@@ -266,105 +266,80 @@ button {
 
   <main id="main-content">
     <div class="prototype-layout">
-      <!-- Trust Interface Frame -->
       <section class="trust-interface-frame flex-1 bg-[var(--atl-background)] p-6 lg:p-8">
         <div class="mx-auto max-w-3xl">
           <div class="mb-4 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
               <a href="prototype-idle.html" class="inline-flex items-center gap-1.5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-card)] px-3 py-1.5 text-xs font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)]"><i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back</a>
-              <h1 class="text-xl font-semibold text-[var(--atl-foreground)]">User · Bid Specialist View</h1>
+              <h1 class="text-xl font-semibold text-[var(--atl-foreground)]">Document Verification View</h1>
             </div>
             <a href="prototype-admin.html" class="inline-flex items-center gap-1.5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-card)] px-3 py-1.5 text-xs font-medium text-[var(--atl-muted-foreground)] hover:bg-[var(--atl-muted)]" data-dom-id="nav-admin"><i data-lucide="layout-dashboard" class="h-3.5 w-3.5"></i> Switch to Admin</a>
           </div>
 
-          <div class="trust-card p-6 lg:p-8">
-            <div class="mb-5 flex items-center gap-2 text-sm text-[var(--atl-muted-foreground)]">
-              <i data-lucide="corner-down-right" class="h-4 w-4"></i>
-              <span>Query: </span><span class="font-medium text-[var(--atl-foreground)]">What signaling standard does Project XX use?</span>
-            </div>
-
-            <!-- Level 0: answer + confidence -->
-            <div class="mb-4 flex flex-wrap items-center gap-3">
-              <span class="confidence-badge confidence-high"><i data-lucide="check-circle-2" class="h-3.5 w-3.5"></i> High confidence</span>
-              <span class="text-xs text-[var(--atl-muted-foreground)]">2 sources · response time 120ms</span>
-            </div>
-
-            <div class="text-[var(--atl-foreground)]">
-              <p class="text-base leading-relaxed">
-                The XX project signalling system adopts the <span class="jargon-term" title="Communication-Based Train Control">CBTC</span> standard. Through train-to-ground communication, the system achieves real-time train positioning and <span class="jargon-term" title="Moving Block">moving block</span> operation, increasing line capacity by approximately 15-20% compared with conventional fixed block systems.
-              </p>
-            </div>
-
-            <!-- Level 1: details expander -->
-            <details class="mt-6 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-neutral-50)]" open>
-              <summary class="flex items-center justify-between px-4 py-3 text-sm font-medium text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]">
-                <span class="flex items-center gap-2"><i data-lucide="file-text" class="h-4 w-4 text-[var(--atl-primary)]"></i> Details</span>
-                <i data-lucide="chevron-down" class="h-4 w-4 text-[var(--atl-muted-foreground)]"></i>
-              </summary>
-              <div class="border-t border-[var(--atl-border)] p-4">
-                <!-- Sources -->
-                <div class="mb-4">
-                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-muted-foreground)]">
-                    <i data-lucide="book-open" class="h-3.5 w-3.5"></i> Sources
-                  </h4>
-                  <div class="space-y-3">
-                    <div class="rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] p-3">
-                      <div class="flex items-center justify-between">
-                        <a href="prototype-document.html" class="text-sm font-medium text-[var(--atl-primary)] hover:underline" data-dom-id="link-document">📄 XX Project Technical Specification v3.2 · Page 15</a>
-                        <span class="text-xs font-medium text-[var(--atl-state-success)]">95% match</span>
-                      </div>
-                      <details class="mt-2">
-                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">View excerpt</summary>
-                        <p class="mt-2 text-xs leading-relaxed text-[var(--atl-muted-foreground)]">The signalling system adopts the CBTC standard; core equipment includes the ZDJ-200 electric point machine, wayside signals and track circuits...</p>
-                      </details>
-                    </div>
-                    <div class="rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)] p-3">
-                      <div class="flex items-center justify-between">
-                        <a href="prototype-document-high-p3.html" class="text-sm font-medium text-[var(--atl-primary)] hover:underline" data-dom-id="link-document">📄 XX Project Signaling System Design Drawing · Page 3</a>
-                        <span class="text-xs font-medium text-[var(--atl-state-success)]">88% match</span>
-                      </div>
-                      <details class="mt-2">
-                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">View excerpt</summary>
-                        <p class="mt-2 text-xs leading-relaxed text-[var(--atl-muted-foreground)]">The signalling system design of this project is based on the CBTC standard, implementing moving block control...</p>
-                      </details>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Jargon -->
-                <details class="mb-4 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-card)]" open>
-                  <summary class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]">
-                    <i data-lucide="languages" class="h-4 w-4 text-[var(--atl-primary)]"></i> Jargon Explanation
-                  </summary>
-                  <div class="border-t border-[var(--atl-border)] p-4 space-y-4">
-                    <div>
-                      <p class="text-sm font-semibold text-[var(--atl-foreground)]">"CBTC"</p>
-                      <p class="mt-1 flex items-start gap-2 text-sm text-[var(--atl-foreground)]"><span class="text-base">💬</span> It uses radio to let trains and wayside equipment chat in real time, so the system always knows where each train is and how fast it is going.</p>
-                      <details class="mt-2">
-                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">📖 Formal definition</summary>
-                        <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">Communication-Based Train Control, a train control system based on continuous train-to-ground communication.</p>
-                      </details>
-                    </div>
-                    <div>
-                      <p class="text-sm font-semibold text-[var(--atl-foreground)]">"Moving block"</p>
-                      <p class="mt-1 flex items-start gap-2 text-sm text-[var(--atl-foreground)]"><span class="text-base">💬</span> The safe gap between trains is not fixed; it is calculated on the fly—faster trains get more space, stopped trains can be closer.</p>
-                      <details class="mt-2">
-                        <summary class="text-xs text-[var(--atl-muted-foreground)] hover:text-[var(--atl-foreground)]">📖 Formal definition</summary>
-                        <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">Moving Block, a block system in which the safe separation between trains is calculated dynamically based on real-time speed.</p>
-                      </details>
-                    </div>
-                  </div>
-                </details>
-
-                <!-- Verification advice -->
-                <div class="rounded-lg border border-[var(--atl-state-success-bg)] bg-[var(--atl-state-success-bg)] p-4">
-                  <h4 class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--atl-state-success)]">
-                    <i data-lucide="shield-alert" class="h-3.5 w-3.5"></i> Verification Advice
-                  </h4>
-                  <p class="text-sm text-[var(--atl-foreground)]">No manual check needed. The answer comes directly from a document citation; confidence is high.</p>
-                </div>
+          <div class="doc-page overflow-hidden">
+            <div class="doc-page-header flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+              <div>
+                <p class="text-xs font-medium text-[var(--atl-muted-foreground)]">DOC-012 · v2024</p>
+                <h2 class="text-base font-semibold text-[var(--atl-foreground)]">Rail Transit Equipment List 2024</h2>
               </div>
-            </details>
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--atl-border)] bg-[var(--atl-card)] px-3 py-1 text-xs font-medium text-[var(--atl-muted-foreground)]">
+                <i data-lucide="file-text" class="h-3.5 w-3.5"></i> Page 12
+              </span>
+            </div>
+            <div class="p-5 lg:p-6">
+              <div class="mb-4 rounded-md border-l-4 border-[var(--atl-primary)] bg-[var(--atl-primary-50)] p-3">
+                <p class="text-xs font-medium text-[var(--atl-primary)]">Source Citation Locator</p>
+                <p class="mt-1 text-xs text-[var(--atl-muted-foreground)]">You were routed here because the medium-confidence query "What are the main technical parameters of the ZDJ-200 switch machine?" matches the selection reference table on this page.</p>
+              </div>
+
+                            <h3 class="mb-3 text-sm font-semibold text-[var(--atl-foreground)]">Switch Machine Selection Reference</h3>
+              <div class="overflow-x-auto rounded-lg border border-[var(--atl-border)]">
+                <table class="w-full text-left text-sm">
+                  <thead class="bg-[var(--atl-neutral-50)] text-xs font-semibold uppercase text-[var(--atl-muted-foreground)]">
+                    <tr>
+                      <th class="border-b border-[var(--atl-border)] px-4 py-3">Model</th>
+                      <th class="border-b border-[var(--atl-border)] px-4 py-3">Rated voltage</th>
+                      <th class="border-b border-[var(--atl-border)] px-4 py-3">Switching force</th>
+                      <th class="border-b border-[var(--atl-border)] px-4 py-3">Operating time</th>
+                      <th class="border-b border-[var(--atl-border)] px-4 py-3">Applicable rail</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-[var(--atl-foreground)]">
+                    <tr class="bg-[var(--atl-primary-50)]">
+                      <td class="px-4 py-3 font-medium text-[var(--atl-primary)]">ZDJ-200</td>
+                      <td class="px-4 py-3 font-medium text-[var(--atl-primary)]">DC 160V</td>
+                      <td class="px-4 py-3 font-medium text-[var(--atl-primary)]">5880N</td>
+                      <td class="px-4 py-3 font-medium text-[var(--atl-primary)]">&#8804; 6s</td>
+                      <td class="px-4 py-3 font-medium text-[var(--atl-primary)]">50/60kg/m</td>
+                    </tr>
+                    <tr class="border-b border-[var(--atl-border)]">
+                      <td class="px-4 py-3">ZDJ-150</td>
+                      <td class="px-4 py-3">DC 160V</td>
+                      <td class="px-4 py-3">3920N</td>
+                      <td class="px-4 py-3">&#8804; 5s</td>
+                      <td class="px-4 py-3">50kg/m</td>
+                    </tr>
+                    <tr class="border-b border-[var(--atl-border)]">
+                      <td class="px-4 py-3">S700K</td>
+                      <td class="px-4 py-3">AC 380V</td>
+                      <td class="px-4 py-3">~6000N</td>
+                      <td class="px-4 py-3">&#8804; 5.6s</td>
+                      <td class="px-4 py-3">60kg/m</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mt-5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-neutral-50)] p-4">
+                <p class="text-sm leading-relaxed text-[var(--atl-foreground)]">
+                  <strong>Note:</strong> The ZDJ-200 row is highlighted as the model cited in the answer; some parameters are inferred from comparable equipment and flagged for human verification.
+                </p>
+              </div>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="prototype-medium.html" class="inline-flex items-center gap-1.5 rounded-md border border-[var(--atl-border)] bg-[var(--atl-card)] px-4 py-2 text-sm font-medium text-[var(--atl-foreground)] hover:bg-[var(--atl-muted)]" data-dom-id="back-previous">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to Answer
+            </a>
+            <span class="text-xs text-[var(--atl-muted-foreground)]">F1 source citation · trace to original in one click</span>
           </div>
 
           <div class="mt-6 rounded-lg border border-[var(--atl-border)] bg-[var(--atl-neutral-50)] p-4">
@@ -372,13 +347,13 @@ button {
               <i data-lucide="info" class="h-4 w-4 text-[var(--atl-primary)]"></i> About this state
             </h3>
             <p class="text-xs leading-relaxed text-[var(--atl-muted-foreground)]">
-              HIGH confidence answer state (PRD Step 4.3 / F2a). Green label = safe to use; Details collapsed by default per Progressive Disclosure. Clicking Details reveals Sources, Jargon and Verification Advice — demonstrating F1 / F3 / F4.
+              DOCUMENT_VIEW (PRD Step 4.1). When the user clicks a source link on the medium-confidence answer, this view opens the cited manual page to verify the AI answer's origin — demonstrating F1 source traceability.
             </p>
           </div>
         </div>
       </section>
     </div>
-  </main>
+</main>
 
   <footer class="global-footer border-t border-[var(--atl-border)] bg-[var(--atl-muted)] py-8">
     <div class="atl-container text-center text-sm text-[var(--atl-muted-foreground)]">
@@ -393,14 +368,8 @@ button {
     .nav-item:hover { background: var(--atl-muted); color: var(--atl-foreground); text-decoration: none; }
     .nav-item[data-active="true"] { background: var(--atl-primary-50); color: var(--atl-primary); }
     .prototype-layout { display: flex; min-height: calc(100vh - 64px - 88px); }.trust-card { border: 1px solid var(--atl-border); background: var(--atl-card); border-radius: 16px; box-shadow: var(--atl-shadow-1); }
-    .search-input { border: 1px solid var(--atl-input); background: var(--atl-background); }
-    .confidence-badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 9999px; padding: 4px 10px; font-size: 12px; font-weight: 500; }
-    .confidence-high { background: var(--atl-state-success-bg); color: var(--atl-state-success); border: 1px solid #bbf7d0; }
-    .confidence-medium { background: var(--atl-state-warning-bg); color: var(--atl-state-warning); border: 1px solid #fde68a; }
-    .confidence-low { background: var(--atl-state-error-bg); color: var(--atl-state-error); border: 1px solid #fecaca; }
-    .jargon-term { border-bottom: 1px dashed var(--atl-primary); color: var(--atl-primary); cursor: help; }
-    details > summary { list-style: none; cursor: pointer; }
-    details > summary::-webkit-details-marker { display: none; }
+    .doc-page { border: 1px solid var(--atl-border); background: var(--atl-card); border-radius: 12px; box-shadow: var(--atl-shadow-1); }
+    .doc-page-header { border-bottom: 1px solid var(--atl-border); background: var(--atl-neutral-50); }
   </style>
 </body>
 </html>
