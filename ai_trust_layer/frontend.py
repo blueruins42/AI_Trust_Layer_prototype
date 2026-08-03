@@ -369,18 +369,10 @@ def render_alert_banner(verification_advice, confidence_score=None):
         unsafe_allow_html=True,
     )
 
-    # Action link button (right-aligned, triggers source document view)
-    if verification_advice and verification_advice.action_link:
-        link = verification_advice.action_link
-        _, btn_col = st.columns([3, 1])
-        with btn_col:
-            if st.button("View source document  →", key="alert_action_link", type="primary"):
-                st.session_state["doc_view"] = {
-                    "doc_name": link.document,
-                    "page": link.page,
-                }
-                update_verification_click()
-                st.rerun()
+    # NOTE: the "View source document" action now lives in the Sources area
+    # (rendered by render_sources) so all confidence levels share one consistent
+    # button. The alert keeps its visual warning only.
+
 
 
 def render_no_docs_banner():
@@ -440,15 +432,10 @@ def render_details_expander(response: TrustLayerResponse):
         # Log that user viewed details
         update_details_viewed()
 
-        # F1: Source annotations
-        # Tell render_sources whether a source-document button already exists in
-        # the verification advice (low/medium). High confidence has none, so
-        # render_sources will add its own Document Verification View button.
-        has_doc_link = bool(
-            response.verification_advice
-            and getattr(response.verification_advice, "action_link", None)
-        )
-        render_sources(response.sources, has_doc_action_link=has_doc_link)
+        # F1: Source annotations — every referenced document gets its own
+        # "View source document -> Page N" button inside the Sources area,
+        # giving a consistent name + position across all confidence levels.
+        render_sources(response.sources)
 
         # F3: Jargon glossary (independent expander, always collapsed by default)
         if response.jargon_glossary:
@@ -463,14 +450,15 @@ def render_details_expander(response: TrustLayerResponse):
 
 # -- F1: Source Annotations -------------------------------------
 
-def render_sources(sources: list, has_doc_action_link: bool = False):
-    """F1 Source annotation rendering: sorted by match_score descending, each shows doc name + page + match score + excerpt.
+def render_sources(sources: list):
+    """F1 Source annotation rendering: sorted by match_score descending, each shows doc name + page + match score + excerpt, with a per-source "View source document" button.
 
-    For answers that do NOT already surface a source-document button via the
-    verification advice (i.e. high confidence), a direct "View source document"
-    button is appended so the Document Verification View is reachable. This is
-    the F1 Source Transparency principle and matches the static mirror. Low and
-    medium keep their own verification-advice action link untouched.
+    Every referenced document gets its OWN "View source document -> Page N" button
+    (consistent name + position across ALL confidence levels: high / medium / low),
+    opening the Document Verification View for THAT specific source. This is the F1
+    Source Transparency principle and matches the static mirror (one doc view per
+    reference). Previously only the top source had a button, leaving the 2nd
+    reference (e.g. HIGH page 3, MEDIUM page 12) unclickable.
     """
     if not sources:
         st.info("No specific documents referenced in this answer")
@@ -498,21 +486,21 @@ def render_sources(sources: list, has_doc_action_link: bool = False):
             with st.expander("View Excerpt", expanded=False, key=f"excerpt_{rid}_{i}"):
                 st.markdown(f"> {src.excerpt}")
 
-        st.markdown("---")
-
-    # F1 Document Verification View — only when the verification advice did NOT
-    # already provide a source-document button (the high-confidence case). Jump
-    # to the most relevant referenced document (top source by match score).
-    if not has_doc_action_link and sorted_sources:
-        top = sorted_sources[0]
-        if top.page_number > 0:
-            label = f"View source document page {top.page_number}"
-            if st.button(f"{label} ->", key=f"source_doc_link_{rid}"):
+        # Per-source Document Verification View button — consistent label & position
+        # for every confidence level. Jump to THIS source's own document page.
+        if src.page_number > 0:
+            if st.button(
+                f"View source document -> Page {src.page_number}",
+                key=f"source_doc_link_{rid}_{i}",
+            ):
                 st.session_state["doc_view"] = {
-                    "doc_name": top.document_name,
-                    "page": top.page_number,
+                    "doc_name": src.document_name,
+                    "page": src.page_number,
                 }
+                update_verification_click()
                 st.rerun()
+
+        st.markdown("---")
 
 
 # -- F3: Jargon Glossary ----------------------------------------
@@ -560,16 +548,8 @@ def render_verification_advice(verification_advice, confidence_level: Confidence
         for field in verification_advice.fields_to_check:
             st.markdown(f"- {field}")
 
-    # Action link
-    if verification_advice.action_link:
-        link = verification_advice.action_link
-        if st.button(f"{link.text} ->", key="verif_action_link"):
-            st.session_state["doc_view"] = {
-                "doc_name": link.document,
-                "page": link.page,
-            }
-            update_verification_click()
-            st.rerun()
+    # NOTE: the per-source "View source document" buttons are rendered by
+    # render_sources inside the Sources area, so they are not duplicated here.
 
 
 # -- Document View ----------------------------------------------
@@ -577,10 +557,6 @@ def render_verification_advice(verification_advice, confidence_level: Confidence
 def render_document_view(doc_name: str, page_number: int):
     """DOCUMENT_VIEW state rendering: show doc name + page + original content + back button"""
     st.markdown("### Document View")
-
-    if st.button("<- Back to Answer", key="doc_view_back_top"):
-        st.session_state["doc_view"] = None
-        st.rerun()
 
     st.markdown(f"**{doc_name}** - Page {page_number}")
     st.divider()
